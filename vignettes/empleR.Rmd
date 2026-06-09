@@ -1,0 +1,132 @@
+---
+title: "Introduccion a empleR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduccion a empleR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(empleR)
+```
+
+## Que es empleR
+
+`{empleR}` es un paquete de R para descargar, procesar y analizar los
+microdatos de las encuestas de empleo del Peru publicadas por el INEI:
+
+- **EPEN** (Encuesta Permanente de Empleo Nacional, 2022-presente): cobertura
+  nacional por departamentos.
+- **EPE** (Encuesta Permanente de Empleo, hasta 2021): cobertura solo Lima
+  Metropolitana.
+
+El paquete resuelve la principal dificultad tecnica de trabajar con estas
+series: la **ruptura de clasificadores ocupacionales** entre EPE (que usa
+CO-95, 3 digitos) y EPEN (que usa CNO 2015, 4 digitos).
+
+## Ver que datos estan disponibles
+
+```{r catalogo, eval=FALSE}
+# Ver todo el catalogo de fuentes disponibles
+catalogo()
+
+# Solo EPEN departamentos anuales
+catalogo(fuente = "EPEN", variante = "departamentos_anual")
+```
+
+## Flujo basico de trabajo
+
+```{r flujo, eval=FALSE}
+# 1. Descargar microdatos
+epen_2024 <- descargar(year = 2024)
+
+# 2. Aplicar etiquetas de valor
+epen_2024 <- etiquetar(epen_2024)
+
+# 3. Armonizar codigos ocupacionales (CNO 2015 automatico para 2024)
+epen_2024 <- cno(epen_2024)
+
+# 4. Calcular indicadores con diseno muestral
+tasa_dep <- indicadores(epen_2024, "tasa_desempleo", por = "departamento")
+
+# 5. Visualizar en mapa
+mapa(tasa_dep, var = "tasa_desempleo",
+     titulo = "Tasa de desempleo por departamento, EPEN 2024")
+```
+
+Con el operador pipe, el flujo se puede escribir de forma compacta:
+
+```{r pipe, eval=FALSE}
+library(dplyr)
+
+descargar(year = 2024) |>
+  etiquetar() |>
+  cno() |>
+  ia_exposicion() |>
+  indicadores("tasa_desempleo", por = "departamento") |>
+  mapa(var = "tasa_desempleo")
+```
+
+## La ruptura de clasificadores EPE/EPEN
+
+Este es el problema central que `{empleR}` resuelve automaticamente.
+
+Antes de 2022, la EPE usaba el **CO-95** (3 digitos, basado en CIUO-88).
+Desde 2022, la EPEN usa el **CNO 2015** (4 digitos, basado en CIUO-08).
+
+```{r cno-ejemplo, eval=FALSE}
+# Con datos EPE 2019 (CO-95, detectado automaticamente)
+epe_2019 <- descargar(year = 2019)
+epe_2019 <- cno(epe_2019, homologar = TRUE)
+# Agrega: clasificador = "CO_95", cno_cod, cno_desc, cno_homologado
+
+# Con datos EPEN 2024 (CNO 2015, detectado automaticamente)
+epen_2024 <- descargar(year = 2024)
+epen_2024 <- cno(epen_2024, homologar = TRUE)
+# Agrega: clasificador = "CNO_2015", cno_cod, cno_desc
+
+# Ahora cno_homologado permite comparar ambas bases
+```
+
+## Indice de exposicion a inteligencia artificial
+
+`{empleR}` incluye un indice de exposicion a IA generativa construido con
+Claude Sonnet 4.6 (Anthropic) para las ocupaciones del CNO 2015.
+
+```{r ia, eval=FALSE}
+# Agregar score de IA a los microdatos
+epen_ia <- descargar(year = 2024) |>
+  cno() |>
+  ia_exposicion(score = "ambos", incluir_tipo = TRUE)
+
+# Ver distribucion del score
+summary(epen_ia$ia_score_mean)
+
+# Exposicion media por departamento en mapa
+epen_ia |>
+  indicadores("ia_score_mean", por = "departamento") |>
+  mapa(var = "ia_score_mean",
+       titulo = "Exposicion a IA generativa por departamento, 2024")
+```
+
+## Datos de ejemplo
+
+El paquete incluye `muestra_epen_2024`, una submuestra de 2.000 filas para
+practicar sin necesidad de descargar datos:
+
+```{r muestra}
+# Ver estructura de la muestra
+str(muestra_epen_2024)
+
+# Aplicar cno() directamente
+muestra_con_cno <- cno(muestra_epen_2024)
+head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
+```

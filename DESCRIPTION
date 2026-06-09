@@ -1,0 +1,41 @@
+Package: empleR
+Title: Tools for Analyzing Peru's National Employment Surveys (EPEN/EPE)
+Version: 0.0.0.9000
+Authors@R:
+    person("Valentina", "Linares Herrera", , "durgavalentinalinaresherrera@gmail.com",
+           role = c("aut", "cre"),
+           comment = c(ORCID = ""))
+Description: Provides tools to download, read, and analyze microdata from Peru's
+    national employment surveys: the Encuesta Permanente de Empleo Nacional
+    (EPEN, 2022-present) and its predecessor the Encuesta Permanente de Empleo
+    (EPE, until 2021). Key features include automatic harmonization of occupational
+    classifiers (CNO 2015 and CO-95), calculation of labor market indicators
+    using complex survey design, regional visualization via interactive maps,
+    and integration with an AI occupational exposure index.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 4.1.0)
+Imports:
+    cli,
+    dplyr,
+    geoperu,
+    ggplot2,
+    httr2,
+    leaflet,
+    readr,
+    rlang,
+    sf,
+    survey,
+    utils
+Suggests:
+    covr,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+URL: https://github.com/valentinalinares/empleR
+BugReports: https://github.com/valentinalinares/empleR/issues
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+inst/doc
+/doc/
+/Meta/
+# No subir datos crudos o sensibles
+_interno/
+*.xlsx
+*.csv.gz
+# Archivos temporales de test
+test_*.R
+check_*.R
+mapa_*.png
