@@ -141,9 +141,10 @@ indicadores <- function(data,
     } else {
       res <- survey::svymean(formula_var, diseno, na.rm = TRUE)
     }
+    # coef() funciona tanto para svymean como para svyquantile (survey >= 4.1)
     resultado <- data.frame(
       indicador  = indicador,
-      estimado   = as.numeric(res),
+      estimado   = as.numeric(stats::coef(res)),
       error_std  = as.numeric(survey::SE(res))
     )
   } else {
