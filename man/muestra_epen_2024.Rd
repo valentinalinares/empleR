@@ -3,13 +3,23 @@
 \docType{data}
 \name{muestra_epen_2024}
 \alias{muestra_epen_2024}
-\title{Muestra de microdatos EPEN 2024}
+\title{Muestra de microdatos EPEN 2024 (solo ocupados)}
 \format{
-Un \code{data.frame} con 2.000 filas y las variables principales de
-la EPEN 2024. Las variables siguen la nomenclatura oficial del INEI.
+Un \code{data.frame} con 2.000 filas y 33 columnas. Variables principales:
+\describe{
+\item{year, month}{Ano y mes de referencia.}
+\item{region_code}{Codigo de departamento (1-25).}
+\item{labor_status_code}{Estado laboral: \strong{siempre 1 (Ocupado)} en este dataset.}
+\item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
+\item{labor_income_monthly}{Ingreso laboral mensual en soles.}
+\item{hours_week}{Horas trabajadas por semana.}
+\item{weight}{Factor de expansion (peso muestral).}
+\item{sex_code, age, education_code}{Variables sociodemograficas.}
+}
 }
 \source{
 INEI - Encuesta Permanente de Empleo Nacional 2024.
+Pipeline de procesamiento: Linares Herrera, V. (2025).
 }
 \usage{
 muestra_epen_2024
@@ -17,6 +27,18 @@ muestra_epen_2024
 \description{
 Submuestra aleatoria de 2.000 filas de la EPEN 2024
 (variante departamentos_anual) para uso en ejemplos y pruebas.
-Incluye las variables mas relevantes para analisis de empleo.
+}
+\details{
+\strong{Importante:} este dataset contiene \strong{unicamente personas ocupadas}
+(\code{labor_status_code = 1}). Los desocupados e inactivos fueron excluidos
+durante el procesamiento del pipeline porque no tienen codigo de ocupacion
+(CNO) y no pueden cruzarse con el indice de IA.
+
+Esto significa que \strong{no es posible calcular tasas de desempleo o actividad}
+directamente desde esta muestra. Para esos indicadores usa:
+\itemize{
+\item \code{\link[=resumen_nacional]{resumen_nacional()}}: tasas pre-calculadas sobre la PEA completa.
+\item \code{\link[=descargar]{descargar()}}: microdatos crudos del INEI con todos los estados laborales.
+}
 }
 \keyword{datasets}

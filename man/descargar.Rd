@@ -38,6 +38,11 @@ Ingresos de la EPEN. Las columnas siguen la nomenclatura original del
 INEI (e.g. \code{C308_COD}, \code{FACTOR07}, \code{ESTRATO}, \code{CONGLOME}).
 Usar \code{\link[=etiquetar]{etiquetar()}} para aplicar etiquetas de valor y \code{\link[=cno]{cno()}} para
 agregar descripciones de ocupaciones.
+
+\strong{A diferencia de \link{muestra_epen_2024}, estos datos incluyen todos los
+estados laborales}: ocupados, desocupados abiertos, desocupados ocultos
+e inactivos. La variable \code{OCA500} (o equivalente) indica el estado laboral
+de cada persona, lo que permite calcular tasas de desempleo y actividad.
 }
 \description{
 Descarga el modulo de Empleo e Ingresos de la Encuesta Permanente de Empleo

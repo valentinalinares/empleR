@@ -24,6 +24,11 @@
 #'   Usar [etiquetar()] para aplicar etiquetas de valor y [cno()] para
 #'   agregar descripciones de ocupaciones.
 #'
+#'   **A diferencia de [muestra_epen_2024], estos datos incluyen todos los
+#'   estados laborales**: ocupados, desocupados abiertos, desocupados ocultos
+#'   e inactivos. La variable `OCA500` (o equivalente) indica el estado laboral
+#'   de cada persona, lo que permite calcular tasas de desempleo y actividad.
+#'
 #' @export
 #'
 #' @examples
