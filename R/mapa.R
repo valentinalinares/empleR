@@ -71,7 +71,16 @@ mapa <- function(data,
   col_join <- .detectar_col_join(data, shapes, nivel)
 
   # Join datos + shapes
-  mapa_data <- dplyr::left_join(shapes, data, by = col_join)
+  # Agregar columnas de data a shapes por indice (evita problemas de dispatch
+  # de left_join/merge con objetos sf cuando sf no esta explicitamente adjuntado)
+  by_shapes <- unname(col_join)   # columna en shapes
+  by_data   <- names(col_join)    # columna en data
+  idx <- match(shapes[[by_shapes]], data[[by_data]])
+  cols_nuevas <- setdiff(names(data), by_data)
+  mapa_data <- shapes
+  for (col in cols_nuevas) {
+    mapa_data[[col]] <- data[[col]][idx]
+  }
 
   n_sin_dato <- sum(is.na(mapa_data[[var]]))
   if (n_sin_dato > 0) {
