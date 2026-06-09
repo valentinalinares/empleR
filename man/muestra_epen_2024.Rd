@@ -12,7 +12,7 @@ la EPEN 2024. Las variables siguen la nomenclatura oficial del INEI.
 INEI - Encuesta Permanente de Empleo Nacional 2024.
 }
 \usage{
-data(muestra_epen_2024)
+muestra_epen_2024
 }
 \description{
 Submuestra aleatoria de 2.000 filas de la EPEN 2024

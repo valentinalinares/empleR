@@ -9,7 +9,7 @@ Un \code{data.frame} con columnas:
 \describe{
 \item{code}{Codigo CNO 2015 de 4 digitos (character).}
 \item{occupation_group}{Nombre de la ocupacion.}
-\item{mean_exposure_score}{Score medio de exposicion (0 a 1). Ej: 0.37 = 37\\%.}
+\item{mean_exposure_score}{Score medio de exposicion en escala 0-1 (p.ej. 0.37 equivale al 37 por ciento).}
 \item{median_exposure_score}{Score mediano de exposicion (0 a 1).}
 \item{std_score}{Desviacion estandar del score entre tareas.}
 \item{total_tasks}{Numero total de tareas evaluadas.}
@@ -23,7 +23,7 @@ Linares Herrera, V. (2025). Indice de exposicion a IA generativa
 para ocupaciones peruanas. Claude Sonnet 4.6, Anthropic.
 }
 \usage{
-data(indice_ia)
+indice_ia
 }
 \description{
 Score de exposicion a IA generativa para cada ocupacion del CNO 2015,

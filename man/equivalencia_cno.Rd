@@ -19,7 +19,7 @@ Un \code{data.frame} con columnas:
 INEI - Tabla de equivalencias CIUO-2008 / CNO 2015.
 }
 \usage{
-data(equivalencia_cno)
+equivalencia_cno
 }
 \description{
 Tabla de correspondencias entre los codigos CIUO-2008 y el Clasificador

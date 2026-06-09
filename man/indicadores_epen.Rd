@@ -22,7 +22,7 @@ Un \code{data.frame} con columnas principales:
 INEI / elaboracion propia con pipeline Python.
 }
 \usage{
-data(indicadores_epen)
+indicadores_epen
 }
 \description{
 Tasas e indicadores laborales ya calculados con la muestra completa de la

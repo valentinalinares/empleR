@@ -19,7 +19,7 @@ Un \code{data.frame} con columnas:
 INEI / elaboracion propia.
 }
 \usage{
-data(catalogo_fuentes)
+catalogo_fuentes
 }
 \description{
 Inventario de todas las encuestas, anos, variantes y periodos disponibles

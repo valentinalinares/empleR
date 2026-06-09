@@ -15,7 +15,7 @@ Un objeto \code{sf} con 25 filas y columnas:
 \pkg{geoperu} (CRAN) / INEI.
 }
 \usage{
-data(shapes_departamentos)
+shapes_departamentos
 }
 \description{
 Shapes a nivel departamento (25 unidades) pre-computados desde el dataset

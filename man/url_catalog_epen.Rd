@@ -19,7 +19,7 @@ Un \code{data.frame} con columnas:
 INEI - Sistema de Recuperacion de Informacion de Encuestas (SRIIE).
 }
 \usage{
-data(url_catalog_epen)
+url_catalog_epen
 }
 \description{
 URLs reales para descargar los microdatos de la EPEN desde el servidor del

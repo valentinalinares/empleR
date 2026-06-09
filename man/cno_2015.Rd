@@ -19,7 +19,7 @@ Un \code{data.frame} con columnas:
 INEI - Clasificador Nacional de Ocupaciones 2015.
 }
 \usage{
-data(cno_2015)
+cno_2015
 }
 \description{
 Diccionario completo del CNO 2015, el clasificador ocupacional peruano

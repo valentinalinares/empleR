@@ -16,7 +16,7 @@ Un objeto \code{sf} con 196 filas y columnas:
 \pkg{geoperu} (CRAN) / INEI.
 }
 \usage{
-data(shapes_provincias)
+shapes_provincias
 }
 \description{
 Shapes a nivel provincia (196 unidades) pre-computados desde el dataset
