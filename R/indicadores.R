@@ -155,13 +155,13 @@ indicadores <- function(data,
       res <- survey::svyby(formula_var, by = formula_por, design = diseno,
                            FUN = survey::svymean, na.rm = TRUE)
     }
+    # Extraer estimado y SE directamente con coef()/SE()
+    # (mas robusto que buscar columnas por nombre en el data.frame)
     res_df          <- as.data.frame(res)
-    col_est         <- names(res_df)[names(res_df) == var_objetivo]
-    col_se          <- names(res_df)[grepl("^se\\.", names(res_df), ignore.case = TRUE)]
     resultado       <- res_df[, c(por), drop = FALSE]
     resultado$indicador <- indicador
-    resultado$estimado  <- if (length(col_est)) res_df[[col_est]] else res_df[[ncol(res_df) - 1]]
-    resultado$error_std <- if (length(col_se))  res_df[[col_se[1]]] else NA_real_
+    resultado$estimado  <- as.numeric(stats::coef(res))
+    resultado$error_std <- as.numeric(survey::SE(res))
   }
 
   resultado
