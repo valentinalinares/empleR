@@ -1,0 +1,52 @@
+url: https://valentinalinares.github.io/empleR/
+
+template:
+  bootstrap: 5
+  bootswatch: cosmo
+  bslib:
+    primary: "#2C7FB8"
+
+lang: es
+
+home:
+  title: empleR
+  description: >
+    Herramientas para descargar, armonizar y analizar encuestas laborales
+    peruanas, con indicadores de empleo, ocupaciones y exposicion a IA.
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+
+reference:
+  - title: Descarga y catalogo
+    contents:
+      - catalogo
+      - descargar
+      - etiquetar
+  - title: Ocupaciones e indicadores
+    contents:
+      - cno
+      - indicadores
+      - resumen_nacional
+      - ia_exposicion
+  - title: Visualizacion
+    contents:
+      - panel
+      - mapa
+  - title: Datos incluidos
+    contents:
+      - muestra_epen_2024
+      - cno_2015
+      - equivalencia_cno
+      - indice_ia
+      - catalogo_fuentes
+      - indicadores_epen
+      - url_catalog_epen
+
+articles:
+  - title: Manual de uso
+    navbar: Manual de uso
+    contents:
+      - empleR

@@ -5,6 +5,7 @@
 *.Rproj
 inst/doc
 /doc/
+/docs/
 /Meta/
 # No subir datos crudos o sensibles
 _interno/
@@ -14,3 +15,4 @@ _interno/
 test_*.R
 check_*.R
 mapa_*.png
+demo_mapa_ia.png

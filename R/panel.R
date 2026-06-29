@@ -105,12 +105,19 @@ panel <- function(data_lista,
 
   tasa_apareamiento <- if (n_total > 0) {
     round(100 * length(keys_comunes) / n_total, 1)
-  } else { 0 }
+  } else {
+    0
+  }
+
+  msg_apareadas <- paste0(
+    "Viviendas apareadas en todos los trimestres: ",
+    "{length(keys_comunes)} ({tasa_apareamiento}%)"
+  )
 
   cli::cli_inform(c(
     "i" = "Trimestres: {n_trimestres}",
     "i" = "Viviendas unicas: {n_total}",
-    "v" = "Viviendas apareadas en todos los trimestres: {length(keys_comunes)} ({tasa_apareamiento}%)"
+    "v" = msg_apareadas
   ))
 
   # Filtrar segun apareamiento

@@ -3,7 +3,7 @@
 #' Agrega a los microdatos el indice de exposicion a IA generativa por
 #' ocupacion, construido con Claude Sonnet 4.6 (Anthropic). El indice
 #' mide el grado en que las tareas de cada ocupacion pueden ser asistidas
-#' o sustituidas por IA generativa, usando un score continuo de 0 a 100.
+#' o sustituidas por IA generativa, usando un score continuo de 0 a 1.
 #'
 #' @details
 #' El indice fue construido evaluando las tareas de cada ocupacion del
@@ -11,7 +11,7 @@
 #' independientes del modelo Claude Sonnet 4.6, consolidando el resultado
 #' por consenso. Cada tarea recibe:
 #' \itemize{
-#'   \item Un **score continuo** (0-100) de exposicion.
+#'   \item Un **score continuo** (0-1) de exposicion.
 #'   \item Un **tipo de impacto**: `A` (aumento/augmentation),
 #'     `S` (sustitucion), `N` (impacto nulo).
 #' }
@@ -31,7 +31,7 @@
 #'
 #' @return El mismo `data.frame` con columnas adicionales:
 #'   \describe{
-#'     \item{ia_score_mean}{Score medio de exposicion a IA (0-100).}
+#'     \item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
 #'     \item{ia_score_median}{Score mediano (solo si `score = "ambos"`).}
 #'     \item{ia_tipo}{Tipo de impacto predominante (solo si `incluir_tipo = TRUE`).}
 #'   }
@@ -44,7 +44,7 @@
 #' muestra <- ia_exposicion(muestra)
 #'
 #' # Ver distribucion de exposicion
-#' hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-100)")
+#' hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-1)")
 #'
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024) |>

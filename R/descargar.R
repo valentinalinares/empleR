@@ -116,7 +116,10 @@ descargar <- function(year,
     if (is.null(periodo)) {
       cli::cli_abort(c(
         "Para {.val lima_movil} debes especificar el argumento {.arg periodo}.",
-        "i" = "Usa {.code catalogo(fuente='EPEN', variante='lima_movil', year={year})} para ver los periodos disponibles."
+        "i" = paste0(
+          "Usa {.code catalogo(fuente='EPEN', variante='lima_movil', year={year})} ",
+          "para ver los periodos disponibles."
+        )
       ))
     }
     # Busqueda flexible del periodo (sin acentos, case-insensitive)
@@ -124,7 +127,10 @@ descargar <- function(year,
     if (nrow(sub) == 0) {
       cli::cli_abort(c(
         "Periodo '{periodo}' no encontrado para EPEN {year} / {variante}.",
-        "i" = "Usa {.code catalogo(fuente='EPEN', variante='lima_movil', year={year})} para ver los periodos exactos."
+        "i" = paste0(
+          "Usa {.code catalogo(fuente='EPEN', variante='lima_movil', year={year})} ",
+          "para ver los periodos exactos."
+        )
       ))
     }
   }
@@ -159,9 +165,17 @@ descargar <- function(year,
 
   # Leer con readr, adivinando el separador (INEI usa ; o ,)
   datos <- tryCatch(
-    readr::read_csv2(archivos_csv[1], show_col_types = FALSE, locale = readr::locale(encoding = "latin1")),
+    readr::read_csv2(
+      archivos_csv[1],
+      show_col_types = FALSE,
+      locale = readr::locale(encoding = "latin1")
+    ),
     error = function(e) {
-      readr::read_csv(archivos_csv[1], show_col_types = FALSE, locale = readr::locale(encoding = "latin1"))
+      readr::read_csv(
+        archivos_csv[1],
+        show_col_types = FALSE,
+        locale = readr::locale(encoding = "latin1")
+      )
     }
   )
 

@@ -26,7 +26,7 @@ predominante (\code{A}, \code{S}, \code{N}) por ocupacion. Por defecto \code{FAL
 \value{
 El mismo \code{data.frame} con columnas adicionales:
 \describe{
-\item{ia_score_mean}{Score medio de exposicion a IA (0-100).}
+\item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
 \item{ia_score_median}{Score mediano (solo si \code{score = "ambos"}).}
 \item{ia_tipo}{Tipo de impacto predominante (solo si \code{incluir_tipo = TRUE}).}
 }
@@ -35,7 +35,7 @@ El mismo \code{data.frame} con columnas adicionales:
 Agrega a los microdatos el indice de exposicion a IA generativa por
 ocupacion, construido con Claude Sonnet 4.6 (Anthropic). El indice
 mide el grado en que las tareas de cada ocupacion pueden ser asistidas
-o sustituidas por IA generativa, usando un score continuo de 0 a 100.
+o sustituidas por IA generativa, usando un score continuo de 0 a 1.
 }
 \details{
 El indice fue construido evaluando las tareas de cada ocupacion del
@@ -43,7 +43,7 @@ Clasificador Nacional de Ocupaciones (CNO 2015) con tres corridas
 independientes del modelo Claude Sonnet 4.6, consolidando el resultado
 por consenso. Cada tarea recibe:
 \itemize{
-\item Un \strong{score continuo} (0-100) de exposicion.
+\item Un \strong{score continuo} (0-1) de exposicion.
 \item Un \strong{tipo de impacto}: \code{A} (aumento/augmentation),
 \code{S} (sustitucion), \code{N} (impacto nulo).
 }
@@ -56,7 +56,7 @@ muestra <- cno(muestra_epen_2024)
 muestra <- ia_exposicion(muestra)
 
 # Ver distribucion de exposicion
-hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-100)")
+hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-1)")
 
 \dontrun{
 epen_2024 <- descargar(year = 2024) |>

@@ -31,7 +31,14 @@ construido con Claude Sonnet 4.6 (Anthropic) mediante tres corridas
 independientes y consolidacion por consenso.
 }
 \details{
-Correlacion con indice OIT: r = 0.85.
-Correlacion con indice anterior (INEI): r = 0.45.
+El archivo fuente final recomendado es
+\verb{02_exposure_index_por_ocupacion.xlsx}. El score sintetico principal es
+\code{mean_exposure_score}; \code{median_exposure_score} y \code{std_score} se conservan
+para analisis de sensibilidad y heterogeneidad. Segun el memo metodologico
+del indice Sonnet 2026-06-15:
+\itemize{
+\item Correlacion con indice OIT: r = 0.85.
+\item Correlacion con indice anterior: r = 0.45.
+}
 }
 \keyword{datasets}

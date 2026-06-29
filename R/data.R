@@ -90,8 +90,13 @@
 #'   }
 #'
 #' @details
-#' Correlacion con indice OIT: r = 0.85.
-#' Correlacion con indice anterior (INEI): r = 0.45.
+#' El archivo fuente final recomendado es
+#' `02_exposure_index_por_ocupacion.xlsx`. El score sintetico principal es
+#' `mean_exposure_score`; `median_exposure_score` y `std_score` se conservan
+#' para analisis de sensibilidad y heterogeneidad. Segun el memo metodologico
+#' del indice Sonnet 2026-06-15:
+#' - Correlacion con indice OIT: r = 0.85.
+#' - Correlacion con indice anterior: r = 0.45.
 #'
 #' @source Linares Herrera, V. (2025). Indice de exposicion a IA generativa
 #'   para ocupaciones peruanas. Claude Sonnet 4.6, Anthropic.
