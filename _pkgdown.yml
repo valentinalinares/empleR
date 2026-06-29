@@ -44,6 +44,8 @@ reference:
       - catalogo_fuentes
       - indicadores_epen
       - url_catalog_epen
+      - shapes_departamentos
+      - shapes_provincias
 
 articles:
   - title: Manual de uso
