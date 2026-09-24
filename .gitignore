@@ -10,6 +10,8 @@ inst/doc
 # No subir datos crudos o sensibles
 _interno/
 *.xlsx
+# Excepcion: correspondencia publica del INEI usada por data-raw/03_build_equivalencia_co95.R
+!data-raw/co_1995/co_1995_correspondencia.xlsx
 *.csv.gz
 # Archivos temporales de test
 test_*.R
