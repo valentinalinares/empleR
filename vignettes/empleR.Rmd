@@ -86,24 +86,32 @@ Este es el problema central que `{empleR}` resuelve automaticamente.
 Antes de 2022, la EPE usaba el **CO-95** (3 digitos, basado en CIUO-88).
 Desde 2022, la EPEN usa el **CNO 2015** (4 digitos, basado en CIUO-08).
 
-> **Pendiente:** la homologacion CO-95 -> CNO 2015 requiere la tabla de
-> equivalencias oficial del INEI, que aun no esta incluida en el paquete
-> (ver `data-raw/03_build_equivalencia_co95.R`). Mientras tanto, `cno()`
-> solo procesa bases EPEN (CNO 2015).
+La homologacion usa la tabla de correspondencia oficial del INEI
+(`co_1995`). No todas las ocupaciones tienen un equivalente unico:
+de 370 codigos CO-95, 236 tienen un solo destino CNO 2015 y 125 tienen
+varios. Por ejemplo, CO-95 262 ("Economistas y planificadores") corresponde
+a CNO 2412 (analistas financieros) y 2631 (economistas). En esos casos
+`cno()` **no elige un candidato**: deja `cno_homologado` en `NA` y guarda
+todas las opciones en `cno_candidatos`.
 
 ```{r cno-ejemplo, eval=FALSE}
-# Con datos EPE 2019 (CO-95, detectado automaticamente)
-epe_2019 <- descargar(year = 2019)
+# Con datos EPE 2019 (CO-95, detectado automaticamente; variable P204A)
+epe_2019 <- readRDS("epe_2019.rds")
 epe_2019 <- cno(epe_2019, homologar = TRUE)
-# Agrega: clasificador = "CO_95", cno_cod, cno_desc, cno_homologado
+# Agrega: cno_cod, cno_desc, cno_homologado, cno_candidatos,
+#         cno_gran_grupo, homologacion_estado
 
-# Con datos EPEN 2024 (CNO 2015, detectado automaticamente)
-epen_2024 <- descargar(year = 2024)
-epen_2024 <- cno(epen_2024, homologar = TRUE)
-# Agrega: clasificador = "CNO_2015", cno_cod, cno_desc
+# Revisar cobertura antes de comparar series
+table(epe_2019$homologacion_estado)
 
-# Ahora cno_homologado permite comparar ambas bases
+# A nivel de gran grupo la cobertura es mayor
+epen_2024 <- cno(descargar(year = 2024), agregar = "1d")
+# epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod
 ```
+
+La tabla completa de pares esta en `equivalencia_co95`. No la unas
+directamente a los microdatos: un codigo CO-95 con varios destinos
+replicaria personas y pesos.
 
 ## Indice de exposicion a inteligencia artificial
 
