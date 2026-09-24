@@ -33,7 +33,11 @@
 #'   \describe{
 #'     \item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
 #'     \item{ia_score_median}{Score mediano (solo si `score = "ambos"`).}
-#'     \item{ia_tipo}{Tipo de impacto predominante (solo si `incluir_tipo = TRUE`).}
+#'     \item{ia_tipo}{Tipo de impacto predominante: el tipo (`A`, `S` o `N`)
+#'       con mas tareas en la ocupacion; en empate se prioriza `S`, luego `A`
+#'       (solo si `incluir_tipo = TRUE`).}
+#'     \item{tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo}{Numero de tareas
+#'       de cada tipo (solo si `incluir_tipo = TRUE`).}
 #'   }
 #'
 #' @export
@@ -51,13 +55,15 @@
 #'   cno() |>
 #'   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 #'
-#' # Exposicion media por departamento (con diseno muestral)
-#' indicadores(epen_2024, "ingreso_promedio", por = "departamento")
+#' # Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
+#' indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
 #' }
 ia_exposicion <- function(data,
                           var_cno = "cno_cod",
                           score = "mean",
                           incluir_tipo = FALSE) {
+
+  score <- match.arg(score, c("mean", "median", "ambos"))
 
   if (!var_cno %in% names(data)) {
     cli::cli_abort(c(
@@ -98,12 +104,15 @@ ia_exposicion <- function(data,
   if ("median_exposure_score" %in% names(data)) {
     data <- dplyr::rename(data, ia_score_median = "median_exposure_score")
   }
-  if ("tipo_impacto" %in% names(data)) {
-    data <- dplyr::rename(data, ia_tipo = "tipo_impacto")
+  if (incluir_tipo) {
+    data$ia_tipo <- .tipo_predominante(
+      data$tipo_A_aumento, data$tipo_S_sustitucion, data$tipo_N_nulo
+    )
   }
 
   # Informar sobre ocupaciones sin score
-  sin_score <- sum(is.na(data$ia_score_mean))
+  col_score <- if (score == "median") "ia_score_median" else "ia_score_mean"
+  sin_score <- sum(is.na(data[[col_score]]))
   if (sin_score > 0) {
     pct <- round(100 * sin_score / nrow(data), 1)
     cli::cli_warn(c(
@@ -113,4 +122,17 @@ ia_exposicion <- function(data,
   }
 
   data
+}
+
+
+# Helpers internos --------------------------------------------------------
+
+#' @noRd
+.tipo_predominante <- function(n_a, n_s, n_n) {
+  conteos <- cbind(S = n_s, A = n_a, N = n_n)
+  tipo <- rep(NA_character_, nrow(conteos))
+  ok <- stats::complete.cases(conteos)
+  # max.col con ties.method = "first" desempata en el orden S, A, N
+  tipo[ok] <- colnames(conteos)[max.col(conteos[ok, , drop = FALSE], ties.method = "first")]
+  tipo
 }

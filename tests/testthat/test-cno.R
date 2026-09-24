@@ -18,3 +18,17 @@ test_that("cno() respeta el nivel de agregacion", {
   codigos_validos <- nchar(resultado$cno_cod) <= 2
   expect_true(all(codigos_validos | is.na(resultado$cno_cod)))
 })
+
+test_that("cno() da un error claro para bases CO-95 sin tabla de equivalencias", {
+  skip_if(
+    "equivalencia_co95" %in% utils::data(package = "empleR")$results[, "Item"],
+    "equivalencia_co95 ya esta incluida en el paquete"
+  )
+  epe <- muestra_epen_2024
+  epe$year <- 2019L
+  expect_error(suppressMessages(cno(epe)), "CO-95")
+})
+
+test_that("cno() rechaza niveles de agregacion invalidos", {
+  expect_error(suppressMessages(cno(muestra_epen_2024, agregar = "5d")))
+})

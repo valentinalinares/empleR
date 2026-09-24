@@ -15,7 +15,10 @@ segun el ano de la base).}
 
 \item{homologar}{Logico. Si \code{TRUE}, aplica la tabla de equivalencias
 CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
-adicional \code{cno_homologado}. Por defecto \code{FALSE}.}
+adicional \code{cno_homologado}. Por defecto \code{FALSE}. Las bases CO-95
+requieren la tabla \code{equivalencia_co95} (ver
+\code{data-raw/03_build_equivalencia_co95.R}); si aun no esta incluida en el
+paquete, \code{cno()} falla con un mensaje explicativo.}
 
 \item{agregar}{Nivel de agregacion del CNO al que reducir los codigos.
 Opciones: \code{"4d"} (4 digitos, por defecto), \code{"3d"}, \code{"2d"}, \code{"1d"}.

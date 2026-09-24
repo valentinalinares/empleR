@@ -163,20 +163,23 @@ descargar <- function(year,
     ))
   }
 
-  # Leer con readr, adivinando el separador (INEI usa ; o ,)
-  datos <- tryCatch(
-    readr::read_csv2(
-      archivos_csv[1],
-      show_col_types = FALSE,
-      locale = readr::locale(encoding = "latin1")
-    ),
-    error = function(e) {
-      readr::read_csv(
-        archivos_csv[1],
-        show_col_types = FALSE,
-        locale = readr::locale(encoding = "latin1")
-      )
-    }
+  # Detectar el separador (INEI usa ; o ,) contando en la cabecera.
+  # read_csv2 no falla con archivos separados por coma: los lee como una sola
+  # columna, por eso no sirve como fallback con tryCatch.
+  cabecera <- readLines(archivos_csv[1], n = 1, warn = FALSE, encoding = "latin1")
+  n_pyc  <- lengths(regmatches(cabecera, gregexpr(";", cabecera, fixed = TRUE)))
+  n_coma <- lengths(regmatches(cabecera, gregexpr(",", cabecera, fixed = TRUE)))
+  delim  <- if (n_pyc >= n_coma) ";" else ","
+
+  # Con ; se mantiene la coma decimal, igual que read_csv2
+  datos <- readr::read_delim(
+    archivos_csv[1],
+    delim = delim,
+    show_col_types = FALSE,
+    locale = readr::locale(
+      encoding = "latin1",
+      decimal_mark = if (delim == ";") "," else "."
+    )
   )
 
   datos

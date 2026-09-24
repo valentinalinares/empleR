@@ -25,26 +25,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' epen_2024 <- descargar(year = 2024)
-#'
-#' # Calcular tasa de desempleo por departamento
-#' desempleo <- indicadores(epen_2024, "tasa_desempleo", por = "departamento")
+#' # Ingreso promedio por departamento. region_code (1-25) sigue el orden
+#' # alfabetico de los departamentos, igual que shapes_departamentos.
+#' ingreso_dep <- indicadores(muestra_epen_2024, "ingreso_promedio",
+#'                            por = "region_code")
+#' ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
 #'
 #' # Mapa interactivo (leaflet)
-#' mapa(desempleo, var = "tasa_desempleo")
+#' mapa(ingreso_dep, var = "estimado", titulo = "Ingreso promedio (S/)")
 #'
 #' # Mapa estatico (ggplot2)
-#' mapa(desempleo, var = "tasa_desempleo", tipo = "ggplot",
-#'      titulo = "Tasa de desempleo por departamento, EPEN 2024")
-#'
-#' # Mapa de exposicion a IA
-#' ia_dep <- descargar(year = 2024) |>
-#'   cno() |>
-#'   ia_exposicion() |>
-#'   indicadores("ingreso_promedio", por = "departamento")
-#'
-#' mapa(ia_dep, var = "ia_score_mean",
-#'      titulo = "Exposicion a IA por departamento (score medio)")
+#' mapa(ingreso_dep, var = "estimado", tipo = "ggplot",
+#'      titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
 #' }
 mapa <- function(data,
                  var,

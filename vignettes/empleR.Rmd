@@ -55,24 +55,28 @@ epen_2024 <- etiquetar(epen_2024)
 epen_2024 <- cno(epen_2024)
 
 # 4. Calcular indicadores con diseno muestral
-tasa_dep <- indicadores(epen_2024, "tasa_desempleo", por = "departamento")
+ingreso_dep <- indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 
-# 5. Visualizar en mapa
-mapa(tasa_dep, var = "tasa_desempleo",
-     titulo = "Tasa de desempleo por departamento, EPEN 2024")
+# 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)
+ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
+mapa(ingreso_dep, var = "estimado",
+     titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
+```
+
+Las tasas de desempleo, actividad y empleo requieren la PEA completa y se
+consultan pre-calculadas con `resumen_nacional()`:
+
+```{r tasas, eval=FALSE}
+resumen_nacional("EPEN", variante = "departamentos_anual")
 ```
 
 Con el operador pipe, el flujo se puede escribir de forma compacta:
 
 ```{r pipe, eval=FALSE}
-library(dplyr)
-
 descargar(year = 2024) |>
-  etiquetar() |>
   cno() |>
-  ia_exposicion() |>
-  indicadores("tasa_desempleo", por = "departamento") |>
-  mapa(var = "tasa_desempleo")
+  ia_exposicion(incluir_tipo = TRUE) |>
+  indicadores("ingreso_promedio", por = "ia_tipo")
 ```
 
 ## La ruptura de clasificadores EPE/EPEN
@@ -81,6 +85,11 @@ Este es el problema central que `{empleR}` resuelve automaticamente.
 
 Antes de 2022, la EPE usaba el **CO-95** (3 digitos, basado en CIUO-88).
 Desde 2022, la EPEN usa el **CNO 2015** (4 digitos, basado en CIUO-08).
+
+> **Pendiente:** la homologacion CO-95 -> CNO 2015 requiere la tabla de
+> equivalencias oficial del INEI, que aun no esta incluida en el paquete
+> (ver `data-raw/03_build_equivalencia_co95.R`). Mientras tanto, `cno()`
+> solo procesa bases EPEN (CNO 2015).
 
 ```{r cno-ejemplo, eval=FALSE}
 # Con datos EPE 2019 (CO-95, detectado automaticamente)
@@ -110,11 +119,17 @@ epen_ia <- descargar(year = 2024) |>
 # Ver distribucion del score
 summary(epen_ia$ia_score_mean)
 
-# Exposicion media por departamento en mapa
-epen_ia |>
-  indicadores("ia_score_mean", por = "departamento") |>
-  mapa(var = "ia_score_mean",
-       titulo = "Exposicion a IA generativa por departamento, 2024")
+# Exposicion media por departamento en mapa (promedio ponderado por peso)
+ia_dep <- do.call(rbind, lapply(split(epen_ia, epen_ia$region_code), function(d) {
+  ok <- !is.na(d$ia_score_mean)
+  data.frame(
+    region_code   = d$region_code[1],
+    ia_score_mean = stats::weighted.mean(d$ia_score_mean[ok], d$weight[ok])
+  )
+}))
+ia_dep$departamento <- shapes_departamentos$departamento[ia_dep$region_code]
+mapa(ia_dep, var = "ia_score_mean",
+     titulo = "Exposicion a IA generativa por departamento, 2024")
 ```
 
 ## Datos de ejemplo

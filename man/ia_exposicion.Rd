@@ -28,7 +28,11 @@ El mismo \code{data.frame} con columnas adicionales:
 \describe{
 \item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
 \item{ia_score_median}{Score mediano (solo si \code{score = "ambos"}).}
-\item{ia_tipo}{Tipo de impacto predominante (solo si \code{incluir_tipo = TRUE}).}
+\item{ia_tipo}{Tipo de impacto predominante: el tipo (\code{A}, \code{S} o \code{N})
+con mas tareas en la ocupacion; en empate se prioriza \code{S}, luego \code{A}
+(solo si \code{incluir_tipo = TRUE}).}
+\item{tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo}{Numero de tareas
+de cada tipo (solo si \code{incluir_tipo = TRUE}).}
 }
 }
 \description{
@@ -63,7 +67,7 @@ epen_2024 <- descargar(year = 2024) |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 
-# Exposicion media por departamento (con diseno muestral)
-indicadores(epen_2024, "ingreso_promedio", por = "departamento")
+# Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
+indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
 }
 }

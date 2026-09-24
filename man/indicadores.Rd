@@ -23,7 +23,7 @@ indicadores(
 \item \code{"ingreso_mediano"}: Mediana del ingreso mensual (ocupados).
 }}
 
-\item{por}{Variable(s) de agrupacion: \code{"sex"}, \code{"departamento"},
+\item{por}{Variable(s) de agrupacion: \code{"sex"}, \code{"region_code"},
 \code{"education_code"}, \code{"institutional_sector_code"}, etc. \code{NULL} = nacional.}
 
 \item{var_strata}{Nombre de la variable de estrato. Detecta automaticamente
@@ -59,7 +59,7 @@ indicadores(muestra_epen_2024, "ingreso_promedio", por = "sex")
 \dontrun{
 epen_2024 <- descargar(year = 2024)
 
-# Ingreso promedio por departamento
+# Ingreso promedio por departamento (codigo de region 1-25)
 indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 
 # Horas trabajadas por sector institucional

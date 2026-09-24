@@ -5,7 +5,6 @@ if (getRversion() >= "2.15.1") {
   utils::globalVariables(c(
     "catalogo_fuentes",
     "cno_2015",
-    "co_1995",
     "equivalencia_cno",
     "indicadores_epen",
     "indice_ia",

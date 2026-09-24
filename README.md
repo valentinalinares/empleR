@@ -21,7 +21,8 @@ datos <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 
-indicadores(datos, indicador = "ingreso_promedio", por = "departamento")
+# Ingreso promedio por tipo de impacto de la IA
+indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 ```
 
 ## Que ofrece

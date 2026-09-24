@@ -15,7 +15,10 @@
 #'   segun el ano de la base).
 #' @param homologar Logico. Si `TRUE`, aplica la tabla de equivalencias
 #'   CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
-#'   adicional `cno_homologado`. Por defecto `FALSE`.
+#'   adicional `cno_homologado`. Por defecto `FALSE`. Las bases CO-95
+#'   requieren la tabla `equivalencia_co95` (ver
+#'   `data-raw/03_build_equivalencia_co95.R`); si aun no esta incluida en el
+#'   paquete, `cno()` falla con un mensaje explicativo.
 #' @param agregar Nivel de agregacion del CNO al que reducir los codigos.
 #'   Opciones: `"4d"` (4 digitos, por defecto), `"3d"`, `"2d"`, `"1d"`.
 #'   Para bases EPE (CO-95), el maximo disponible es `"3d"`.
@@ -57,6 +60,8 @@ cno <- function(data,
                 homologar = FALSE,
                 agregar = "4d") {
 
+  agregar <- match.arg(agregar, c("4d", "3d", "2d", "1d"))
+
   # Detectar ano y clasificador
   year <- .detectar_year(data)
   clasificador <- .detectar_clasificador(year)
@@ -82,7 +87,14 @@ cno <- function(data,
   data$clasificador <- clasificador
 
   # Cargar diccionario segun clasificador
-  dicc_ocup <- if (clasificador == "CNO_2015") cno_2015 else co_1995
+  if (clasificador == "CNO_2015") {
+    dicc_ocup <- cno_2015[, c("codigo", "descripcion")]
+  } else {
+    equiv_co95 <- .equivalencia_co95()
+    dicc_ocup <- unique(equiv_co95[, c("co_95", "desc_co_95")])
+    names(dicc_ocup) <- c("codigo", "descripcion")
+    dicc_ocup <- dicc_ocup[!duplicated(dicc_ocup$codigo), ]
+  }
 
   # Reducir a nivel de agregacion solicitado
   data$cno_cod <- .agregar_codigo(data[[var_ocup]],
@@ -92,19 +104,25 @@ cno <- function(data,
   # Unir descripcion
   data <- dplyr::left_join(
     data,
-    dicc_ocup[, c("codigo", "descripcion")],
+    dicc_ocup,
     by = c("cno_cod" = "codigo")
   )
   data <- dplyr::rename(data, cno_desc = "descripcion")
 
   # Homologar CO-95 -> CNO 2015 si se pide
   if (homologar && clasificador == "CO_95") {
-    data <- dplyr::left_join(
-      data,
-      equivalencia_cno[, c("co_95", "cno_2015")],
-      by = c("cno_cod" = "co_95")
-    )
-    data <- dplyr::rename(data, cno_homologado = "cno_2015")
+    # Un codigo CO-95 puede tener varios CNO 2015 equivalentes. Para no
+    # duplicar filas (y el peso muestral) se conserva un solo enlace por codigo.
+    equiv <- equiv_co95[, c("co_95", "cno_2015")]
+    n_multiples <- length(unique(equiv$co_95[duplicated(equiv$co_95)]))
+    if (n_multiples > 0) {
+      cli::cli_warn(c(
+        "{n_multiples} codigo(s) CO-95 tienen mas de un equivalente CNO 2015.",
+        "i" = "Se usa el primer enlace de {.code equivalencia_co95} para cada uno."
+      ))
+    }
+    equiv <- equiv[!duplicated(equiv$co_95), ]
+    data$cno_homologado <- equiv$cno_2015[match(data$cno_cod, equiv$co_95)]
     cli::cli_inform(c(
       "v" = "Columna {.field cno_homologado} agregada con equivalencias CNO 2015."
     ))
@@ -119,6 +137,23 @@ cno <- function(data,
 
 
 # Helpers internos --------------------------------------------------------
+
+#' @noRd
+.equivalencia_co95 <- function() {
+  # Tabla CO-95 -> CNO 2015 del INEI. Se construye con
+  # data-raw/03_build_equivalencia_co95.R; mientras no exista, las bases EPE
+  # (CO-95) no pueden procesarse.
+  env <- new.env()
+  suppressWarnings(utils::data("equivalencia_co95", package = "empleR", envir = env))
+  if (!exists("equivalencia_co95", envir = env, inherits = FALSE)) {
+    cli::cli_abort(c(
+      "Las bases EPE (CO-95) todavia no estan soportadas.",
+      "i" = "Falta la tabla de equivalencias CO-95 -> CNO 2015 del INEI.",
+      "i" = "Ver {.file data-raw/03_build_equivalencia_co95.R}."
+    ))
+  }
+  env$equivalencia_co95
+}
 
 #' @noRd
 .detectar_clasificador <- function(year) {
