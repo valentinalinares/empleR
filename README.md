@@ -21,7 +21,8 @@ datos <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 
-indicadores(datos, indicador = "ingreso_promedio", por = "departamento")
+# Ingreso promedio por tipo de impacto de la IA
+indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 ```
 
 ## Que ofrece
@@ -29,7 +30,8 @@ indicadores(datos, indicador = "ingreso_promedio", por = "departamento")
 - `catalogo()` lista fuentes, anos y variantes disponibles.
 - `descargar()` obtiene microdatos de encuestas laborales.
 - `etiquetar()` aplica etiquetas legibles a variables codificadas.
-- `cno()` armoniza codigos ocupacionales hacia CNO 2015.
+- `cno()` armoniza codigos ocupacionales hacia CNO 2015 (CO-95 de la EPE
+  via la tabla de correspondencia del INEI, sin forzar casos ambiguos).
 - `indicadores()` calcula indicadores laborales con diseno muestral.
 - `resumen_nacional()` devuelve indicadores nacionales pre-calculados.
 - `ia_exposicion()` agrega scores de exposicion a IA por ocupacion.

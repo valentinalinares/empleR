@@ -15,11 +15,13 @@ segun el ano de la base).}
 
 \item{homologar}{Logico. Si \code{TRUE}, aplica la tabla de equivalencias
 CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
-adicional \code{cno_homologado}. Por defecto \code{FALSE}.}
+adicionales \code{cno_homologado}, \code{cno_candidatos}, \code{cno_gran_grupo} y
+\code{homologacion_estado}. Por defecto \code{FALSE}.}
 
 \item{agregar}{Nivel de agregacion del CNO al que reducir los codigos.
 Opciones: \code{"4d"} (4 digitos, por defecto), \code{"3d"}, \code{"2d"}, \code{"1d"}.
-Para bases EPE (CO-95), el maximo disponible es \code{"3d"}.}
+Para bases EPE (CO-95), el maximo disponible y el valor por defecto es
+\code{"3d"}. La homologacion siempre usa el codigo CO-95 completo.}
 }
 \value{
 El mismo \code{data.frame} con columnas adicionales:
@@ -27,8 +29,15 @@ El mismo \code{data.frame} con columnas adicionales:
 \item{clasificador}{El clasificador detectado: \code{"CNO_2015"} o \code{"CO_95"}.}
 \item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.}
 \item{cno_desc}{Descripcion de la ocupacion (del diccionario interno).}
-\item{cno_homologado}{(Solo si \code{homologar = TRUE}) Codigo CNO 2015
-equivalente para bases CO-95.}
+\item{cno_homologado}{(Solo si \code{homologar = TRUE}, bases CO-95) Codigo
+CNO 2015 de 4 digitos cuando la equivalencia es unica; \code{NA} si no.}
+\item{cno_candidatos}{Todos los codigos CNO 2015 posibles, separados
+por \code{"; "}.}
+\item{cno_gran_grupo}{Gran grupo CNO 2015 (1 digito) cuando todos los
+candidatos lo comparten; permite comparar a nivel agregado.}
+\item{homologacion_estado}{\code{"unica"}, \code{"multiples_destinos"},
+\code{"discrepancia_fuente"}, \code{"ocupacion_no_especificada"},
+\code{"codigo_no_encontrado"} o \code{"sin_codigo"}.}
 }
 }
 \description{
@@ -39,8 +48,17 @@ clasificador correcto segun el ano de la base y, opcionalmente, aplica la
 tabla de equivalencias para construir series comparables.
 }
 \details{
-La variable ocupacional en EPEN es \code{C308_COD}; en ENAHO es \code{P505R4}.
-En EPE (Lima historica) la variable puede diferir segun el ano.
+La variable ocupacional en EPEN es \code{C308_COD}; en EPE es \code{P204A}
+(\code{p204a}); en ENAHO es \code{P505R4}.
+
+La homologacion CO-95 -> CNO 2015 usa la tabla de correspondencia oficial
+del INEI (ver \link{co_1995}). Solo se asigna un codigo CNO 2015 cuando la
+equivalencia es \strong{unica}: 125 codigos CO-95 tienen varios destinos (por
+ejemplo, 262 "Economistas y planificadores" corresponde a CNO 2412 y 2631)
+y en esos casos \code{cno_homologado} queda en \code{NA}. Elegir un candidato o
+repartir los pesos requiere una decision metodologica explicita del
+analista. Revisa siempre la cobertura con
+\code{table(datos$homologacion_estado)} antes de comparar series.
 }
 \examples{
 # Con la muestra incluida en el paquete
@@ -56,11 +74,13 @@ epen_2024 <- cno(epen_2024)
 epen_2024 <- cno(epen_2024, agregar = "2d")
 
 # Homologar base EPE 2019 a CNO 2015 para comparar con EPEN 2024
-epe_2019  <- descargar(year = 2019)
-epen_2024 <- descargar(year = 2024)
+# (descargar() aun no cubre EPE; leer la base EPE obtenida del INEI)
+epe_2019 <- readRDS("epe_2019.rds")
+epe_2019 <- cno(epe_2019, homologar = TRUE)
+table(epe_2019$homologacion_estado)
 
-epe_2019  <- cno(epe_2019,  homologar = TRUE)
-epen_2024 <- cno(epen_2024, homologar = TRUE)
-# Ahora ambas bases tienen cno_homologado comparable
+# Comparacion a nivel de gran grupo (mayor cobertura que 4 digitos)
+epen_2024 <- cno(epen_2024, agregar = "1d")
+# epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod
 }
 }

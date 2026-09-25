@@ -198,3 +198,54 @@
 #'
 #' @source \pkg{geoperu} (CRAN) / INEI.
 "shapes_provincias"
+
+
+#' Catalogo CO-95 con su equivalencia al CNO 2015
+#'
+#' Una fila por codigo del Codigo de Ocupaciones 1995 (CO-95), usado por la
+#' EPE hasta 2021, con sus equivalentes en el CNO 2015. Es el diccionario que
+#' usa [cno()] con `homologar = TRUE`.
+#'
+#' Construido con el anexo 1 (hoja `CNO2015_CO95`) de las tablas de
+#' correspondencia del INEI, invertido. `cno2015_unico` solo se completa
+#' cuando hay un unico destino, sin discrepancias entre los anexos 1 y 2, y el
+#' codigo no es 999 (ocupacion no especificada).
+#'
+#' @format Un `data.frame` con 370 filas y 7 columnas:
+#'   \describe{
+#'     \item{co95}{Codigo CO-95 de 3 digitos (character).}
+#'     \item{nombre_co95}{Descripcion de la ocupacion CO-95.}
+#'     \item{n_cno2015}{Numero de codigos CNO 2015 equivalentes.}
+#'     \item{cno2015_candidatos}{Codigos CNO 2015 equivalentes, separados por `"; "`.}
+#'     \item{cno2015_unico}{Codigo CNO 2015 si la equivalencia es unica; `NA` si no.}
+#'     \item{estado}{`"unica"` (236), `"multiples_destinos"` (125),
+#'       `"discrepancia_fuente"` (8) u `"ocupacion_no_especificada"` (1).}
+#'     \item{gran_grupo_cno}{Gran grupo CNO 2015 (1 digito) si todos los
+#'       candidatos lo comparten.}
+#'   }
+#' @source INEI, Tablas de correspondencia CNO - CIUO - CO
+#'   (\url{https://www.inei.gob.pe/media/Tablas_de_correspondencia_CNO_CIUO_CO.xlsx})
+#'   y Clasificador Nacional de Ocupaciones 2015, anexos 1 y 2. Ver
+#'   `data-raw/03_build_equivalencia_co95.R`.
+#' @seealso [equivalencia_co95] para la tabla completa de pares.
+"co_1995"
+
+
+#' Tabla de correspondencia CO-95 -> CNO 2015 (todos los pares)
+#'
+#' Los 604 pares CO-95 / CNO 2015 del anexo 1 del INEI. Un codigo CO-95 puede
+#' aparecer varias veces: **no unir microdatos directamente con esta tabla**,
+#' porque se replicarian personas y factores de expansion. Para eso usar
+#' [co_1995] o [cno()] con `homologar = TRUE`.
+#'
+#' @format Un `data.frame` con 604 filas y columnas:
+#'   \describe{
+#'     \item{co95, nombre_co95}{Codigo (3 digitos) y descripcion CO-95.}
+#'     \item{cno2015, nombre_cno2015}{Codigo (4 digitos) y descripcion CNO 2015.}
+#'     \item{acuerdo_anexos}{`"si"` si el par aparece en los anexos 1 y 2;
+#'       `"solo_anexo1"` si no.}
+#'     \item{n_cno_por_co95}{Numero de destinos CNO 2015 del codigo CO-95.}
+#'     \item{n_co95_por_cno}{Numero de origenes CO-95 del codigo CNO 2015.}
+#'   }
+#' @source Ver [co_1995].
+"equivalencia_co95"

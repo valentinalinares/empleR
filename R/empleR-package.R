@@ -7,6 +7,7 @@ if (getRversion() >= "2.15.1") {
     "cno_2015",
     "co_1995",
     "equivalencia_cno",
+    "equivalencia_co95",
     "indicadores_epen",
     "indice_ia",
     "shapes_departamentos",

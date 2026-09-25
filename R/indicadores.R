@@ -13,7 +13,7 @@
 #'   - `"ingreso_promedio"`: Ingreso laboral mensual medio (ocupados).
 #'   - `"horas_promedio"`: Horas trabajadas promedio semanales (ocupados).
 #'   - `"ingreso_mediano"`: Mediana del ingreso mensual (ocupados).
-#' @param por Variable(s) de agrupacion: `"sex"`, `"departamento"`,
+#' @param por Variable(s) de agrupacion: `"sex"`, `"region_code"`,
 #'   `"education_code"`, `"institutional_sector_code"`, etc. `NULL` = nacional.
 #' @param var_strata Nombre de la variable de estrato. Detecta automaticamente
 #'   `strata_code` (datos procesados) o `ESTRATO` (datos crudos INEI).
@@ -41,7 +41,7 @@
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024)
 #'
-#' # Ingreso promedio por departamento
+#' # Ingreso promedio por departamento (codigo de region 1-25)
 #' indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 #'
 #' # Horas trabajadas por sector institucional
