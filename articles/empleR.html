@@ -111,22 +111,23 @@ usa CNO 2015, 4 digitos).</p>
 <span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="va">epen_2024</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 4. Calcular indicadores con diseno muestral</span></span>
-<span><span class="va">tasa_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">epen_2024</span>, <span class="st">"tasa_desempleo"</span>, por <span class="op">=</span> <span class="st">"departamento"</span><span class="op">)</span></span>
+<span><span class="va">ingreso_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">epen_2024</span>, <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"region_code"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 5. Visualizar en mapa</span></span>
-<span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span><span class="va">tasa_dep</span>, var <span class="op">=</span> <span class="st">"tasa_desempleo"</span>,</span>
-<span>     titulo <span class="op">=</span> <span class="st">"Tasa de desempleo por departamento, EPEN 2024"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)</span></span>
+<span><span class="va">ingreso_dep</span><span class="op">$</span><span class="va">departamento</span> <span class="op">&lt;-</span> <span class="va">shapes_departamentos</span><span class="op">$</span><span class="va">departamento</span><span class="op">[</span><span class="va">ingreso_dep</span><span class="op">$</span><span class="va">region_code</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span><span class="va">ingreso_dep</span>, var <span class="op">=</span> <span class="st">"estimado"</span>,</span>
+<span>     titulo <span class="op">=</span> <span class="st">"Ingreso laboral promedio por departamento, EPEN 2024"</span><span class="op">)</span></span></code></pre></div>
+<p>Las tasas de desempleo, actividad y empleo requieren la PEA completa
+y se consultan pre-calculadas con <code><a href="../reference/resumen_nacional.html">resumen_nacional()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/resumen_nacional.html">resumen_nacional</a></span><span class="op">(</span><span class="st">"EPEN"</span>, variante <span class="op">=</span> <span class="st">"departamentos_anual"</span><span class="op">)</span></span></code></pre></div>
 <p>Con el operador pipe, el flujo se puede escribir de forma
 compacta:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/ia_exposicion.html">ia_exposicion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="st">"tasa_desempleo"</span>, por <span class="op">=</span> <span class="st">"departamento"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"tasa_desempleo"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/ia_exposicion.html">ia_exposicion</a></span><span class="op">(</span>incluir_tipo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"ia_tipo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="la-ruptura-de-clasificadores-epeepen">La ruptura de clasificadores EPE/EPEN<a class="anchor" aria-label="anchor" href="#la-ruptura-de-clasificadores-epeepen"></a>
@@ -136,18 +137,30 @@ automaticamente.</p>
 <p>Antes de 2022, la EPE usaba el <strong>CO-95</strong> (3 digitos,
 basado en CIUO-88). Desde 2022, la EPEN usa el <strong>CNO 2015</strong>
 (4 digitos, basado en CIUO-08).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Con datos EPE 2019 (CO-95, detectado automaticamente)</span></span>
-<span><span class="va">epe_2019</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2019</span><span class="op">)</span></span>
+<p>La homologacion usa la tabla de correspondencia oficial del INEI
+(<code>co_1995</code>). No todas las ocupaciones tienen un equivalente
+unico: de 370 codigos CO-95, 236 tienen un solo destino CNO 2015 y 125
+tienen varios. Por ejemplo, CO-95 262 (“Economistas y planificadores”)
+corresponde a CNO 2412 (analistas financieros) y 2631 (economistas). En
+esos casos <code><a href="../reference/cno.html">cno()</a></code> <strong>no elige un candidato</strong>:
+deja <code>cno_homologado</code> en <code>NA</code> y guarda todas las
+opciones en <code>cno_candidatos</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Con datos EPE 2019 (CO-95, detectado automaticamente; variable P204A)</span></span>
+<span><span class="va">epe_2019</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"epe_2019.rds"</span><span class="op">)</span></span>
 <span><span class="va">epe_2019</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="va">epe_2019</span>, homologar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># Agrega: clasificador = "CO_95", cno_cod, cno_desc, cno_homologado</span></span>
+<span><span class="co"># Agrega: cno_cod, cno_desc, cno_homologado, cno_candidatos,</span></span>
+<span><span class="co">#         cno_gran_grupo, homologacion_estado</span></span>
 <span></span>
-<span><span class="co"># Con datos EPEN 2024 (CNO 2015, detectado automaticamente)</span></span>
-<span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
-<span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="va">epen_2024</span>, homologar <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co"># Agrega: clasificador = "CNO_2015", cno_cod, cno_desc</span></span>
+<span><span class="co"># Revisar cobertura antes de comparar series</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">epe_2019</span><span class="op">$</span><span class="va">homologacion_estado</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Ahora cno_homologado permite comparar ambas bases</span></span></code></pre></div>
+<span><span class="co"># A nivel de gran grupo la cobertura es mayor</span></span>
+<span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span>, agregar <span class="op">=</span> <span class="st">"1d"</span><span class="op">)</span></span>
+<span><span class="co"># epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod</span></span></code></pre></div>
+<p>La tabla completa de pares esta en <code>equivalencia_co95</code>. No
+la unas directamente a los microdatos: un codigo CO-95 con varios
+destinos replicaria personas y pesos.</p>
 </div>
 <div class="section level2">
 <h2 id="indice-de-exposicion-a-inteligencia-artificial">Indice de exposicion a inteligencia artificial<a class="anchor" aria-label="anchor" href="#indice-de-exposicion-a-inteligencia-artificial"></a>
@@ -155,7 +168,7 @@ basado en CIUO-88). Desde 2022, la EPEN usa el <strong>CNO 2015</strong>
 <p><a href="https://valentinalinares.github.io/empleR/">empleR</a> incluye un indice de exposicion a IA generativa
 construido con Claude Sonnet 4.6 (Anthropic) para las ocupaciones del
 CNO 2015.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Agregar score de IA a los microdatos</span></span>
 <span><span class="va">epen_ia</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -164,18 +177,24 @@ CNO 2015.</p>
 <span><span class="co"># Ver distribucion del score</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">epen_ia</span><span class="op">$</span><span class="va">ia_score_mean</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Exposicion media por departamento en mapa</span></span>
-<span><span class="va">epen_ia</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="st">"ia_score_mean"</span>, por <span class="op">=</span> <span class="st">"departamento"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"ia_score_mean"</span>,</span>
-<span>       titulo <span class="op">=</span> <span class="st">"Exposicion a IA generativa por departamento, 2024"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Exposicion media por departamento en mapa (promedio ponderado por peso)</span></span>
+<span><span class="va">ia_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">epen_ia</span>, <span class="va">epen_ia</span><span class="op">$</span><span class="va">region_code</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">ok</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">ia_score_mean</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    region_code   <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">region_code</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>    ia_score_mean <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/weighted.mean.html" class="external-link">weighted.mean</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">ia_score_mean</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span>, <span class="va">d</span><span class="op">$</span><span class="va">weight</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ia_dep</span><span class="op">$</span><span class="va">departamento</span> <span class="op">&lt;-</span> <span class="va">shapes_departamentos</span><span class="op">$</span><span class="va">departamento</span><span class="op">[</span><span class="va">ia_dep</span><span class="op">$</span><span class="va">region_code</span><span class="op">]</span></span>
+<span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span><span class="va">ia_dep</span>, var <span class="op">=</span> <span class="st">"ia_score_mean"</span>,</span>
+<span>     titulo <span class="op">=</span> <span class="st">"Exposicion a IA generativa por departamento, 2024"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="datos-de-ejemplo">Datos de ejemplo<a class="anchor" aria-label="anchor" href="#datos-de-ejemplo"></a>
 </h2>
 <p>El paquete incluye <code>muestra_epen_2024</code>, una submuestra de
 2.000 filas para practicar sin necesidad de descargar datos:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ver estructura de la muestra</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">muestra_epen_2024</span><span class="op">)</span></span>
 <span><span class="co">#&gt; tibble [2,000 × 33] (S3: tbl_df/tbl/data.frame)</span></span>
@@ -239,7 +258,7 @@ CNO 2015.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

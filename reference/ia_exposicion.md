@@ -54,7 +54,13 @@ El mismo `data.frame` con columnas adicionales:
 
 - ia_tipo:
 
-  Tipo de impacto predominante (solo si `incluir_tipo = TRUE`).
+  Tipo de impacto predominante: el tipo (`A`, `S` o `N`) con mas tareas
+  en la ocupacion; en empate se prioriza `S`, luego `A` (solo si
+  `incluir_tipo = TRUE`).
+
+- tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo:
+
+  Numero de tareas de cada tipo (solo si `incluir_tipo = TRUE`).
 
 ## Details
 
@@ -91,7 +97,7 @@ epen_2024 <- descargar(year = 2024) |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 
-# Exposicion media por departamento (con diseno muestral)
-indicadores(epen_2024, "ingreso_promedio", por = "departamento")
+# Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
+indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
 } # }
 ```

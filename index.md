@@ -23,7 +23,8 @@ datos <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 
-indicadores(datos, indicador = "ingreso_promedio", por = "departamento")
+# Ingreso promedio por tipo de impacto de la IA
+indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 ```
 
 ## Que ofrece
@@ -35,7 +36,8 @@ indicadores(datos, indicador = "ingreso_promedio", por = "departamento")
 - [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
   aplica etiquetas legibles a variables codificadas.
 - [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
-  armoniza codigos ocupacionales hacia CNO 2015.
+  armoniza codigos ocupacionales hacia CNO 2015 (CO-95 de la EPE via la
+  tabla de correspondencia del INEI, sin forzar casos ambiguos).
 - [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
   calcula indicadores laborales con diseno muestral.
 - [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)

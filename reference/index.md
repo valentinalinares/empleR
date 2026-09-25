@@ -36,6 +36,10 @@
   : Clasificador Nacional de Ocupaciones 2015 (CNO 2015)
 - [`equivalencia_cno`](https://valentinalinares.github.io/empleR/reference/equivalencia_cno.md)
   : Tabla de equivalencias CIUO-2008 \<-\> CNO 2015
+- [`co_1995`](https://valentinalinares.github.io/empleR/reference/co_1995.md)
+  : Catalogo CO-95 con su equivalencia al CNO 2015
+- [`equivalencia_co95`](https://valentinalinares.github.io/empleR/reference/equivalencia_co95.md)
+  : Tabla de correspondencia CO-95 -\> CNO 2015 (todos los pares)
 - [`indice_ia`](https://valentinalinares.github.io/empleR/reference/indice_ia.md)
   : Indice de exposicion a inteligencia artificial por ocupacion
 - [`catalogo_fuentes`](https://valentinalinares.github.io/empleR/reference/catalogo_fuentes.md)

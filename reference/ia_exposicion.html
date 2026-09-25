@@ -91,7 +91,13 @@ predominante (<code>A</code>, <code>S</code>, <code>N</code>) por ocupacion. Por
 <dd><p>Score mediano (solo si <code>score = "ambos"</code>).</p></dd>
 
 <dt>ia_tipo</dt>
-<dd><p>Tipo de impacto predominante (solo si <code>incluir_tipo = TRUE</code>).</p></dd>
+<dd><p>Tipo de impacto predominante: el tipo (<code>A</code>, <code>S</code> o <code>N</code>)
+con mas tareas en la ocupacion; en empate se prioriza <code>S</code>, luego <code>A</code>
+(solo si <code>incluir_tipo = TRUE</code>).</p></dd>
+
+<dt>tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo</dt>
+<dd><p>Numero de tareas
+de cada tipo (solo si <code>incluir_tipo = TRUE</code>).</p></dd>
 
 
 </dl></div>
@@ -126,8 +132,8 @@ Correlacion con el indice de la OIT: r = 0.85.</p>
 <span class="r-in"><span>  <span class="fu"><a href="cno.html">cno</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">ia_exposicion</span><span class="op">(</span>score <span class="op">=</span> <span class="st">"ambos"</span>, incluir_tipo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Exposicion media por departamento (con diseno muestral)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">epen_2024</span>, <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"departamento"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Ingreso promedio segun tipo de impacto predominante (con diseno muestral)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">epen_2024</span>, <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"ia_tipo"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -140,7 +146,7 @@ Correlacion con el indice de la OIT: r = 0.85.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

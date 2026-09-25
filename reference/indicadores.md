@@ -38,7 +38,7 @@ indicadores(
 
 - por:
 
-  Variable(s) de agrupacion: `"sex"`, `"departamento"`,
+  Variable(s) de agrupacion: `"sex"`, `"region_code"`,
   `"education_code"`, `"institutional_sector_code"`, etc. `NULL` =
   nacional.
 
@@ -99,7 +99,7 @@ indicadores(muestra_epen_2024, "ingreso_promedio", por = "sex")
 if (FALSE) { # \dontrun{
 epen_2024 <- descargar(year = 2024)
 
-# Ingreso promedio por departamento
+# Ingreso promedio por departamento (codigo de region 1-25)
 indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 
 # Horas trabajadas por sector institucional

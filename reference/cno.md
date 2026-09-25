@@ -27,14 +27,16 @@ cno(data, var_ocup = NULL, homologar = FALSE, agregar = "4d")
 - homologar:
 
   Logico. Si `TRUE`, aplica la tabla de equivalencias CO-95 \<-\> CNO
-  2015 para bases EPE pre-2022 y devuelve la columna adicional
-  `cno_homologado`. Por defecto `FALSE`.
+  2015 para bases EPE pre-2022 y devuelve la columna adicionales
+  `cno_homologado`, `cno_candidatos`, `cno_gran_grupo` y
+  `homologacion_estado`. Por defecto `FALSE`.
 
 - agregar:
 
   Nivel de agregacion del CNO al que reducir los codigos. Opciones:
   `"4d"` (4 digitos, por defecto), `"3d"`, `"2d"`, `"1d"`. Para bases
-  EPE (CO-95), el maximo disponible es `"3d"`.
+  EPE (CO-95), el maximo disponible y el valor por defecto es `"3d"`. La
+  homologacion siempre usa el codigo CO-95 completo.
 
 ## Value
 
@@ -54,13 +56,39 @@ El mismo `data.frame` con columnas adicionales:
 
 - cno_homologado:
 
-  (Solo si `homologar = TRUE`) Codigo CNO 2015 equivalente para bases
-  CO-95.
+  (Solo si `homologar = TRUE`, bases CO-95) Codigo CNO 2015 de 4 digitos
+  cuando la equivalencia es unica; `NA` si no.
+
+- cno_candidatos:
+
+  Todos los codigos CNO 2015 posibles, separados por `"; "`.
+
+- cno_gran_grupo:
+
+  Gran grupo CNO 2015 (1 digito) cuando todos los candidatos lo
+  comparten; permite comparar a nivel agregado.
+
+- homologacion_estado:
+
+  `"unica"`, `"multiples_destinos"`, `"discrepancia_fuente"`,
+  `"ocupacion_no_especificada"`, `"codigo_no_encontrado"` o
+  `"sin_codigo"`.
 
 ## Details
 
-La variable ocupacional en EPEN es `C308_COD`; en ENAHO es `P505R4`. En
-EPE (Lima historica) la variable puede diferir segun el ano.
+La variable ocupacional en EPEN es `C308_COD`; en EPE es `P204A`
+(`p204a`); en ENAHO es `P505R4`.
+
+La homologacion CO-95 -\> CNO 2015 usa la tabla de correspondencia
+oficial del INEI (ver
+[co_1995](https://valentinalinares.github.io/empleR/reference/co_1995.md)).
+Solo se asigna un codigo CNO 2015 cuando la equivalencia es **unica**:
+125 codigos CO-95 tienen varios destinos (por ejemplo, 262 "Economistas
+y planificadores" corresponde a CNO 2412 y 2631) y en esos casos
+`cno_homologado` queda en `NA`. Elegir un candidato o repartir los pesos
+requiere una decision metodologica explicita del analista. Revisa
+siempre la cobertura con `table(datos$homologacion_estado)` antes de
+comparar series.
 
 ## Examples
 
@@ -100,11 +128,13 @@ epen_2024 <- cno(epen_2024)
 epen_2024 <- cno(epen_2024, agregar = "2d")
 
 # Homologar base EPE 2019 a CNO 2015 para comparar con EPEN 2024
-epe_2019  <- descargar(year = 2019)
-epen_2024 <- descargar(year = 2024)
+# (descargar() aun no cubre EPE; leer la base EPE obtenida del INEI)
+epe_2019 <- readRDS("epe_2019.rds")
+epe_2019 <- cno(epe_2019, homologar = TRUE)
+table(epe_2019$homologacion_estado)
 
-epe_2019  <- cno(epe_2019,  homologar = TRUE)
-epen_2024 <- cno(epen_2024, homologar = TRUE)
-# Ahora ambas bases tienen cno_homologado comparable
+# Comparacion a nivel de gran grupo (mayor cobertura que 4 digitos)
+epen_2024 <- cno(epen_2024, agregar = "1d")
+# epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod
 } # }
 ```

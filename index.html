@@ -75,7 +75,8 @@
 <span>  <span class="fu"><a href="reference/cno.html">cno</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/ia_exposicion.html">ia_exposicion</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"ambos"</span>, incluir_tipo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">datos</span>, indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"departamento"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Ingreso promedio por tipo de impacto de la IA</span></span>
+<span><span class="fu"><a href="reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">datos</span>, indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"ia_tipo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="que-ofrece">Que ofrece<a class="anchor" aria-label="anchor" href="#que-ofrece"></a>
@@ -88,7 +89,7 @@
 <li>
 <code><a href="reference/etiquetar.html">etiquetar()</a></code> aplica etiquetas legibles a variables codificadas.</li>
 <li>
-<code><a href="reference/cno.html">cno()</a></code> armoniza codigos ocupacionales hacia CNO 2015.</li>
+<code><a href="reference/cno.html">cno()</a></code> armoniza codigos ocupacionales hacia CNO 2015 (CO-95 de la EPE via la tabla de correspondencia del INEI, sin forzar casos ambiguos).</li>
 <li>
 <code><a href="reference/indicadores.html">indicadores()</a></code> calcula indicadores laborales con diseno muestral.</li>
 <li>
@@ -167,7 +168,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
