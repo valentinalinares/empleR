@@ -5,14 +5,15 @@
 \alias{cno_2015}
 \title{Clasificador Nacional de Ocupaciones 2015 (CNO 2015)}
 \format{
-Un \code{data.frame} con columnas:
+Un \code{data.frame} con 666 filas (todos los niveles) y columnas:
 \describe{
-\item{codigo}{Codigo CNO de 4 digitos (character).}
-\item{descripcion}{Descripcion de la ocupacion.}
-\item{grupo_primario}{Descripcion del grupo primario (4 digitos).}
-\item{subgrupo}{Descripcion del subgrupo (3 digitos).}
-\item{subgrupo_principal}{Descripcion del subgrupo principal (2 digitos).}
-\item{gran_grupo}{Descripcion del gran grupo (1 digito).}
+\item{codigo}{Codigo CNO de 1 a 4 digitos segun el nivel (character).}
+\item{descripcion}{Nombre del grupo.}
+\item{nivel}{Nivel jerarquico: 1 (gran grupo) a 4 (grupo primario;
+473 codigos).}
+\item{descripcion_extendida}{Descripcion del grupo segun el INEI.}
+\item{tasks, tasks_clean}{Tareas del grupo primario (texto original y
+limpio).}
 }
 }
 \source{
@@ -24,5 +25,13 @@ cno_2015
 \description{
 Diccionario completo del CNO 2015, el clasificador ocupacional peruano
 de 4 digitos vigente desde 2022 en la EPEN. Basado en CIUO-08.
+}
+\details{
+El grupo primario 5321 ("Trabajadores en el cuidado de personas
+en instituciones", p. 242) se agrego con
+\verb{data-raw/04_corregir_cno_2015.R}: faltaba porque su titulo quedo pegado
+al subgrupo 532. Su descripcion extendida y sus tareas estan pendientes de
+copiar desde el PDF oficial (quedan en \code{NA}), por lo que 5321 no tiene
+score en \link{indice_ia}.
 }
 \keyword{datasets}

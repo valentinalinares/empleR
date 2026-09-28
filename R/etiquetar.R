@@ -144,20 +144,6 @@ etiquetar <- function(data, vars = NULL, as_factor = TRUE) {
 # Helpers internos --------------------------------------------------------
 
 #' @noRd
-.detectar_year <- function(data) {
-  # EPEN procesada usa "year"; datos crudos INEI pueden usar "ANo", "ANIO"
-  candidatos <- c("year", "ANo", "ANIO", "anio", "YEAR")
-  var_year <- intersect(candidatos, names(data))
-  if (length(var_year) == 0) {
-    cli::cli_abort(c(
-      "No se pudo detectar el ano de la base.",
-      "i" = "Asegurate de pasar datos descargados con {.fn descargar}."
-    ))
-  }
-  as.integer(data[[var_year[1]]][1])
-}
-
-#' @noRd
 .aplicar_etiqueta <- function(x, mapa, as_factor) {
   resultado <- mapa[as.character(x)]
   nombres <- unname(resultado)

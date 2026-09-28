@@ -4,14 +4,14 @@
 \alias{ia_exposicion}
 \title{Cruzar ocupaciones con el indice de exposicion a inteligencia artificial}
 \usage{
-ia_exposicion(data, var_cno = "cno_cod", score = "mean", incluir_tipo = FALSE)
+ia_exposicion(data, var_cno = NULL, score = "mean", incluir_tipo = FALSE)
 }
 \arguments{
-\item{data}{\code{data.frame} con microdatos de EPEN/EPE que incluya
-codigos CNO (resultado de aplicar \code{\link[=cno]{cno()}}).}
+\item{data}{\code{data.frame} con microdatos de EPEN/EPE procesados con \code{\link[=cno]{cno()}}.}
 
-\item{var_cno}{Nombre de la variable con el codigo CNO 2015 en \code{data}.
-Por defecto \code{"cno_cod"} (generada por \code{\link[=cno]{cno()}}).}
+\item{var_cno}{Variable con el codigo CNO 2015 de 4 digitos. Si es \code{NULL}
+(por defecto) se elige por fila segun la columna \code{clasificador}:
+\code{cno_cod} para CNO 2015 y \code{cno_homologado} para CO-95.}
 
 \item{score}{Que score agregar. Opciones:
 \itemize{
@@ -20,20 +20,29 @@ Por defecto \code{"cno_cod"} (generada por \code{\link[=cno]{cno()}}).}
 \item \code{"ambos"}: agrega tanto media como mediana.
 }}
 
-\item{incluir_tipo}{Logico. Si \code{TRUE}, agrega tambien el tipo de impacto
-predominante (\code{A}, \code{S}, \code{N}) por ocupacion. Por defecto \code{FALSE}.}
+\item{incluir_tipo}{Logico. Si \code{TRUE}, agrega el tipo de impacto
+predominante y los conteos de tareas por tipo. Por defecto \code{FALSE}.}
 }
 \value{
-El mismo \code{data.frame} con columnas adicionales:
+El mismo \code{data.frame} (mismas filas y orden) con columnas adicionales:
 \describe{
+\item{ia_cno}{Codigo CNO 2015 usado para el cruce.}
 \item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
-\item{ia_score_median}{Score mediano (solo si \code{score = "ambos"}).}
-\item{ia_tipo}{Tipo de impacto predominante: el tipo (\code{A}, \code{S} o \code{N})
-con mas tareas en la ocupacion; en empate se prioriza \code{S}, luego \code{A}
-(solo si \code{incluir_tipo = TRUE}).}
-\item{tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo}{Numero de tareas
-de cada tipo (solo si \code{incluir_tipo = TRUE}).}
+\item{ia_score_median}{Score mediano (si \code{score} es \code{"median"} o \code{"ambos"}).}
+\item{ia_cobertura}{\code{"con_score"}, \code{"sin_score"} (codigo CNO valido
+sin score en el indice), \code{"codigo_no_encontrado"} (4 digitos que no
+existen en el CNO 2015), \code{"sin_homologacion"} (CO-95 sin
+equivalencia unica) o \code{"sin_codigo"}.}
+\item{ia_tipo}{Tipo de impacto con mas tareas (\code{A}, \code{S} o \code{N}); \code{NA}
+si hay empate, si la ocupacion no tiene tareas o no esta en el indice.}
+\item{ia_empate}{\code{TRUE} si dos o mas tipos empatan en el maximo;
+\code{NA} si no hay tareas o indice.}
+\item{ia_tipo_estado}{\code{"predominante"}, \code{"empate"}, \code{"sin_tareas"} o
+\code{"sin_indice"}.}
+\item{ia_total_tareas, tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo}{
+Conteos de tareas del indice.}
 }
+Las ultimas cuatro filas solo se agregan con \code{incluir_tipo = TRUE}.
 }
 \description{
 Agrega a los microdatos el indice de exposicion a IA generativa por
@@ -54,6 +63,16 @@ por consenso. Cada tarea recibe:
 El indice final por ocupacion es la media de los scores de sus tareas.
 Correlacion con el indice de la OIT: r = 0.85.
 }
+\section{Bases EPE (CO-95)}{
+
+El indice esta definido en CNO 2015 a 4 digitos. En bases EPE se usa
+\code{cno_homologado} (de \code{cno(homologar = TRUE)}): solo las ocupaciones con
+equivalencia unica reciben score. Las ambiguas quedan en \code{NA} con
+\code{ia_cobertura = "sin_homologacion"}; nunca se cruza un codigo CO-95 ni un
+codigo agregado (1-3 digitos) con el indice. En una base que une EPE y
+EPEN (con la columna \code{clasificador} de \code{\link[=cno]{cno()}}) cada fila usa su codigo.
+}
+
 \examples{
 # Con la muestra incluida
 muestra <- cno(muestra_epen_2024)
@@ -69,5 +88,13 @@ epen_2024 <- descargar(year = 2024) |>
 
 # Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
 indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
+
+# Base EPE: el cruce usa cno_homologado automaticamente
+epe_2019 <- cno(readRDS("epe_2019.rds"), homologar = TRUE) |>
+  ia_exposicion()
+cobertura(epe_2019)
 }
+}
+\seealso{
+\code{\link[=cobertura]{cobertura()}} para resumir la cobertura por encuesta y ano.
 }
