@@ -9,8 +9,9 @@
 #' @param por Variables de agrupacion. Por defecto, la encuesta (`source`, o
 #'   la derivada de `clasificador`: CO-95 = EPE, CNO 2015 = EPEN) y el ano.
 #' @param var_peso Factor de expansion. Si es `NULL` se detecta (`weight`,
-#'   `FACTOR07`, `FACTOR`, `fexp`); si no existe, solo se reportan
-#'   observaciones.
+#'   `FAC300_ANUAL`, `FACTOR07`, `FACTOR`, `fexp`); si no existe, solo se
+#'   reportan observaciones. En la EPE (`fa_def19`, `fa_def21`) el factor
+#'   depende del periodo y hay que indicarlo.
 #'
 #' @return Un `data.frame` con una fila por grupo, estado y detalle:
 #'   \describe{
@@ -50,7 +51,7 @@ cobertura <- function(data, por = NULL, var_peso = NULL) {
     cli::cli_abort("Variables de agrupacion inexistentes: {.val {faltantes}}.")
   }
 
-  var_peso <- var_peso %||% .detectar_var(data, c("weight", "FACTOR07", "FACTOR", "fexp"))
+  var_peso <- var_peso %||% .detectar_var(data, c("weight", "FAC300_ANUAL", "FACTOR07", "FACTOR", "fexp"))
   peso <- if (is.null(var_peso)) rep(NA_real_, nrow(data)) else as.numeric(data[[var_peso]])
   if (is.null(var_peso)) {
     cli::cli_inform(c("i" = "Sin factor de expansion: solo se reportan observaciones."))

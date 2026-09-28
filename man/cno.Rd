@@ -15,9 +15,9 @@ cno(
 \arguments{
 \item{data}{\code{data.frame} con microdatos de EPEN/EPE.}
 
-\item{var_ocup}{Nombre de la variable de codigo ocupacional.
-Por defecto se detecta automaticamente (\code{C308_COD} para EPEN,
-segun el ano de la base).}
+\item{var_ocup}{Nombre de la variable de codigo ocupacional. Por defecto
+se usa el codigo original: \code{C308_COD} u \code{occupation_code_raw} (EPEN),
+\code{P204A}/\code{p204a} (EPE); \code{occupation_code_4d} solo si no hay original.}
 
 \item{homologar}{Logico. Si \code{TRUE}, aplica la tabla de equivalencias
 CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
@@ -36,7 +36,13 @@ detectarlo automaticamente.}
 El mismo \code{data.frame} con columnas adicionales:
 \describe{
 \item{clasificador}{El clasificador detectado: \code{"CNO_2015"} o \code{"CO_95"}.}
-\item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.}
+\item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.
+Sale del codigo original (\code{C308_COD}, \code{P204A} u
+\code{occupation_code_raw}) completado con ceros a la izquierda; solo si
+no existe se usa \code{occupation_code_4d}.}
+\item{cno_discrepancia_4d}{(Solo CNO 2015, si la base trae el codigo
+original y \code{occupation_code_4d}) \code{TRUE} cuando ambos no coinciden,
+por ejemplo 212 -> \code{"0212"} frente a \code{"2120"}.}
 \item{cno_desc}{Descripcion de la ocupacion (del diccionario interno).}
 \item{cno_homologado}{(Solo si \code{homologar = TRUE}, bases CO-95) Codigo
 CNO 2015 de 4 digitos cuando la equivalencia es unica; \code{NA} si no.}

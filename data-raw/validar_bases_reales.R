@@ -11,25 +11,31 @@
 # Comprueba, para cada base: variables del diccionario, pesos, diseno
 # muestral, homologacion y cobertura del indice de IA (observaciones y
 # poblacion), y compara la poblacion ocupada expandida entre ambas.
-
-.candidatos <- list(
-  year      = c("year", "YEAR", "anio", "ANIO", "ANO", "AÑO", "año"),
-  ocupacion = c("C308_COD", "P204A", "p204a", "occupation_code_4d", "occupation_code_raw"),
-  peso      = c("weight", "FACTOR07", "FACTOR", "fexp", "fac500a", "FAC500A"),
-  estrato   = c("strata_code", "ESTRATO", "estrato"),
-  upm       = c("cluster_id", "CONGLOME", "conglome"),
-  condicion = c("labor_status_code", "OCU500", "ocu500", "OCA500"),
-  edad      = c("age", "P208A", "p208a", "EDAD")
-)
-
-.buscar <- function(d, rol, forzada = NULL) {
-  if (!is.null(forzada)) return(if (forzada %in% names(d)) forzada else NA_character_)
-  empleR:::.buscar_nombre(names(d), .candidatos[[rol]])
-}
+#
+# Variables: se detectan con los alias por encuesta del paquete
+# (empleR:::.alias_variables). EPE: pano, p204a, fa_def19/fa_def21, ocu200,
+# p108 (edad solo en EPE). EPEN: ANIO, C308_COD, FAC300_ANUAL, OCUP300, C208.
+# Ambas: ESTRATO, CONGLOMERADO. Con fa_def19 y fa_def21 a la vez hay que
+# indicar el factor: vars_epe = list(peso = "fa_def19").
+#
+# PENDIENTES (no se resuelven aqui con supuestos):
+# - EPEN: ocupados de Lima/Callao sin FAC300_ANUAL (2.790 en la validacion
+#   local). Se reportan como peso NA; no se imputan ni se excluyen hasta
+#   documentar residencia habitual y el factor que corresponde por ano y
+#   periodo.
+# - Diseno muestral: falta la especificacion operativa oficial de
+#   conglomerado, estrato, ponderacion, dominios y ajustes. Sin ella los
+#   totales ponderados son validos, pero no los errores estandar.
+# - Territorio: DIVISION_LIMA == 1 aproxima, pero no reproduce, los 43
+#   distritos de Lima y 6 del Callao de la EPE; falta un ubigeo distrital EPEN.
+# - Periodos: EPE dic 2018-feb 2019 frente a EPEN anual 2024 sirve como
+#   prueba tecnica, no para interpretar diferencias.
+# - Codigo de "ocupado" en ocu200 y OCUP300: verificar en cada diccionario
+#   (argumento `ocupado`, por defecto 1).
 
 validar_una <- function(d, nombre, vars = list(), ocupado = 1, edad_min = 14, filtro = NULL) {
   cat("\n==========", nombre, "==========\n")
-  v <- vapply(names(.candidatos), function(r) .buscar(d, r, vars[[r]]), character(1))
+  v <- empleR:::.detectar_variables(d, nombre, vars)
   print(data.frame(rol = names(v), variable = unname(v)), row.names = FALSE)
   faltan <- names(v)[is.na(v) & names(v) %in% c("year", "ocupacion", "peso")]
   if (length(faltan) > 0) stop(nombre, ": faltan variables obligatorias: ", paste(faltan, collapse = ", "))
@@ -46,6 +52,7 @@ validar_una <- function(d, nombre, vars = list(), ocupado = 1, edad_min = 14, fi
   cat("Ocupados", if (!is.na(v["edad"])) paste0("de ", edad_min, "+ anos"), ":", nrow(d), "filas\n")
 
   peso <- as.numeric(d[[v["peso"]]])
+  # Las filas sin factor se reportan; no se imputan ni se excluyen (pendiente)
   cat(sprintf("Pesos: NA=%d, <=0=%d, min=%.1f, max=%.1f, suma=%.0f\n",
               sum(is.na(peso)), sum(peso <= 0, na.rm = TRUE),
               min(peso, na.rm = TRUE), max(peso, na.rm = TRUE), sum(peso, na.rm = TRUE)))
@@ -59,7 +66,9 @@ validar_una <- function(d, nombre, vars = list(), ocupado = 1, edad_min = 14, fi
     cat("AVISO: sin estrato o UPM; los errores estandar seran aproximados.\n")
   }
 
-  d <- cno(d, var_ocup = v[["ocupacion"]], homologar = identical(nombre, "EPE"))
+  es_epe <- identical(nombre, "EPE")
+  d <- cno(d, var_ocup = v[["ocupacion"]], homologar = es_epe,
+           clasificador = if (es_epe) "CO_95" else "CNO_2015")
   d <- suppressWarnings(ia_exposicion(d, incluir_tipo = TRUE))
   cob <- cobertura(d, var_peso = v[["peso"]])
   print(cob, row.names = FALSE)

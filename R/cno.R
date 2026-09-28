@@ -26,9 +26,9 @@
 #' `table(datos$homologacion_estado)` antes de comparar series.
 #'
 #' @param data `data.frame` con microdatos de EPEN/EPE.
-#' @param var_ocup Nombre de la variable de codigo ocupacional.
-#'   Por defecto se detecta automaticamente (`C308_COD` para EPEN,
-#'   segun el ano de la base).
+#' @param var_ocup Nombre de la variable de codigo ocupacional. Por defecto
+#'   se usa el codigo original: `C308_COD` u `occupation_code_raw` (EPEN),
+#'   `P204A`/`p204a` (EPE); `occupation_code_4d` solo si no hay original.
 #' @param homologar Logico. Si `TRUE`, aplica la tabla de equivalencias
 #'   CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
 #'   adicionales `cno_homologado`, `cno_candidatos`, `cno_gran_grupo` y
@@ -43,7 +43,13 @@
 #' @return El mismo `data.frame` con columnas adicionales:
 #'   \describe{
 #'     \item{clasificador}{El clasificador detectado: `"CNO_2015"` o `"CO_95"`.}
-#'     \item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.}
+#'     \item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.
+#'       Sale del codigo original (`C308_COD`, `P204A` u
+#'       `occupation_code_raw`) completado con ceros a la izquierda; solo si
+#'       no existe se usa `occupation_code_4d`.}
+#'     \item{cno_discrepancia_4d}{(Solo CNO 2015, si la base trae el codigo
+#'       original y `occupation_code_4d`) `TRUE` cuando ambos no coinciden,
+#'       por ejemplo 212 -> `"0212"` frente a `"2120"`.}
 #'     \item{cno_desc}{Descripcion de la ocupacion (del diccionario interno).}
 #'     \item{cno_homologado}{(Solo si `homologar = TRUE`, bases CO-95) Codigo
 #'       CNO 2015 de 4 digitos cuando la equivalencia es unica; `NA` si no.}
@@ -124,6 +130,7 @@ cno <- function(data,
                                   clasificador = clasificador)
   data$cno_desc <- dicc_desc[match(data$cno_cod, dicc_cod)]
   .avisar_codigos_desconocidos(data$cno_cod, dicc_cod, clasificador)
+  if (clasificador == "CNO_2015") data <- .comparar_con_procesado(data, var_ocup)
 
   # Homologar CO-95 -> CNO 2015 si se pide
   if (homologar && clasificador == "CO_95") {
@@ -163,6 +170,37 @@ cno <- function(data,
       "y {.field homologacion_estado}."
     )
   ))
+  data
+}
+
+#' @noRd
+.comparar_con_procesado <- function(data, var_ocup) {
+  # Si la base trae el codigo original y occupation_code_4d, compara ambos.
+  # cno_cod siempre sale de var_ocup; la discrepancia queda en
+  # cno_discrepancia_4d (TRUE/FALSE; NA si falta alguno de los dos).
+  var_raw <- intersect(c("C308_COD", "occupation_code_raw"), names(data))
+  if (!"occupation_code_4d" %in% names(data) || length(var_raw) == 0) return(data)
+  var_raw <- if (var_ocup %in% var_raw) var_ocup else var_raw[1]
+
+  desde_raw  <- .normalizar_codigo(data[[var_raw]], "CNO_2015")
+  procesado  <- .normalizar_codigo(data$occupation_code_4d, "CNO_2015")
+  data$cno_discrepancia_4d <- ifelse(
+    is.na(desde_raw) | is.na(procesado), NA, desde_raw != procesado
+  )
+
+  n <- sum(data$cno_discrepancia_4d, na.rm = TRUE)
+  if (n > 0) {
+    i <- which(data$cno_discrepancia_4d)[1]
+    usado <- if (var_ocup == "occupation_code_4d") "occupation_code_4d" else var_raw
+    cli::cli_warn(c(
+      "{n} fila(s) donde {.field occupation_code_4d} no coincide con {.field {var_raw}}.",
+      "i" = paste0(
+        "Ejemplo: {.field {var_raw}} = {.val {data[[var_raw]][i]}} -> {.val {desde_raw[i]}}, ",
+        "pero {.field occupation_code_4d} = {.val {data$occupation_code_4d[i]}}."
+      ),
+      "i" = "{.field cno_cod} usa {.field {usado}}; las filas quedan marcadas en {.field cno_discrepancia_4d}."
+    ))
+  }
   data
 }
 
@@ -283,7 +321,7 @@ cno <- function(data,
 # Nombres posibles de la variable ano. "A\u00d1O" es ANO con enie; las otras
 # variantes cubren archivos latin1 leidos como UTF-8 y nombres sin tilde.
 .vars_year <- c(
-  "year", "YEAR", "anio", "ANIO", "ano", "ANO", "Ano",
+  "year", "YEAR", "anio", "ANIO", "ano", "ANO", "Ano", "pano",
   "A\u00d1O", "a\u00f1o", "A\u00f1o", "A\u00c3\u2018O", "ANo"
 )
 
@@ -319,11 +357,13 @@ cno <- function(data,
   # EPEN procesada: occupation_code_4d (ya estandarizada a 4 digitos)
   # EPEN cruda INEI: C308_COD
   # ENAHO procesada: occupation_code_4d o P505R4
+  # El codigo original (C308_COD, P204A, occupation_code_raw) tiene
+  # prioridad sobre occupation_code_4d: la version procesada puede haberse
+  # completado con ceros a la derecha (212 -> "2120").
   if (clasificador == "CNO_2015") {
-    candidatos <- c("occupation_code_4d", "C308_COD", "P505R4", "cod_ocup")
+    candidatos <- c("C308_COD", "occupation_code_raw", "occupation_code_4d", "P505R4", "cod_ocup")
   } else {
-    # EPE cruda INEI: P204A / p204a (CO-95)
-    candidatos <- c("occupation_code_4d", "occupation_code_raw", "P204A", "p204a",
+    candidatos <- c("P204A", "p204a", "occupation_code_raw", "occupation_code_4d",
                     "P505R3", "cod_ocup")
   }
   encontrada <- intersect(candidatos, names(data))

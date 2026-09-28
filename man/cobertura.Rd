@@ -13,8 +13,9 @@ cobertura(data, por = NULL, var_peso = NULL)
 la derivada de \code{clasificador}: CO-95 = EPE, CNO 2015 = EPEN) y el ano.}
 
 \item{var_peso}{Factor de expansion. Si es \code{NULL} se detecta (\code{weight},
-\code{FACTOR07}, \code{FACTOR}, \code{fexp}); si no existe, solo se reportan
-observaciones.}
+\code{FAC300_ANUAL}, \code{FACTOR07}, \code{FACTOR}, \code{fexp}); si no existe, solo se
+reportan observaciones. En la EPE (\code{fa_def19}, \code{fa_def21}) el factor
+depende del periodo y hay que indicarlo.}
 }
 \value{
 Un \code{data.frame} con una fila por grupo, estado y detalle:

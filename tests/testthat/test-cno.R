@@ -165,3 +165,82 @@ test_that("la variable AÑO se detecta aunque venga sin marca de codificacion o 
     expect_equal(suppressMessages(cno(df))$clasificador, "CO_95")
   }
 })
+
+# Codigo original frente a occupation_code_4d -----------------------------------
+
+test_that("raw 212 produce 0212 aunque el procesado sea 2120 y ambos existan", {
+  cod4 <- cno_2015$codigo[cno_2015$nivel == 4]
+  expect_true(all(c("0212", "2120") %in% cod4))
+
+  datos <- data.frame(
+    year = 2024L,
+    occupation_code_raw = c(212, 5212),
+    occupation_code_4d = c("2120", "5212")
+  )
+  expect_warning(r <- suppressMessages(cno(datos)), "no coincide")
+  expect_equal(r$cno_cod, c("0212", "5212"))
+  expect_equal(r$cno_discrepancia_4d, c(TRUE, FALSE))
+})
+
+test_that("C308_COD tiene prioridad sobre occupation_code_4d", {
+  datos <- data.frame(year = 2024L, C308_COD = 212L, occupation_code_4d = "2120")
+  r <- suppressWarnings(suppressMessages(cno(datos)))
+  expect_equal(r$cno_cod, "0212")
+  expect_true(r$cno_discrepancia_4d)
+})
+
+test_that("con var_ocup = occupation_code_4d la discrepancia sigue detectable", {
+  datos <- data.frame(year = 2024L, occupation_code_raw = 212, occupation_code_4d = "2120")
+  expect_warning(
+    r <- suppressMessages(cno(datos, var_ocup = "occupation_code_4d")),
+    "no coincide"
+  )
+  expect_equal(r$cno_cod, "2120")
+  expect_true(r$cno_discrepancia_4d)
+})
+
+test_that("sin codigo original no se agrega la columna de discrepancia", {
+  r <- suppressMessages(cno(data.frame(year = 2024L, occupation_code_4d = "5212")))
+  expect_false("cno_discrepancia_4d" %in% names(r))
+})
+
+test_that("la muestra no tiene discrepancias entre codigo original y procesado", {
+  r <- suppressMessages(cno(muestra_epen_2024))
+  expect_false(any(r$cno_discrepancia_4d, na.rm = TRUE))
+})
+
+test_that("cno() reconoce pano como ano de la EPE", {
+  r <- suppressMessages(cno(data.frame(pano = 2019L, p204a = 262L)))
+  expect_equal(r$clasificador, "CO_95")
+  expect_equal(r$cno_cod, "262")
+})
+
+# Tareas del catalogo --------------------------------------------------------------
+
+test_that("5223 tiene sus tres tareas del indice y los scores no cambian", {
+  i <- indice_ia$code == "5223"
+  tareas_indice <- trimws(sub(
+    " -> score: .*$", "",
+    strsplit(indice_ia$tasks_and_classifications[i], "\n", fixed = TRUE)[[1]]
+  ))
+  tareas_cno <- strsplit(cno_2015$tasks[cno_2015$codigo == "5223"], "\r\n", fixed = TRUE)[[1]]
+  expect_equal(tareas_cno, tareas_indice)
+  expect_length(tareas_cno, 3)
+  expect_equal(indice_ia$mean_exposure_score[i], 0.45)
+  expect_equal(indice_ia$median_exposure_score[i], 0.45)
+  expect_equal(
+    c(indice_ia$tipo_A_aumento[i], indice_ia$tipo_S_sustitucion[i], indice_ia$tipo_N_nulo[i]),
+    c(2, 0, 1)
+  )
+})
+
+test_that("5321 no tiene score ni tipo de impacto (no se toman de 5322 ni 5329)", {
+  expect_false("5321" %in% indice_ia$code)
+  datos <- data.frame(year = 2024L, C308_COD = c("5321", "5322"))
+  r <- suppressWarnings(suppressMessages(ia_exposicion(cno(datos), incluir_tipo = TRUE)))
+  expect_true(is.na(r$ia_score_mean[1]))
+  expect_true(is.na(r$ia_tipo[1]))
+  expect_equal(r$ia_tipo_estado[1], "sin_indice")
+  expect_equal(r$ia_cobertura[1], "sin_score")
+  expect_false(is.na(r$ia_score_mean[2]))
+})
