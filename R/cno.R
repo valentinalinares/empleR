@@ -2,9 +2,16 @@
 #'
 #' Esta funcion resuelve la **ruptura de clasificadores** entre la EPE (hasta
 #' 2021, usa CO-95 de 3 digitos, basado en CIUO-88) y la EPEN (desde 2022,
-#' usa CNO 2015 de 4 digitos, basado en CIUO-08). Detecta automaticamente el
-#' clasificador correcto segun el ano de la base y, opcionalmente, aplica la
+#' usa CNO 2015 de 4 digitos, basado en CIUO-08) y, opcionalmente, aplica la
 #' tabla de equivalencias para construir series comparables.
+#'
+#' El clasificador se determina, en este orden: (1) el argumento
+#' `clasificador`; (2) la encuesta declarada en `source`/`fuente`/`encuesta`
+#' (EPE o EPEN); (3) los anos de **todas** las filas (`year`, `anio`, `ANIO`,
+#' `ANO` o su version con enie): 2021 o antes es CO-95; 2022 o despues, CNO 2015. Una base que mezcla
+#' ambos periodos o ambas encuestas produce un error: hay que procesar cada
+#' parte por separado. Si una base de 2022 usa CO-95, indicalo con
+#' `clasificador = "CO_95"`.
 #'
 #' La variable ocupacional en EPEN es `C308_COD`; en EPE es `P204A`
 #' (`p204a`); en ENAHO es `P505R4`.
@@ -30,6 +37,8 @@
 #'   Opciones: `"4d"` (4 digitos, por defecto), `"3d"`, `"2d"`, `"1d"`.
 #'   Para bases EPE (CO-95), el maximo disponible y el valor por defecto es
 #'   `"3d"`. La homologacion siempre usa el codigo CO-95 completo.
+#' @param clasificador `"CNO_2015"`, `"CO_95"` o `NULL` (por defecto) para
+#'   detectarlo automaticamente.
 #'
 #' @return El mismo `data.frame` con columnas adicionales:
 #'   \describe{
@@ -44,7 +53,7 @@
 #'       candidatos lo comparten; permite comparar a nivel agregado.}
 #'     \item{homologacion_estado}{`"unica"`, `"multiples_destinos"`,
 #'       `"discrepancia_fuente"`, `"ocupacion_no_especificada"`,
-#'       `"codigo_no_encontrado"` o `"sin_codigo"`.}
+#'       `"codigo_no_encontrado"`, `"formato_invalido"` o `"sin_codigo"`.}
 #'   }
 #'
 #' @export
@@ -75,20 +84,14 @@
 cno <- function(data,
                 var_ocup = NULL,
                 homologar = FALSE,
-                agregar = "4d") {
+                agregar = "4d",
+                clasificador = NULL) {
 
   agregar_por_defecto <- missing(agregar)
   agregar <- match.arg(agregar, c("4d", "3d", "2d", "1d"))
 
-  # Detectar ano y clasificador
-  year <- .detectar_year(data)
-  clasificador <- .detectar_clasificador(year)
+  clasificador <- .resolver_clasificador(data, clasificador)
   if (clasificador == "CO_95" && agregar_por_defecto) agregar <- "3d"
-
-  cli::cli_inform(c(
-    "i" = "Ano detectado: {year}",
-    "i" = "Clasificador: {clasificador}"
-  ))
 
   # Detectar variable ocupacional si no se especifica
   if (is.null(var_ocup)) {
@@ -120,10 +123,11 @@ cno <- function(data,
                                   agregar = agregar,
                                   clasificador = clasificador)
   data$cno_desc <- dicc_desc[match(data$cno_cod, dicc_cod)]
+  .avisar_codigos_desconocidos(data$cno_cod, dicc_cod, clasificador)
 
   # Homologar CO-95 -> CNO 2015 si se pide
   if (homologar && clasificador == "CO_95") {
-    data <- .homologar_co95(data, cod_completo)
+    data <- .homologar_co95(data, cod_completo, data[[var_ocup]])
   } else if (homologar && clasificador == "CNO_2015") {
     cli::cli_warn(
       "La base ya usa CNO 2015. {.arg homologar} no tiene efecto."
@@ -137,7 +141,7 @@ cno <- function(data,
 # Helpers internos --------------------------------------------------------
 
 #' @noRd
-.homologar_co95 <- function(data, cod_co95) {
+.homologar_co95 <- function(data, cod_co95, original) {
   # Se usa el catalogo co_1995 (una fila por codigo CO-95), nunca la tabla
   # larga equivalencia_co95: unir con ella replicaria personas y pesos.
   j <- match(cod_co95, co_1995$co95)
@@ -146,7 +150,9 @@ cno <- function(data,
   data$cno_gran_grupo      <- co_1995$gran_grupo_cno[j]
   data$homologacion_estado <- co_1995$estado[j]
   data$homologacion_estado[is.na(j)] <- "codigo_no_encontrado"
-  data$homologacion_estado[is.na(cod_co95)] <- "sin_codigo"
+  vacio <- is.na(original) | trimws(as.character(original)) == ""
+  data$homologacion_estado[is.na(cod_co95) & !vacio] <- "formato_invalido"
+  data$homologacion_estado[vacio] <- "sin_codigo"
 
   pct_unica <- round(100 * mean(!is.na(data$cno_homologado)), 1)
   cli::cli_inform(c(
@@ -158,6 +164,30 @@ cno <- function(data,
     )
   ))
   data
+}
+
+#' @noRd
+.avisar_codigos_desconocidos <- function(cod, dicc_cod, clasificador) {
+  desconocidos <- !is.na(cod) & !cod %in% dicc_cod
+  if (!any(desconocidos)) return(invisible())
+  codigos <- sort(unique(cod[desconocidos]))
+  msgs <- c(
+    "{sum(desconocidos)} fila(s) con codigos que no existen en el {clasificador}: {.val {utils::head(codigos, 8)}}."
+  )
+  # Patron tipico: codigo de 3 digitos completado con un cero a la derecha
+  # (211 -> "2110") en vez de a la izquierda (211 -> "0211").
+  if (clasificador == "CNO_2015") {
+    corregidos <- paste0("0", substr(codigos, 1, 3))
+    rellenados <- grepl("0$", codigos) & corregidos %in% dicc_cod
+    if (any(rellenados)) {
+      msgs <- c(msgs, "i" = paste0(
+        "{sum(rellenados)} parece(n) completado(s) con un cero a la derecha ",
+        "(p. ej. {.val {codigos[rellenados][1]}} deberia ser {.val {corregidos[rellenados][1]}}); ",
+        "revisa la variable original o usa {.arg var_ocup} con el codigo crudo."
+      ))
+    }
+  }
+  cli::cli_warn(msgs)
 }
 
 #' @noRd
@@ -173,10 +203,114 @@ cno <- function(data,
 }
 
 #' @noRd
-.detectar_clasificador <- function(year) {
-  # EPEN (2022+): CNO 2015 (4 digitos, CIUO-08)
+.resolver_clasificador <- function(data, clasificador = NULL) {
+  validos <- c("CNO_2015", "CO_95")
+  years <- .detectar_years(data)
+  years_obs <- sort(unique(years[!is.na(years)]))
+
+  # 1. Clasificador indicado por el usuario: se respeta, pero se avisa si
+  #    contradice los anos de la base.
+  if (!is.null(clasificador)) {
+    clasificador <- match.arg(clasificador, validos)
+    esperado <- unique(.clasificador_por_year(years_obs))
+    if (length(esperado) > 0 && !all(esperado == clasificador)) {
+      cli::cli_warn(c(
+        "{.arg clasificador} = {.val {clasificador}} no coincide con los anos de la base ({years_obs}).",
+        "i" = "Se usa el clasificador indicado."
+      ))
+    }
+    cli::cli_inform(c("i" = "Clasificador indicado: {clasificador}"))
+    return(clasificador)
+  }
+
+  # 2. Encuesta declarada en la base (EPE -> CO-95, EPEN -> CNO 2015)
+  por_fuente <- .clasificador_por_fuente(data)
+  if (!is.null(por_fuente)) {
+    cli::cli_inform(c("i" = "Clasificador segun la encuesta de la base: {por_fuente}"))
+    return(por_fuente)
+  }
+
+  # 3. Anos de todas las filas (no solo la primera)
+  if (length(years_obs) == 0) {
+    vars_year <- .vars_year
+    cli::cli_abort(c(
+      "No se pudo determinar el clasificador ocupacional de la base.",
+      "i" = "No hay variable de ano con valores validos ({.val {vars_year}}).",
+      "i" = "Indicalo con {.code clasificador = \"CO_95\"} o {.code \"CNO_2015\"}."
+    ))
+  }
+  por_year <- unique(.clasificador_por_year(years_obs))
+  if (length(por_year) > 1) {
+    cli::cli_abort(c(
+      "La base mezcla anos con distinto clasificador ocupacional: {years_obs}.",
+      "i" = "Hasta 2021 (EPE) se usa CO-95; desde 2022 (EPEN), CNO 2015.",
+      "i" = "Aplica {.fn cno} por separado a cada periodo, o indica {.arg clasificador}."
+    ))
+  }
+  if (anyNA(years)) {
+    cli::cli_warn("{sum(is.na(years))} fila(s) sin ano; se asume el clasificador del resto.")
+  }
+  cli::cli_inform(c(
+    "i" = "Anos detectados: {years_obs}",
+    "i" = "Clasificador: {por_year}"
+  ))
+  por_year
+}
+
+#' @noRd
+.clasificador_por_year <- function(years) {
+  # EPEN (desde 2022): CNO 2015 (4 digitos, CIUO-08)
   # EPE (hasta 2021): CO-95 (3 digitos, CIUO-88)
-  if (year >= 2022) "CNO_2015" else "CO_95"
+  ifelse(years >= 2022, "CNO_2015", "CO_95")
+}
+
+#' @noRd
+.clasificador_por_fuente <- function(data) {
+  col <- intersect(c("source", "fuente", "encuesta"), names(data))
+  if (length(col) == 0) return(NULL)
+  fuentes <- unique(toupper(trimws(as.character(data[[col[1]]]))))
+  fuentes <- fuentes[!is.na(fuentes) & fuentes %in% c("EPE", "EPEN")]
+  if (length(fuentes) == 0) return(NULL)
+  if (length(fuentes) > 1) {
+    cli::cli_abort(c(
+      "La base mezcla encuestas EPE y EPEN en {.field {col[1]}}.",
+      "i" = "Aplica {.fn cno} por separado a cada encuesta y luego une los resultados."
+    ))
+  }
+  if (fuentes == "EPEN") "CNO_2015" else "CO_95"
+}
+
+# Nombres posibles de la variable ano. "A\u00d1O" es ANO con enie; las otras
+# variantes cubren archivos latin1 leidos como UTF-8 y nombres sin tilde.
+.vars_year <- c(
+  "year", "YEAR", "anio", "ANIO", "ano", "ANO", "Ano",
+  "A\u00d1O", "a\u00f1o", "A\u00f1o", "A\u00c3\u2018O", "ANo"
+)
+
+#' @noRd
+.detectar_years <- function(data) {
+  var_year <- .buscar_nombre(names(data), .vars_year)
+  if (is.na(var_year)) return(integer(0))
+  suppressWarnings(as.integer(as.character(data[[var_year]])))
+}
+
+#' @noRd
+.buscar_nombre <- function(nombres, candidatos) {
+  # Compara por bytes UTF-8: un mismo nombre puede venir marcado como UTF-8,
+  # latin1 o sin marca segun como se leyo el archivo y el locale de la sesion.
+  a_bytes <- function(x) {
+    # Solo se convierte lo marcado como latin1: enc2utf8() sobre texto sin
+    # marca depende del locale y puede alterar los bytes.
+    lat <- Encoding(x) == "latin1"
+    x[lat] <- enc2utf8(x[lat])
+    vapply(x, function(z) paste(as.character(charToRaw(z)), collapse = " "), "", USE.NAMES = FALSE)
+  }
+  # "41 d1 4f": ANO con enie en latin1 sin marcar
+  cand <- c(a_bytes(candidatos), "41 d1 4f")
+  nom <- a_bytes(nombres)
+  i <- match(cand, nom)
+  i <- i[!is.na(i)]
+  if (length(i) == 0) NA_character_ else nombres[i[1]]
 }
 
 #' @noRd

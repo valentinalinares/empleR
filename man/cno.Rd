@@ -4,7 +4,13 @@
 \alias{cno}
 \title{Armonizar codigos ocupacionales entre CNO 2015 y CO-95}
 \usage{
-cno(data, var_ocup = NULL, homologar = FALSE, agregar = "4d")
+cno(
+  data,
+  var_ocup = NULL,
+  homologar = FALSE,
+  agregar = "4d",
+  clasificador = NULL
+)
 }
 \arguments{
 \item{data}{\code{data.frame} con microdatos de EPEN/EPE.}
@@ -22,6 +28,9 @@ adicionales \code{cno_homologado}, \code{cno_candidatos}, \code{cno_gran_grupo} 
 Opciones: \code{"4d"} (4 digitos, por defecto), \code{"3d"}, \code{"2d"}, \code{"1d"}.
 Para bases EPE (CO-95), el maximo disponible y el valor por defecto es
 \code{"3d"}. La homologacion siempre usa el codigo CO-95 completo.}
+
+\item{clasificador}{\code{"CNO_2015"}, \code{"CO_95"} o \code{NULL} (por defecto) para
+detectarlo automaticamente.}
 }
 \value{
 El mismo \code{data.frame} con columnas adicionales:
@@ -37,17 +46,24 @@ por \code{"; "}.}
 candidatos lo comparten; permite comparar a nivel agregado.}
 \item{homologacion_estado}{\code{"unica"}, \code{"multiples_destinos"},
 \code{"discrepancia_fuente"}, \code{"ocupacion_no_especificada"},
-\code{"codigo_no_encontrado"} o \code{"sin_codigo"}.}
+\code{"codigo_no_encontrado"}, \code{"formato_invalido"} o \code{"sin_codigo"}.}
 }
 }
 \description{
 Esta funcion resuelve la \strong{ruptura de clasificadores} entre la EPE (hasta
 2021, usa CO-95 de 3 digitos, basado en CIUO-88) y la EPEN (desde 2022,
-usa CNO 2015 de 4 digitos, basado en CIUO-08). Detecta automaticamente el
-clasificador correcto segun el ano de la base y, opcionalmente, aplica la
+usa CNO 2015 de 4 digitos, basado en CIUO-08) y, opcionalmente, aplica la
 tabla de equivalencias para construir series comparables.
 }
 \details{
+El clasificador se determina, en este orden: (1) el argumento
+\code{clasificador}; (2) la encuesta declarada en \code{source}/\code{fuente}/\code{encuesta}
+(EPE o EPEN); (3) los anos de \strong{todas} las filas (\code{year}, \code{anio}, \code{ANIO},
+\code{ANO} o su version con enie): 2021 o antes es CO-95; 2022 o despues, CNO 2015. Una base que mezcla
+ambos periodos o ambas encuestas produce un error: hay que procesar cada
+parte por separado. Si una base de 2022 usa CO-95, indicalo con
+\code{clasificador = "CO_95"}.
+
 La variable ocupacional en EPEN es \code{C308_COD}; en EPE es \code{P204A}
 (\code{p204a}); en ENAHO es \code{P505R4}.
 
