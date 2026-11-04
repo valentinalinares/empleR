@@ -5,10 +5,20 @@
 \alias{muestra_epen_2024}
 \title{Muestra de microdatos EPEN 2024 (solo ocupados)}
 \format{
-Un \code{data.frame} con 2.000 filas y 33 columnas. Variables principales:
+Un \code{data.frame} con 2.000 filas y 34 columnas. Variables principales:
 \describe{
 \item{year, month}{Ano y mes de referencia.}
 \item{region_code}{Codigo de departamento (1-25).}
+\item{sample_id}{Identificador de muestra (\code{MUESTRA}, character).}
+\item{strata_code}{Estrato (\code{ESTRATO}, 1-8).}
+\item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
+hogar (character, con los ceros a la izquierda del original). La UPM
+es \code{sample_id} + \code{region_code} + \code{cluster_id}.}
+\item{person_id, relationship_code}{Numero de orden de la persona
+(\code{C201}) y parentesco (\code{C203}).}
+\item{occupational_category_code, firm_size_code,
+income_periodicity_code}{Categoria ocupacional (\code{C310}), tamano de
+empresa (\code{C317}) y periodicidad del pago (\code{C338}, solo dependientes).}
 \item{labor_status_code}{Estado laboral: \strong{siempre 1 (Ocupado)} en este dataset.}
 \item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
 \item{labor_income_monthly}{Ingreso laboral mensual en soles.}
@@ -18,8 +28,9 @@ Un \code{data.frame} con 2.000 filas y 33 columnas. Variables principales:
 }
 }
 \source{
-INEI - Encuesta Permanente de Empleo Nacional 2024.
-Pipeline de procesamiento: Linares Herrera, V. (2025).
+INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76.
+Pipeline de procesamiento: Linares Herrera, V. (2025),
+\url{https://github.com/valentinalinares/ia_empleo_peru}.
 }
 \usage{
 muestra_epen_2024
@@ -40,5 +51,14 @@ directamente desde esta muestra. Para esos indicadores usa:
 \item \code{\link[=resumen_nacional]{resumen_nacional()}}: tasas pre-calculadas sobre la PEA completa.
 \item \code{\link[=descargar]{descargar()}}: microdatos crudos del INEI con todos los estados laborales.
 }
+
+81 filas no tienen factor de expansion (\code{weight}); se conservan sin
+imputar. \code{ubigeo} y \code{domain_code} estan vacios porque el modulo 76 no trae
+variables equivalentes.
+
+La muestra se regenera con \verb{data-raw/07_muestra_epen_2024.R} desde la base
+corregida de \code{ia_empleo_peru} (codigos CNO completados a la izquierda e
+identificadores reconstruidos desde los ZIP oficiales). Son las mismas 2.000
+personas que la version anterior.
 }
 \keyword{datasets}

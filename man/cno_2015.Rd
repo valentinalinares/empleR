@@ -30,8 +30,8 @@ de 4 digitos vigente desde 2022 en la EPEN. Basado en CIUO-08.
 El grupo primario 5321 ("Trabajadores en el cuidado de personas
 en instituciones", p. 242) se agrego con
 \verb{data-raw/04_corregir_cno_2015.R}: faltaba porque su titulo quedo pegado
-al subgrupo 532. Su descripcion extendida y sus tareas estan pendientes de
-copiar desde el PDF oficial (quedan en \code{NA}), por lo que 5321 no tiene
-score en \link{indice_ia}.
+al subgrupo 532. Sus cuatro tareas se transcribieron de esa pagina
+(\code{data-raw/cno_2015_tareas_5321.txt}); su descripcion extendida sigue en
+\code{NA}. 5321 no tiene score en \link{indice_ia}.
 }
 \keyword{datasets}

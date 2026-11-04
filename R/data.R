@@ -3,10 +3,20 @@
 #' Submuestra aleatoria de 2.000 filas de la EPEN 2024
 #' (variante departamentos_anual) para uso en ejemplos y pruebas.
 #'
-#' @format Un `data.frame` con 2.000 filas y 33 columnas. Variables principales:
+#' @format Un `data.frame` con 2.000 filas y 34 columnas. Variables principales:
 #'   \describe{
 #'     \item{year, month}{Ano y mes de referencia.}
 #'     \item{region_code}{Codigo de departamento (1-25).}
+#'     \item{sample_id}{Identificador de muestra (`MUESTRA`, character).}
+#'     \item{strata_code}{Estrato (`ESTRATO`, 1-8).}
+#'     \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
+#'       hogar (character, con los ceros a la izquierda del original). La UPM
+#'       es `sample_id` + `region_code` + `cluster_id`.}
+#'     \item{person_id, relationship_code}{Numero de orden de la persona
+#'       (`C201`) y parentesco (`C203`).}
+#'     \item{occupational_category_code, firm_size_code,
+#'       income_periodicity_code}{Categoria ocupacional (`C310`), tamano de
+#'       empresa (`C317`) y periodicidad del pago (`C338`, solo dependientes).}
 #'     \item{labor_status_code}{Estado laboral: **siempre 1 (Ocupado)** en este dataset.}
 #'     \item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
 #'     \item{labor_income_monthly}{Ingreso laboral mensual en soles.}
@@ -26,8 +36,18 @@
 #' - [resumen_nacional()]: tasas pre-calculadas sobre la PEA completa.
 #' - [descargar()]: microdatos crudos del INEI con todos los estados laborales.
 #'
-#' @source INEI - Encuesta Permanente de Empleo Nacional 2024.
-#'   Pipeline de procesamiento: Linares Herrera, V. (2025).
+#' 81 filas no tienen factor de expansion (`weight`); se conservan sin
+#' imputar. `ubigeo` y `domain_code` estan vacios porque el modulo 76 no trae
+#' variables equivalentes.
+#'
+#' La muestra se regenera con `data-raw/07_muestra_epen_2024.R` desde la base
+#' corregida de `ia_empleo_peru` (codigos CNO completados a la izquierda e
+#' identificadores reconstruidos desde los ZIP oficiales). Son las mismas 2.000
+#' personas que la version anterior.
+#'
+#' @source INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76.
+#'   Pipeline de procesamiento: Linares Herrera, V. (2025),
+#'   \url{https://github.com/valentinalinares/ia_empleo_peru}.
 "muestra_epen_2024"
 
 
@@ -50,9 +70,9 @@
 #' @details El grupo primario 5321 ("Trabajadores en el cuidado de personas
 #'   en instituciones", p. 242) se agrego con
 #'   `data-raw/04_corregir_cno_2015.R`: faltaba porque su titulo quedo pegado
-#'   al subgrupo 532. Su descripcion extendida y sus tareas estan pendientes de
-#'   copiar desde el PDF oficial (quedan en `NA`), por lo que 5321 no tiene
-#'   score en [indice_ia].
+#'   al subgrupo 532. Sus cuatro tareas se transcribieron de esa pagina
+#'   (`data-raw/cno_2015_tareas_5321.txt`); su descripcion extendida sigue en
+#'   `NA`. 5321 no tiene score en [indice_ia].
 #'
 #' @source INEI - Clasificador Nacional de Ocupaciones 2015.
 "cno_2015"
