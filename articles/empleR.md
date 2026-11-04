@@ -111,6 +111,32 @@ La tabla completa de pares esta en `equivalencia_co95`. No la unas
 directamente a los microdatos: un codigo CO-95 con varios destinos
 replicaria personas y pesos.
 
+### Deteccion del clasificador
+
+[`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
+decide el clasificador con el argumento `clasificador`, la encuesta
+declarada en `source` (EPE o EPEN) o los anos de **todas** las filas
+(`year`, `anio`, `ANIO` o `AÑO`). Una base que mezcla anos anteriores y
+posteriores a 2022, o ambas encuestas, produce un error: procesa cada
+parte por separado y une despues.
+
+### Exposicion a IA y cobertura en EPE y EPEN
+
+[`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md)
+usa `cno_homologado` en las filas EPE y `cno_cod` en las EPEN, y rechaza
+codigos CO-95 o agregados.
+[`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
+resume por encuesta y ano cuantas observaciones y cuanta poblacion
+tienen score, y por que falta en el resto:
+
+``` r
+
+epe  <- cno(epe_2019, homologar = TRUE) |> ia_exposicion()
+epen <- cno(descargar(year = 2024)) |> ia_exposicion()
+cobertura(dplyr::bind_rows(epe, epen))
+# estado: con_score, sin_score, sin_homologacion, sin_codigo
+```
+
 ## Indice de exposicion a inteligencia artificial
 
 [empleR](https://valentinalinares.github.io/empleR/) incluye un indice
@@ -186,8 +212,7 @@ str(muestra_epen_2024)
 
 # Aplicar cno() directamente
 muestra_con_cno <- cno(muestra_epen_2024)
-#> ℹ Ano detectado: 2024
-#> ℹ Clasificador: CNO_2015
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
 head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
 #> # A tibble: 6 × 3
 #>   cno_cod cno_desc                                                  clasificador

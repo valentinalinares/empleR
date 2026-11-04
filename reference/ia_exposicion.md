@@ -8,22 +8,21 @@ sustituidas por IA generativa, usando un score continuo de 0 a 1.
 ## Usage
 
 ``` r
-ia_exposicion(data, var_cno = "cno_cod", score = "mean", incluir_tipo = FALSE)
+ia_exposicion(data, var_cno = NULL, score = "mean", incluir_tipo = FALSE)
 ```
 
 ## Arguments
 
 - data:
 
-  `data.frame` con microdatos de EPEN/EPE que incluya codigos CNO
-  (resultado de aplicar
-  [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)).
+  `data.frame` con microdatos de EPEN/EPE procesados con
+  [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md).
 
 - var_cno:
 
-  Nombre de la variable con el codigo CNO 2015 en `data`. Por defecto
-  `"cno_cod"` (generada por
-  [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)).
+  Variable con el codigo CNO 2015 de 4 digitos. Si es `NULL` (por
+  defecto) se elige por fila segun la columna `clasificador`: `cno_cod`
+  para CNO 2015 y `cno_homologado` para CO-95.
 
 - score:
 
@@ -37,12 +36,16 @@ ia_exposicion(data, var_cno = "cno_cod", score = "mean", incluir_tipo = FALSE)
 
 - incluir_tipo:
 
-  Logico. Si `TRUE`, agrega tambien el tipo de impacto predominante
-  (`A`, `S`, `N`) por ocupacion. Por defecto `FALSE`.
+  Logico. Si `TRUE`, agrega el tipo de impacto predominante y los
+  conteos de tareas por tipo. Por defecto `FALSE`.
 
 ## Value
 
-El mismo `data.frame` con columnas adicionales:
+El mismo `data.frame` (mismas filas y orden) con columnas adicionales:
+
+- ia_cno:
+
+  Codigo CNO 2015 usado para el cruce.
 
 - ia_score_mean:
 
@@ -50,17 +53,34 @@ El mismo `data.frame` con columnas adicionales:
 
 - ia_score_median:
 
-  Score mediano (solo si `score = "ambos"`).
+  Score mediano (si `score` es `"median"` o `"ambos"`).
+
+- ia_cobertura:
+
+  `"con_score"`, `"sin_score"` (codigo CNO valido sin score en el
+  indice), `"codigo_no_encontrado"` (4 digitos que no existen en el CNO
+  2015), `"sin_homologacion"` (CO-95 sin equivalencia unica) o
+  `"sin_codigo"`.
 
 - ia_tipo:
 
-  Tipo de impacto predominante: el tipo (`A`, `S` o `N`) con mas tareas
-  en la ocupacion; en empate se prioriza `S`, luego `A` (solo si
-  `incluir_tipo = TRUE`).
+  Tipo de impacto con mas tareas (`A`, `S` o `N`); `NA` si hay empate,
+  si la ocupacion no tiene tareas o no esta en el indice.
 
-- tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo:
+- ia_empate:
 
-  Numero de tareas de cada tipo (solo si `incluir_tipo = TRUE`).
+  `TRUE` si dos o mas tipos empatan en el maximo; `NA` si no hay tareas
+  o indice.
+
+- ia_tipo_estado:
+
+  `"predominante"`, `"empate"`, `"sin_tareas"` o `"sin_indice"`.
+
+- ia_total_tareas, tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo:
+
+  Conteos de tareas del indice.
+
+Las ultimas cuatro filas solo se agregan con `incluir_tipo = TRUE`.
 
 ## Details
 
@@ -77,16 +97,32 @@ por consenso. Cada tarea recibe:
 El indice final por ocupacion es la media de los scores de sus tareas.
 Correlacion con el indice de la OIT: r = 0.85.
 
+## Bases EPE (CO-95)
+
+El indice esta definido en CNO 2015 a 4 digitos. En bases EPE se usa
+`cno_homologado` (de `cno(homologar = TRUE)`): solo las ocupaciones con
+equivalencia unica reciben score. Las ambiguas quedan en `NA` con
+`ia_cobertura = "sin_homologacion"`; nunca se cruza un codigo CO-95 ni
+un codigo agregado (1-3 digitos) con el indice. En una base que une EPE
+y EPEN (con la columna `clasificador` de
+[`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md))
+cada fila usa su codigo.
+
+## See also
+
+[`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
+para resumir la cobertura por encuesta y ano.
+
 ## Examples
 
 ``` r
 # Con la muestra incluida
 muestra <- cno(muestra_epen_2024)
-#> ℹ Ano detectado: 2024
-#> ℹ Clasificador: CNO_2015
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
 muestra <- ia_exposicion(muestra)
-#> Warning: ! 39 filas (2%) tienen codigo CNO sin score de IA.
-#> ℹ Puede deberse a codigos sin cobertura en el indice (22 codigos en 2024).
+#> Warning: ℹ Filas con score de IA: 1961 (98%).
+#> ! 39 (2%) con codigo CNO sin score en el indice.
+#> ℹ Resumen por encuesta y ano: `cobertura()`.
 
 # Ver distribucion de exposicion
 hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-1)")
@@ -99,5 +135,10 @@ epen_2024 <- descargar(year = 2024) |>
 
 # Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
 indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
+
+# Base EPE: el cruce usa cno_homologado automaticamente
+epe_2019 <- cno(readRDS("epe_2019.rds"), homologar = TRUE) |>
+  ia_exposicion()
+cobertura(epe_2019)
 } # }
 ```

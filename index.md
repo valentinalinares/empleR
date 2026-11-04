@@ -43,7 +43,10 @@ indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 - [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)
   devuelve indicadores nacionales pre-calculados.
 - [`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md)
-  agrega scores de exposicion a IA por ocupacion.
+  agrega scores de exposicion a IA por ocupacion (en EPE, sobre
+  `cno_homologado`).
+- [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
+  resume la cobertura de homologacion y score por encuesta y ano.
 - [`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
   y
   [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)

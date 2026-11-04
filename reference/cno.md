@@ -2,15 +2,19 @@
 
 Esta funcion resuelve la **ruptura de clasificadores** entre la EPE
 (hasta 2021, usa CO-95 de 3 digitos, basado en CIUO-88) y la EPEN (desde
-2022, usa CNO 2015 de 4 digitos, basado en CIUO-08). Detecta
-automaticamente el clasificador correcto segun el ano de la base y,
-opcionalmente, aplica la tabla de equivalencias para construir series
-comparables.
+2022, usa CNO 2015 de 4 digitos, basado en CIUO-08) y, opcionalmente,
+aplica la tabla de equivalencias para construir series comparables.
 
 ## Usage
 
 ``` r
-cno(data, var_ocup = NULL, homologar = FALSE, agregar = "4d")
+cno(
+  data,
+  var_ocup = NULL,
+  homologar = FALSE,
+  agregar = "4d",
+  clasificador = NULL
+)
 ```
 
 ## Arguments
@@ -21,8 +25,9 @@ cno(data, var_ocup = NULL, homologar = FALSE, agregar = "4d")
 
 - var_ocup:
 
-  Nombre de la variable de codigo ocupacional. Por defecto se detecta
-  automaticamente (`C308_COD` para EPEN, segun el ano de la base).
+  Nombre de la variable de codigo ocupacional. Por defecto se usa el
+  codigo original: `C308_COD` u `occupation_code_raw` (EPEN),
+  `P204A`/`p204a` (EPE); `occupation_code_4d` solo si no hay original.
 
 - homologar:
 
@@ -38,6 +43,11 @@ cno(data, var_ocup = NULL, homologar = FALSE, agregar = "4d")
   EPE (CO-95), el maximo disponible y el valor por defecto es `"3d"`. La
   homologacion siempre usa el codigo CO-95 completo.
 
+- clasificador:
+
+  `"CNO_2015"`, `"CO_95"` o `NULL` (por defecto) para detectarlo
+  automaticamente.
+
 ## Value
 
 El mismo `data.frame` con columnas adicionales:
@@ -48,7 +58,15 @@ El mismo `data.frame` con columnas adicionales:
 
 - cno_cod:
 
-  Codigo ocupacional estandarizado al nivel solicitado.
+  Codigo ocupacional estandarizado al nivel solicitado. Sale del codigo
+  original (`C308_COD`, `P204A` u `occupation_code_raw`) completado con
+  ceros a la izquierda; solo si no existe se usa `occupation_code_4d`.
+
+- cno_discrepancia_4d:
+
+  (Solo CNO 2015, si la base trae el codigo original y
+  `occupation_code_4d`) `TRUE` cuando ambos no coinciden, por ejemplo
+  212 -\> `"0212"` frente a `"2120"`.
 
 - cno_desc:
 
@@ -71,10 +89,19 @@ El mismo `data.frame` con columnas adicionales:
 - homologacion_estado:
 
   `"unica"`, `"multiples_destinos"`, `"discrepancia_fuente"`,
-  `"ocupacion_no_especificada"`, `"codigo_no_encontrado"` o
-  `"sin_codigo"`.
+  `"ocupacion_no_especificada"`, `"codigo_no_encontrado"`,
+  `"formato_invalido"` o `"sin_codigo"`.
 
 ## Details
+
+El clasificador se determina, en este orden: (1) el argumento
+`clasificador`; (2) la encuesta declarada en
+`source`/`fuente`/`encuesta` (EPE o EPEN); (3) los anos de **todas** las
+filas (`year`, `anio`, `ANIO`, `ANO` o su version con enie): 2021 o
+antes es CO-95; 2022 o despues, CNO 2015. Una base que mezcla ambos
+periodos o ambas encuestas produce un error: hay que procesar cada parte
+por separado. Si una base de 2022 usa CO-95, indicalo con
+`clasificador = "CO_95"`.
 
 La variable ocupacional en EPEN es `C308_COD`; en EPE es `P204A`
 (`p204a`); en ENAHO es `P505R4`.
@@ -95,9 +122,8 @@ comparar series.
 ``` r
 # Con la muestra incluida en el paquete
 cno(muestra_epen_2024)
-#> ℹ Ano detectado: 2024
-#> ℹ Clasificador: CNO_2015
-#> # A tibble: 2,000 × 36
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> # A tibble: 2,000 × 37
 #>    source survey_variant period_label  year month region_code ubigeo domain_code
 #>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <lgl>  <lgl>      
 #>  1 EPEN   departamentos… Anual - (En…  2024     4          18 NA     NA         
@@ -111,7 +137,7 @@ cno(muestra_epen_2024)
 #>  9 EPEN   departamentos… Anual - (En…  2024     5          15 NA     NA         
 #> 10 EPEN   departamentos… Anual - (En…  2024     7          22 NA     NA         
 #> # ℹ 1,990 more rows
-#> # ℹ 28 more variables: strata_code <lgl>, cluster_id <dbl>, dwelling_id <dbl>,
+#> # ℹ 29 more variables: strata_code <lgl>, cluster_id <dbl>, dwelling_id <dbl>,
 #> #   household_id <dbl>, person_id <lgl>, relationship_code <lgl>,
 #> #   sex_code <dbl>, sex <chr>, age <dbl>, labor_status_code <dbl>,
 #> #   occupation_code_raw <dbl>, occupation_code_4d <chr>,

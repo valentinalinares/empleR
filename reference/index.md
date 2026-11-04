@@ -20,6 +20,8 @@
 - [`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md)
   : Cruzar ocupaciones con el indice de exposicion a inteligencia
   artificial
+- [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
+  : Cobertura de la homologacion ocupacional y del indice de IA
 
 ## Visualizacion
 
