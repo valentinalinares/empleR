@@ -135,8 +135,10 @@ set.seed(42)
 muestra_epen_2024 <- epen_completa |>
   filter(year == 2024) |>
   slice_sample(n = 2000) |>
-  # Estandarizar occupation_code_4d a character para joins con CNO y el indice
-  mutate(occupation_code_4d = as.character(occupation_code_4d))
+  # Recalcular occupation_code_4d desde el codigo crudo con ceros a la
+  # izquierda: la base procesada completa los codigos de 3 digitos con un cero
+  # a la derecha (211 -> "2110" en vez de "0211"). Ver 05_corregir_codigos_muestra.R
+  mutate(occupation_code_4d = formatC(as.integer(occupation_code_raw), width = 4, flag = "0"))
 
 cat("muestra_epen_2024:", nrow(muestra_epen_2024), "filas,",
     ncol(muestra_epen_2024), "columnas\n")

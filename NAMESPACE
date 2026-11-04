@@ -2,6 +2,7 @@
 
 export(catalogo)
 export(cno)
+export(cobertura)
 export(descargar)
 export(etiquetar)
 export(ia_exposicion)

@@ -34,7 +34,9 @@ indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
   via la tabla de correspondencia del INEI, sin forzar casos ambiguos).
 - `indicadores()` calcula indicadores laborales con diseno muestral.
 - `resumen_nacional()` devuelve indicadores nacionales pre-calculados.
-- `ia_exposicion()` agrega scores de exposicion a IA por ocupacion.
+- `ia_exposicion()` agrega scores de exposicion a IA por ocupacion (en EPE,
+  sobre `cno_homologado`).
+- `cobertura()` resume la cobertura de homologacion y score por encuesta y ano.
 - `panel()` y `mapa()` ayudan a explorar resultados y visualizarlos.
 
 ## Indice de exposicion IA
