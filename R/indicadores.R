@@ -18,12 +18,23 @@
 #' @param var_strata Nombre de la variable de estrato. Detecta automaticamente
 #'   `strata_code` (datos procesados) o `ESTRATO` (datos crudos INEI).
 #' @param var_psu Nombre de la variable PSU. Detecta automaticamente
-#'   `cluster_id` (datos procesados) o `CONGLOME` (datos crudos INEI).
+#'   `cluster_id` (datos procesados) o `CONGLOMERADO`/`CONGLOME` (datos crudos
+#'   INEI). Si se detecta y la base trae tambien la muestra (`sample_id` o
+#'   `MUESTRA`) y la region (`region_code` o `CCDD`), la UPM se forma con las
+#'   tres: los numeros de conglomerado se repiten entre departamentos y
+#'   muestras, asi que el conglomerado solo no identifica una UPM.
 #' @param var_peso Nombre del factor de expansion. Detecta automaticamente
 #'   `weight` (procesados) o `FACTOR07` (datos crudos INEI).
 #'
 #' @return Un `data.frame` con el indicador calculado y error estandar,
 #'   agrupado segun `por`.
+#'
+#' @section Diseno muestral provisional:
+#' El estrato que se usa es `ESTRATO` (`strata_code`), tal como lo publica el
+#' INEI. Falta confirmar con la especificacion oficial del diseno si ese
+#' estrato se combina con la region u otros dominios, y como tratar las filas
+#' sin factor de expansion (hoy se excluyen con aviso). Los errores estandar
+#' son, por tanto, provisionales.
 #'
 #' @seealso [resumen_nacional()] para indicadores pre-calculados (incluyendo
 #'   tasas de desempleo y actividad). [indicadores_epen] para el dataset
@@ -66,7 +77,8 @@ indicadores <- function(data,
 
   # Detectar variables de diseno muestral
   var_strata <- var_strata %||% .detectar_var(data, c("strata_code", "ESTRATO", "estrato"))
-  var_psu    <- var_psu    %||% .detectar_var(data, c("cluster_id",  "CONGLOME", "conglome"))
+  psu_detectada <- is.null(var_psu)
+  var_psu    <- var_psu    %||% .detectar_var(data, c("cluster_id", "CONGLOMERADO", "CONGLOME", "conglome"))
   var_peso   <- var_peso   %||% .detectar_var(data, c("weight",      "FACTOR07", "FACTOR", "fexp"))
 
   if (is.null(var_peso)) {
@@ -92,8 +104,21 @@ indicadores <- function(data,
     cli::cli_warn("{n_antes - nrow(data)} filas eliminadas por peso NA o cero.")
   }
 
+  # UPM compuesta: muestra + region + conglomerado
+  if (psu_detectada && !is.null(var_psu)) {
+    data <- .upm_compuesta(data, var_psu)
+    if (".upm" %in% names(data)) var_psu <- ".upm"
+  }
+
   # Construir diseno muestral
   if (!is.null(var_strata) && !is.null(var_psu)) {
+    cli::cli_inform(
+      c("i" = paste0(
+        "Diseno muestral provisional: estrato {.field {var_strata}} y UPM ",
+        "{.field {var_psu}}; ver {.code ?indicadores}."
+      )),
+      .frequency = "once", .frequency_id = "empleR_diseno_provisional"
+    )
     diseno <- survey::svydesign(
       ids     = stats::as.formula(paste0("~", var_psu)),
       strata  = stats::as.formula(paste0("~", var_strata)),
@@ -218,6 +243,15 @@ resumen_nacional <- function(fuente = "todas", year = NULL, variante = NULL) {
 
 #' @noRd
 `%||%` <- function(x, y) if (!is.null(x)) x else y
+
+#' @noRd
+.upm_compuesta <- function(data, var_psu) {
+  var_muestra <- .detectar_var(data, c("sample_id", "MUESTRA"))
+  var_region  <- .detectar_var(data, c("region_code", "CCDD"))
+  if (is.null(var_muestra) || is.null(var_region)) return(data)
+  data$.upm <- paste(data[[var_muestra]], data[[var_region]], data[[var_psu]], sep = "|")
+  data
+}
 
 #' @noRd
 .detectar_var <- function(data, candidatos) {

@@ -30,7 +30,11 @@ indicadores(
 \code{strata_code} (datos procesados) o \code{ESTRATO} (datos crudos INEI).}
 
 \item{var_psu}{Nombre de la variable PSU. Detecta automaticamente
-\code{cluster_id} (datos procesados) o \code{CONGLOME} (datos crudos INEI).}
+\code{cluster_id} (datos procesados) o \code{CONGLOMERADO}/\code{CONGLOME} (datos crudos
+INEI). Si se detecta y la base trae tambien la muestra (\code{sample_id} o
+\code{MUESTRA}) y la region (\code{region_code} o \code{CCDD}), la UPM se forma con las
+tres: los numeros de conglomerado se repiten entre departamentos y
+muestras, asi que el conglomerado solo no identifica una UPM.}
 
 \item{var_peso}{Nombre del factor de expansion. Detecta automaticamente
 \code{weight} (procesados) o \code{FACTOR07} (datos crudos INEI).}
@@ -49,6 +53,15 @@ Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
 regional, usa \code{\link[=resumen_nacional]{resumen_nacional()}}, que devuelve los indicadores
 pre-calculados del pipeline INEI con la muestra completa de la PEA.
 }
+\section{Diseno muestral provisional}{
+
+El estrato que se usa es \code{ESTRATO} (\code{strata_code}), tal como lo publica el
+INEI. Falta confirmar con la especificacion oficial del diseno si ese
+estrato se combina con la region u otros dominios, y como tratar las filas
+sin factor de expansion (hoy se excluyen con aviso). Los errores estandar
+son, por tanto, provisionales.
+}
+
 \examples{
 # Ingreso promedio nacional con la muestra interna
 indicadores(muestra_epen_2024, "ingreso_promedio")
