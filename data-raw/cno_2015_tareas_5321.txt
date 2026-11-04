@@ -1,0 +1,7 @@
+# CNO 2015 (INEI), grupo primario 5321 "Trabajadores en el cuidado de personas
+# en instituciones", p. 242 impresa (p. 241 del archivo PDF). Tareas transcritas
+# literalmente, una por linea.
+Implementar cuidados, tratamientos y derivación de planes establecidos por médicos, enfermeras y otros profesionales de la salud.
+Asistir a pacientes en cuidados personales como ir al baño, asearlos y vestirlos.
+Asistir a pacientes en su movilidad y necesidad de comunicación.
+Levantar y movilizar a pacientes y transportarlos en sus sillas de ruedas o en camas con ruedas.

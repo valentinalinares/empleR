@@ -244,3 +244,17 @@ test_that("5321 no tiene score ni tipo de impacto (no se toman de 5322 ni 5329)"
   expect_equal(r$ia_cobertura[1], "sin_score")
   expect_false(is.na(r$ia_score_mean[2]))
 })
+
+test_that("las tareas de 5321 coinciden con la transcripcion del PDF oficial", {
+  fuente <- system.file("extdata", "cno_2015_tareas_5321.txt", package = "empleR")
+  expect_true(nzchar(fuente))
+  lineas <- trimws(readLines(fuente, encoding = "UTF-8"))
+  tareas <- lineas[nzchar(lineas) & !startsWith(lineas, "#")]
+  expect_length(tareas, 4)
+
+  fila <- cno_2015[cno_2015$codigo == "5321", ]
+  expect_equal(strsplit(fila$tasks, "\r\n", fixed = TRUE)[[1]], tareas)
+  expect_equal(fila$tasks_clean, paste(tareas, collapse = " "))
+  # Sin tareas del 5322 mezcladas por la extraccion en dos columnas
+  expect_false(grepl("domicilio", fila$tasks, fixed = TRUE))
+})
