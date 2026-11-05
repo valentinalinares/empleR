@@ -1,6 +1,6 @@
 Package: empleR
 Title: Tools for Analyzing Peru's National Employment Surveys (EPEN/EPE)
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R:
     person("Valentina", "Linares Herrera", , "durgavalentinalinaresherrera@gmail.com",
            role = c("aut", "cre"),

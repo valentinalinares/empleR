@@ -4,9 +4,10 @@ El dataset interno `indice_ia` se reconstruye con
 `data-raw/02_build_indice_ia.R` a partir del paquete metodologico Sonnet
 2026-06-15. La fuente principal es `02_exposure_index_por_ocupacion.xlsx`.
 
-Directorio fuente local usado:
-
-`C:/Users/VALENTINALINARES/OneDrive - Universidad del Pacifico/Desktop/CIUP/IA_Empleo_Peru/2026-06-15_VRI_Fiorella/VRI 2026 - Fiorella/01_Indice_exposicion`
+La carpeta del paquete metodologico (`01_Indice_exposicion`) no se incluye en
+el repositorio. Para reconstruir el indice, indica su ruta con la variable de
+entorno `EMPLER_INDICE_IA_DIR` antes de ejecutar el script. Las huellas
+SHA-256 de abajo permiten verificar que se usan los mismos archivos.
 
 Archivos del paquete metodologico:
 
