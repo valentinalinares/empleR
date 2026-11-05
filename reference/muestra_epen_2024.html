@@ -52,11 +52,31 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>Un <code>data.frame</code> con 2.000 filas y 33 columnas. Variables principales:</p><dl><dt>year, month</dt>
+    <p>Un <code>data.frame</code> con 2.000 filas y 34 columnas. Variables principales:</p><dl><dt>year, month</dt>
 <dd><p>Ano y mes de referencia.</p></dd>
 
 <dt>region_code</dt>
 <dd><p>Codigo de departamento (1-25).</p></dd>
+
+<dt>sample_id</dt>
+<dd><p>Identificador de muestra (<code>MUESTRA</code>, character).</p></dd>
+
+<dt>strata_code</dt>
+<dd><p>Estrato (<code>ESTRATO</code>, 1-8).</p></dd>
+
+<dt>cluster_id, dwelling_id, household_id</dt>
+<dd><p>Conglomerado, vivienda y
+hogar (character, con los ceros a la izquierda del original). La UPM
+es <code>sample_id</code> + <code>region_code</code> + <code>cluster_id</code>.</p></dd>
+
+<dt>person_id, relationship_code</dt>
+<dd><p>Numero de orden de la persona
+(<code>C201</code>) y parentesco (<code>C203</code>).</p></dd>
+
+<dt>occupational_category_code, firm_size_code,
+income_periodicity_code</dt>
+<dd><p>Categoria ocupacional (<code>C310</code>), tamano de
+empresa (<code>C317</code>) y periodicidad del pago (<code>C338</code>, solo dependientes).</p></dd>
 
 <dt>labor_status_code</dt>
 <dd><p>Estado laboral: <strong>siempre 1 (Ocupado)</strong> en este dataset.</p></dd>
@@ -80,8 +100,9 @@
 </dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-    <p>INEI - Encuesta Permanente de Empleo Nacional 2024.
-Pipeline de procesamiento: Linares Herrera, V. (2025).</p>
+    <p>INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76.
+Pipeline de procesamiento: Linares Herrera, V. (2025),
+<a href="https://github.com/valentinalinares/ia_empleo_peru" class="external-link">https://github.com/valentinalinares/ia_empleo_peru</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -92,7 +113,14 @@ durante el procesamiento del pipeline porque no tienen codigo de ocupacion
 <p>Esto significa que <strong>no es posible calcular tasas de desempleo o actividad</strong>
 directamente desde esta muestra. Para esos indicadores usa:</p><ul><li><p><code><a href="resumen_nacional.html">resumen_nacional()</a></code>: tasas pre-calculadas sobre la PEA completa.</p></li>
 <li><p><code><a href="descargar.html">descargar()</a></code>: microdatos crudos del INEI con todos los estados laborales.</p></li>
-</ul></div>
+</ul><p>81 filas no tienen factor de expansion (<code>weight</code>); se conservan sin
+imputar. <code>ubigeo</code> y <code>domain_code</code> estan vacios porque el modulo 76 no trae
+variables equivalentes.</p>
+<p>La muestra se regenera con <code>data-raw/07_muestra_epen_2024.R</code> desde la base
+corregida de <code>ia_empleo_peru</code> (codigos CNO completados a la izquierda e
+identificadores reconstruidos desde los ZIP oficiales). Son las mismas 2.000
+personas que la version anterior.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

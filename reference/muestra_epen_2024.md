@@ -11,7 +11,7 @@ muestra_epen_2024
 
 ## Format
 
-Un `data.frame` con 2.000 filas y 33 columnas. Variables principales:
+Un `data.frame` con 2.000 filas y 34 columnas. Variables principales:
 
 - year, month:
 
@@ -20,6 +20,29 @@ Un `data.frame` con 2.000 filas y 33 columnas. Variables principales:
 - region_code:
 
   Codigo de departamento (1-25).
+
+- sample_id:
+
+  Identificador de muestra (`MUESTRA`, character).
+
+- strata_code:
+
+  Estrato (`ESTRATO`, 1-8).
+
+- cluster_id, dwelling_id, household_id:
+
+  Conglomerado, vivienda y hogar (character, con los ceros a la
+  izquierda del original). La UPM es `sample_id` + `region_code` +
+  `cluster_id`.
+
+- person_id, relationship_code:
+
+  Numero de orden de la persona (`C201`) y parentesco (`C203`).
+
+- occupational_category_code, firm_size_code, income_periodicity_code:
+
+  Categoria ocupacional (`C310`), tamano de empresa (`C317`) y
+  periodicidad del pago (`C338`, solo dependientes).
 
 - labor_status_code:
 
@@ -47,8 +70,9 @@ Un `data.frame` con 2.000 filas y 33 columnas. Variables principales:
 
 ## Source
 
-INEI - Encuesta Permanente de Empleo Nacional 2024. Pipeline de
-procesamiento: Linares Herrera, V. (2025).
+INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76. Pipeline
+de procesamiento: Linares Herrera, V. (2025),
+<https://github.com/valentinalinares/ia_empleo_peru>.
 
 ## Details
 
@@ -65,3 +89,12 @@ actividad** directamente desde esta muestra. Para esos indicadores usa:
 
 - [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md):
   microdatos crudos del INEI con todos los estados laborales.
+
+81 filas no tienen factor de expansion (`weight`); se conservan sin
+imputar. `ubigeo` y `domain_code` estan vacios porque el modulo 76 no
+trae variables equivalentes.
+
+La muestra se regenera con `data-raw/07_muestra_epen_2024.R` desde la
+base corregida de `ia_empleo_peru` (codigos CNO completados a la
+izquierda e identificadores reconstruidos desde los ZIP oficiales). Son
+las mismas 2.000 personas que la version anterior.

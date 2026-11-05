@@ -123,9 +123,9 @@ comparar series.
 # Con la muestra incluida en el paquete
 cno(muestra_epen_2024)
 #> ℹ Clasificador segun la encuesta de la base: CNO_2015
-#> # A tibble: 2,000 × 37
+#> # A tibble: 2,000 × 38
 #>    source survey_variant period_label  year month region_code ubigeo domain_code
-#>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <lgl>  <lgl>      
+#>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <chr>  <chr>      
 #>  1 EPEN   departamentos… Anual - (En…  2024     4          18 NA     NA         
 #>  2 EPEN   departamentos… Anual - (En…  2024     4          15 NA     NA         
 #>  3 EPEN   departamentos… Anual - (En…  2024     7          14 NA     NA         
@@ -137,12 +137,12 @@ cno(muestra_epen_2024)
 #>  9 EPEN   departamentos… Anual - (En…  2024     5          15 NA     NA         
 #> 10 EPEN   departamentos… Anual - (En…  2024     7          22 NA     NA         
 #> # ℹ 1,990 more rows
-#> # ℹ 29 more variables: strata_code <lgl>, cluster_id <dbl>, dwelling_id <dbl>,
-#> #   household_id <dbl>, person_id <lgl>, relationship_code <lgl>,
-#> #   sex_code <dbl>, sex <chr>, age <dbl>, labor_status_code <dbl>,
-#> #   occupation_code_raw <dbl>, occupation_code_4d <chr>,
-#> #   occupational_category_code <lgl>, firm_size_code <lgl>, hours_week <dbl>,
-#> #   income_periodicity_code <lgl>, labor_income_raw <dbl>, …
+#> # ℹ 30 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
+#> #   dwelling_id <chr>, household_id <chr>, person_id <int>,
+#> #   relationship_code <int>, sex_code <dbl>, sex <chr>, age <dbl>,
+#> #   labor_status_code <dbl>, occupation_code_raw <dbl>,
+#> #   occupation_code_4d <chr>, occupational_category_code <int>,
+#> #   firm_size_code <int>, hours_week <dbl>, income_periodicity_code <int>, …
 
 if (FALSE) { # \dontrun{
 epen_2024 <- descargar(year = 2024)

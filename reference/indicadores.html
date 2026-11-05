@@ -87,7 +87,11 @@ procesados (output de <code><a href="descargar.html">descargar()</a></code>) con
 
 <dt id="arg-var-psu">var_psu<a class="anchor" aria-label="anchor" href="#arg-var-psu"></a></dt>
 <dd><p>Nombre de la variable PSU. Detecta automaticamente
-<code>cluster_id</code> (datos procesados) o <code>CONGLOME</code> (datos crudos INEI).</p></dd>
+<code>cluster_id</code> (datos procesados) o <code>CONGLOMERADO</code>/<code>CONGLOME</code> (datos crudos
+INEI). Si se detecta y la base trae tambien la muestra (<code>sample_id</code> o
+<code>MUESTRA</code>) y la region (<code>region_code</code> o <code>CCDD</code>), la UPM se forma con las
+tres: los numeros de conglomerado se repiten entre departamentos y
+muestras, asi que el conglomerado solo no identifica una UPM.</p></dd>
 
 
 <dt id="arg-var-peso">var_peso<a class="anchor" aria-label="anchor" href="#arg-var-peso"></a></dt>
@@ -107,6 +111,16 @@ regional, usa <code><a href="resumen_nacional.html">resumen_nacional()</a></code
 pre-calculados del pipeline INEI con la muestra completa de la PEA.</p>
     </div>
     <div class="section level2">
+    <h2 id="diseno-muestral-provisional">Diseno muestral provisional<a class="anchor" aria-label="anchor" href="#diseno-muestral-provisional"></a></h2>
+
+
+<p>El estrato que se usa es <code>ESTRATO</code> (<code>strata_code</code>), tal como lo publica el
+INEI. Falta confirmar con la especificacion oficial del diseno si ese
+estrato se combina con la region u otros dominios, y como tratar las filas
+sin factor de expansion (hoy se excluyen con aviso). Los errores estandar
+son, por tanto, provisionales.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="resumen_nacional.html">resumen_nacional()</a></code> para indicadores pre-calculados (incluyendo
 tasas de desempleo y actividad). <a href="indicadores_epen.html">indicadores_epen</a> para el dataset
@@ -118,17 +132,18 @@ interno con indicadores nacionales precalculados.</p></div>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Ingreso promedio nacional con la muestra interna</span></span></span>
 <span class="r-in"><span><span class="fu">indicadores</span><span class="op">(</span><span class="va">muestra_epen_2024</span>, <span class="st">"ingreso_promedio"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>81 filas eliminadas por peso NA o cero.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Diseno muestral simplificado: no se encontraron strata/PSU.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Diseno muestral provisional: estrato <span style="color: #00BB00;">strata_code</span> y UPM <span style="color: #00BB00;">.upm</span>; ver</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   `?indicadores`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This message is displayed once per session.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          indicador estimado error_std</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ingreso_promedio 1423.681  51.84008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 ingreso_promedio 1423.681  50.28949</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Ingreso promedio por sexo</span></span></span>
 <span class="r-in"><span><span class="fu">indicadores</span><span class="op">(</span><span class="va">muestra_epen_2024</span>, <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>81 filas eliminadas por peso NA o cero.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Diseno muestral simplificado: no se encontraron strata/PSU.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           sex        indicador estimado error_std</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hombre Hombre ingreso_promedio 1606.021  72.06051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Mujer   Mujer ingreso_promedio 1209.925  72.57662</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hombre Hombre ingreso_promedio 1606.021  71.54815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mujer   Mujer ingreso_promedio 1209.925  71.30004</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></span>

@@ -50,7 +50,11 @@ indicadores(
 - var_psu:
 
   Nombre de la variable PSU. Detecta automaticamente `cluster_id` (datos
-  procesados) o `CONGLOME` (datos crudos INEI).
+  procesados) o `CONGLOMERADO`/`CONGLOME` (datos crudos INEI). Si se
+  detecta y la base trae tambien la muestra (`sample_id` o `MUESTRA`) y
+  la region (`region_code` o `CCDD`), la UPM se forma con las tres: los
+  numeros de conglomerado se repiten entre departamentos y muestras, asi
+  que el conglomerado solo no identifica una UPM.
 
 - var_peso:
 
@@ -70,6 +74,14 @@ regional, usa
 que devuelve los indicadores pre-calculados del pipeline INEI con la
 muestra completa de la PEA.
 
+## Diseno muestral provisional
+
+El estrato que se usa es `ESTRATO` (`strata_code`), tal como lo publica
+el INEI. Falta confirmar con la especificacion oficial del diseno si ese
+estrato se combina con la region u otros dominios, y como tratar las
+filas sin factor de expansion (hoy se excluyen con aviso). Los errores
+estandar son, por tanto, provisionales.
+
 ## See also
 
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)
@@ -84,17 +96,18 @@ para el dataset interno con indicadores nacionales precalculados.
 # Ingreso promedio nacional con la muestra interna
 indicadores(muestra_epen_2024, "ingreso_promedio")
 #> Warning: 81 filas eliminadas por peso NA o cero.
-#> Warning: Diseno muestral simplificado: no se encontraron strata/PSU.
+#> ℹ Diseno muestral provisional: estrato strata_code y UPM .upm; ver
+#>   `?indicadores`.
+#> This message is displayed once per session.
 #>          indicador estimado error_std
-#> 1 ingreso_promedio 1423.681  51.84008
+#> 1 ingreso_promedio 1423.681  50.28949
 
 # Ingreso promedio por sexo
 indicadores(muestra_epen_2024, "ingreso_promedio", por = "sex")
 #> Warning: 81 filas eliminadas por peso NA o cero.
-#> Warning: Diseno muestral simplificado: no se encontraron strata/PSU.
 #>           sex        indicador estimado error_std
-#> Hombre Hombre ingreso_promedio 1606.021  72.06051
-#> Mujer   Mujer ingreso_promedio 1209.925  72.57662
+#> Hombre Hombre ingreso_promedio 1606.021  71.54815
+#> Mujer   Mujer ingreso_promedio 1209.925  71.30004
 
 if (FALSE) { # \dontrun{
 epen_2024 <- descargar(year = 2024)
