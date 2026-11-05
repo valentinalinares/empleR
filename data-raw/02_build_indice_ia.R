@@ -1,21 +1,13 @@
 # Construye data/indice_ia.rda desde el indice final Sonnet 2026-06-15.
 # Ejecutar desde la raiz del paquete.
 
-source_dir <- Sys.getenv(
-  "EMPLER_INDICE_IA_DIR",
-  unset = paste0(
-    "C:/Users/VALENTINALINARES/OneDrive - Universidad del Pacifico/",
-    "Desktop/CIUP/IA_Empleo_Peru/2026-06-15_VRI_Fiorella/",
-    "VRI 2026 - Fiorella/01_Indice_exposicion"
-  )
-)
-
-if (!dir.exists(source_dir)) {
-  source_dir <- paste0(
-    "C:/Users/VALENTINALINARES/OneDrive - Universidad del Pacífico/",
-    "Desktop/CIUP/IA_Empleo_Peru/2026-06-15_VRI_Fiorella/",
-    "VRI 2026 – Fiorella/01_Indice_exposicion"
-  )
+# La carpeta del paquete metodologico se indica con la variable de entorno
+# EMPLER_INDICE_IA_DIR (ver data-raw/indice_exposicion/README.md), por ejemplo:
+#   Sys.setenv(EMPLER_INDICE_IA_DIR = "ruta/a/01_Indice_exposicion")
+source_dir <- Sys.getenv("EMPLER_INDICE_IA_DIR")
+if (!nzchar(source_dir) || !dir.exists(source_dir)) {
+  stop("Indica la carpeta del indice con la variable de entorno EMPLER_INDICE_IA_DIR.",
+       call. = FALSE)
 }
 
 index_file <- file.path(source_dir, "02_exposure_index_por_ocupacion.xlsx")
