@@ -1,10 +1,14 @@
 Package: empleR
 Title: Tools for Analyzing Peru's National Employment Surveys (EPEN/EPE)
 Version: 0.1.0
-Authors@R:
+Authors@R: c(
     person("Valentina", "Linares Herrera", , "durgavalentinalinaresherrera@gmail.com",
            role = c("aut", "cre"),
-           comment = c(ORCID = ""))
+           comment = c(ORCID = "")),
+    person("Walter Omar", "Manky Bonilla",
+           role = "ctb",
+           comment = "Autor del indice de exposicion a IA incluido en el paquete")
+    )
 Description: Provides tools to download, read, and analyze microdata from Peru's
     national employment surveys: the Encuesta Permanente de Empleo Nacional
     (EPEN, 2022-present) and its predecessor the Encuesta Permanente de Empleo

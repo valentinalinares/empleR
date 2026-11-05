@@ -1,4 +1,5 @@
-# Construye data/indice_ia.rda desde el indice final Sonnet 2026-06-15.
+# Construye data/indice_ia.rda desde la corrida Sonnet de abril de 2026,
+# paquete metodologico versionado el 15 de junio de 2026.
 # Ejecutar desde la raiz del paquete.
 
 # La carpeta del paquete metodologico se indica con la variable de entorno

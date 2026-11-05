@@ -1,8 +1,9 @@
 # Fuente final del indice de exposicion IA
 
 El dataset interno `indice_ia` se reconstruye con
-`data-raw/02_build_indice_ia.R` a partir del paquete metodologico Sonnet
-2026-06-15. La fuente principal es `02_exposure_index_por_ocupacion.xlsx`.
+`data-raw/02_build_indice_ia.R` a partir de la corrida Sonnet de abril de 2026.
+El paquete metodologico fue versionado el 15 de junio de 2026. La fuente
+principal es `02_exposure_index_por_ocupacion.xlsx`.
 
 La carpeta del paquete metodologico (`01_Indice_exposicion`) no se incluye en
 el repositorio. Para reconstruir el indice, indica su ruta con la variable de
@@ -36,3 +37,28 @@ Decision metodologica:
 - La escala del indice es 0-1.
 - `median_exposure_score` y `std_score` se conservan para sensibilidad.
 - El tipo de impacto por tarea usa `A` aumento, `S` sustitucion y `N` nulo.
+
+## Autoria y relacion con el indice publicado
+
+El indice y la corrida Sonnet fueron desarrollados por **Walter Omar Manky
+Bonilla**, con la asistencia de investigacion de **Valentina Linares
+Herrera**. Es una actualizacion del enfoque basado en tareas del CNO-2015
+publicado en:
+
+> Manky, W. O. (2025). *Doble desafio tecnologico: analisis de la exposicion a
+> la automatizacion tradicional y a la inteligencia artificial generativa en
+> el empleo peruano, utilizando datos de la ENAHO 2024*. Instituto Nacional de
+> Estadistica e Informatica.
+
+Publicacion oficial:
+<https://www.gob.pe/institucion/inei/informes-publicaciones/7453406-doble-desafio-tecnologico-analisis-de-la-exposicion-a-la-automatizacion-tradicional-y-a-la-inteligencia-artificial-generativa-en-el-empleo-peruano-utilizando-datos-de-la-enaho-2024>.
+
+Los puntajes actuales no reproducen los valores de esa publicacion: fueron
+recalculados con Claude Sonnet 4.6, conservan un score continuo y aplican
+reglas revisadas para empates, ambiguedades y tipo de exposicion. La referencia
+interna de esta version es:
+
+> Manky Bonilla, W. O. (2026). *Indice de exposicion a inteligencia artificial
+> generativa para ocupaciones peruanas: corrida Claude Sonnet 4.6*. Con
+> asistencia de investigacion de V. Linares Herrera. Material de trabajo no
+> publicado.
