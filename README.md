@@ -46,6 +46,12 @@ tarea ocupacional; el score final por ocupacion es `mean_exposure_score` en
 escala 0-1. Los archivos fuente y validaciones estan documentados en
 `data-raw/02_build_indice_ia.R` y `data-raw/indice_exposicion/README.md`.
 
+La corrida actual fue realizada por Valentina Linares Herrera y Walter Omar
+Manky Bonilla con Claude Sonnet 4.6. Actualiza el enfoque publicado por Manky
+(2025), conserva un score continuo y usa reglas revisadas para empates,
+ambiguedades y tipo de exposicion; sus valores no son los puntajes publicados
+originalmente por el INEI.
+
 ## Desarrollo
 
 El paquete usa:

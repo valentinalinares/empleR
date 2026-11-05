@@ -36,3 +36,26 @@ Decision metodologica:
 - La escala del indice es 0-1.
 - `median_exposure_score` y `std_score` se conservan para sensibilidad.
 - El tipo de impacto por tarea usa `A` aumento, `S` sustitucion y `N` nulo.
+
+## Autoria y relacion con el indice publicado
+
+La corrida Sonnet 2026-06-15 fue realizada por **Valentina Linares Herrera y
+Walter Omar Manky Bonilla**. Es una actualizacion del enfoque basado en tareas
+del CNO-2015 publicado en:
+
+> Manky, W. O. (2025). *Doble desafio tecnologico: analisis de la exposicion a
+> la automatizacion tradicional y a la inteligencia artificial generativa en
+> el empleo peruano, utilizando datos de la ENAHO 2024*. Instituto Nacional de
+> Estadistica e Informatica.
+
+Publicacion oficial:
+<https://www.gob.pe/institucion/inei/informes-publicaciones/7453406-doble-desafio-tecnologico-analisis-de-la-exposicion-a-la-automatizacion-tradicional-y-a-la-inteligencia-artificial-generativa-en-el-empleo-peruano-utilizando-datos-de-la-enaho-2024>.
+
+Los puntajes actuales no reproducen los valores de esa publicacion: fueron
+recalculados con Claude Sonnet 4.6, conservan un score continuo y aplican
+reglas revisadas para empates, ambiguedades y tipo de exposicion. La referencia
+interna de esta version es:
+
+> Linares Herrera, V., y Manky Bonilla, W. O. (2026). *Indice de exposicion a
+> inteligencia artificial generativa para ocupaciones peruanas: corrida
+> Claude Sonnet 4.6*. Material de trabajo no publicado.

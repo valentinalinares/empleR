@@ -19,16 +19,23 @@ Un \code{data.frame} con columnas:
 }
 }
 \source{
-Linares Herrera, V. (2025). Indice de exposicion a IA generativa
-para ocupaciones peruanas. Claude Sonnet 4.6, Anthropic.
+Linares Herrera, V., y Manky Bonilla, W. O. (2026). Indice de
+exposicion a inteligencia artificial generativa para ocupaciones
+peruanas: corrida Claude Sonnet 4.6. Material de trabajo no publicado.
+
+Antecedente metodologico: Manky, W. O. (2025). Doble desafio tecnologico:
+analisis de la exposicion a la automatizacion tradicional y a la
+inteligencia artificial generativa en el empleo peruano, utilizando datos
+de la ENAHO 2024. Instituto Nacional de Estadistica e Informatica.
 }
 \usage{
 indice_ia
 }
 \description{
 Score de exposicion a IA generativa para cada ocupacion del CNO 2015,
-construido con Claude Sonnet 4.6 (Anthropic) mediante tres corridas
-independientes y consolidacion por consenso.
+construido por Valentina Linares Herrera y Walter Omar Manky Bonilla con
+Claude Sonnet 4.6 (Anthropic) mediante tres corridas independientes y
+consolidacion por consenso.
 }
 \details{
 El archivo fuente final recomendado es
