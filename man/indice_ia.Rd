@@ -19,9 +19,10 @@ Un \code{data.frame} con columnas:
 }
 }
 \source{
-Linares Herrera, V., y Manky Bonilla, W. O. (2026). Indice de
-exposicion a inteligencia artificial generativa para ocupaciones
-peruanas: corrida Claude Sonnet 4.6. Material de trabajo no publicado.
+Manky Bonilla, W. O. (2026). Indice de exposicion a inteligencia
+artificial generativa para ocupaciones peruanas: corrida Claude Sonnet
+4.6. Con asistencia de investigacion de V. Linares Herrera. Material de
+trabajo no publicado.
 
 Antecedente metodologico: Manky, W. O. (2025). Doble desafio tecnologico:
 analisis de la exposicion a la automatizacion tradicional y a la
@@ -33,16 +34,18 @@ indice_ia
 }
 \description{
 Score de exposicion a IA generativa para cada ocupacion del CNO 2015,
-construido por Valentina Linares Herrera y Walter Omar Manky Bonilla con
-Claude Sonnet 4.6 (Anthropic) mediante tres corridas independientes y
-consolidacion por consenso.
+desarrollado por Walter Omar Manky Bonilla, con la asistencia de
+investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6
+(Anthropic) mediante tres corridas independientes y consolidacion por
+consenso.
 }
 \details{
 El archivo fuente final recomendado es
 \verb{02_exposure_index_por_ocupacion.xlsx}. El score sintetico principal es
 \code{mean_exposure_score}; \code{median_exposure_score} y \code{std_score} se conservan
 para analisis de sensibilidad y heterogeneidad. Segun el memo metodologico
-del indice Sonnet 2026-06-15:
+de la corrida Sonnet de abril de 2026, cuyo paquete metodologico fue
+versionado el 15 de junio de 2026:
 \itemize{
 \item Correlacion con indice OIT: r = 0.85.
 \item Correlacion con indice anterior: r = 0.45.

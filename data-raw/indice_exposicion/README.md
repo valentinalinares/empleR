@@ -1,8 +1,9 @@
 # Fuente final del indice de exposicion IA
 
 El dataset interno `indice_ia` se reconstruye con
-`data-raw/02_build_indice_ia.R` a partir del paquete metodologico Sonnet
-2026-06-15. La fuente principal es `02_exposure_index_por_ocupacion.xlsx`.
+`data-raw/02_build_indice_ia.R` a partir de la corrida Sonnet de abril de 2026.
+El paquete metodologico fue versionado el 15 de junio de 2026. La fuente
+principal es `02_exposure_index_por_ocupacion.xlsx`.
 
 La carpeta del paquete metodologico (`01_Indice_exposicion`) no se incluye en
 el repositorio. Para reconstruir el indice, indica su ruta con la variable de
@@ -39,9 +40,10 @@ Decision metodologica:
 
 ## Autoria y relacion con el indice publicado
 
-La corrida Sonnet 2026-06-15 fue realizada por **Valentina Linares Herrera y
-Walter Omar Manky Bonilla**. Es una actualizacion del enfoque basado en tareas
-del CNO-2015 publicado en:
+El indice y la corrida Sonnet fueron desarrollados por **Walter Omar Manky
+Bonilla**, con la asistencia de investigacion de **Valentina Linares
+Herrera**. Es una actualizacion del enfoque basado en tareas del CNO-2015
+publicado en:
 
 > Manky, W. O. (2025). *Doble desafio tecnologico: analisis de la exposicion a
 > la automatizacion tradicional y a la inteligencia artificial generativa en
@@ -56,6 +58,7 @@ recalculados con Claude Sonnet 4.6, conservan un score continuo y aplican
 reglas revisadas para empates, ambiguedades y tipo de exposicion. La referencia
 interna de esta version es:
 
-> Linares Herrera, V., y Manky Bonilla, W. O. (2026). *Indice de exposicion a
-> inteligencia artificial generativa para ocupaciones peruanas: corrida
-> Claude Sonnet 4.6*. Material de trabajo no publicado.
+> Manky Bonilla, W. O. (2026). *Indice de exposicion a inteligencia artificial
+> generativa para ocupaciones peruanas: corrida Claude Sonnet 4.6*. Con
+> asistencia de investigacion de V. Linares Herrera. Material de trabajo no
+> publicado.

@@ -11,6 +11,7 @@ Provides tools to download, read, and analyze microdata from Peru's national emp
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://valentinalinares.github.io/empleR/}
   \item \url{https://github.com/valentinalinares/empleR}
   \item Report bugs at \url{https://github.com/valentinalinares/empleR/issues}
 }
@@ -22,6 +23,11 @@ Useful links:
 Authors:
 \itemize{
   \item Valentina Linares Herrera \email{durgavalentinalinaresherrera@gmail.com}
+}
+
+Other contributors:
+\itemize{
+  \item Walter Omar Manky Bonilla (Autor del indice de exposicion a IA incluido en el paquete) [contributor]
 }
 
 }

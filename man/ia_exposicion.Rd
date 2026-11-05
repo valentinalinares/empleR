@@ -46,10 +46,11 @@ Las ultimas cuatro filas solo se agregan con \code{incluir_tipo = TRUE}.
 }
 \description{
 Agrega a los microdatos el indice de exposicion a IA generativa por
-ocupacion, construido por Valentina Linares Herrera y Walter Omar Manky
-Bonilla con Claude Sonnet 4.6 (Anthropic). El indice mide el grado en que
-las tareas de cada ocupacion pueden ser asistidas o sustituidas por IA
-generativa, usando un score continuo de 0 a 1.
+ocupacion, desarrollado por Walter Omar Manky Bonilla, con la asistencia de
+investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6
+(Anthropic). El indice mide el grado en que las tareas de cada ocupacion
+pueden ser asistidas o sustituidas por IA generativa, usando un score
+continuo de 0 a 1.
 }
 \details{
 El indice fue construido evaluando las tareas de cada ocupacion del
