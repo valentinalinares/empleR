@@ -4,6 +4,9 @@
 
 - **Valentina Linares Herrera**. Author, maintainer.
 
+- **Walter Omar Manky Bonilla**. Contributor.  
+  Autor del indice de exposicion a IA incluido en el paquete
+
 ## Citation
 
 Source:

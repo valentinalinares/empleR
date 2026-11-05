@@ -54,11 +54,19 @@ indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 
 ## Indice de exposicion IA
 
-El dataset `indice_ia` usa el indice Sonnet 2026-06-15. La unidad base
-es la tarea ocupacional; el score final por ocupacion es
+El dataset `indice_ia` usa la corrida Sonnet de abril de 2026, cuyo
+paquete metodologico fue versionado el 15 de junio de 2026. La unidad
+base es la tarea ocupacional; el score final por ocupacion es
 `mean_exposure_score` en escala 0-1. Los archivos fuente y validaciones
 estan documentados en `data-raw/02_build_indice_ia.R` y
 `data-raw/indice_exposicion/README.md`.
+
+El indice y la corrida actual fueron desarrollados por Walter Omar Manky
+Bonilla, con la asistencia de investigacion de Valentina Linares
+Herrera, usando Claude Sonnet 4.6. La corrida actualiza el enfoque
+publicado por Manky (2025), conserva un score continuo y usa reglas
+revisadas para empates, ambiguedades y tipo de exposicion; sus valores
+no son los puntajes publicados originalmente por el INEI.
 
 ## Desarrollo
 

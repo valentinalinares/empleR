@@ -76,11 +76,27 @@ muestra completa de la PEA.
 
 ## Diseno muestral provisional
 
-El estrato que se usa es `ESTRATO` (`strata_code`), tal como lo publica
-el INEI. Falta confirmar con la especificacion oficial del diseno si ese
-estrato se combina con la region u otros dominios, y como tratar las
-filas sin factor de expansion (hoy se excluyen con aviso). Los errores
-estandar son, por tanto, provisionales.
+Las fichas EPEN describen un diseno probabilistico, estratificado, de
+areas y bietapico, independiente en cada departamento. La UPM
+implementada combina muestra, region y conglomerado porque los numeros
+de conglomerado se reutilizan entre departamentos. El estrato que se usa
+es `ESTRATO` (`strata_code`), tal como lo publica el INEI.
+
+La documentacion publica localizada no especifica la combinacion
+operativa completa del estrato de varianza, el tratamiento de las
+visitas panel, las UPM de inclusion forzosa ni las etapas finales de
+calibracion de `FAC300_ANUAL`. Tampoco explica el tratamiento oficial de
+filas sin factor, que esta funcion excluye con aviso. Los errores
+estandar son, por tanto, aproximaciones reproducibles basadas en el
+diseno publico y no deben presentarse como errores oficiales del INEI.
+
+## References
+
+INEI. Ficha tecnica EPEN 2024.
+<https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Ficha_Tecnica.pdf>
+
+INEI. Diccionario EPEN 2024.
+<https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Diccionario.pdf>
 
 ## See also
 

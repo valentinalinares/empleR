@@ -189,9 +189,20 @@ resto:</p>
 <div class="section level2">
 <h2 id="indice-de-exposicion-a-inteligencia-artificial">Indice de exposicion a inteligencia artificial<a class="anchor" aria-label="anchor" href="#indice-de-exposicion-a-inteligencia-artificial"></a>
 </h2>
-<p><a href="https://valentinalinares.github.io/empleR/">empleR</a> incluye un indice de exposicion a IA generativa
-construido con Claude Sonnet 4.6 (Anthropic) para las ocupaciones del
-CNO 2015.</p>
+<p><a href="https://valentinalinares.github.io/empleR/">empleR</a> incluye una nueva corrida del indice de
+exposicion a IA generativa, desarrollada por Walter Omar Manky Bonilla,
+con la asistencia de investigacion de Valentina Linares Herrera, usando
+Claude Sonnet 4.6 (Anthropic) para las ocupaciones del CNO 2015. La
+corrida se realizo en abril de 2026 y su paquete metodologico fue
+versionado el 15 de junio de 2026. Actualiza el enfoque publicado por
+Manky (2025), conserva un score continuo y aplica reglas revisadas para
+empates, ambiguedades y tipo de exposicion; por ello sus valores no son
+los puntajes publicados originalmente por el INEI.</p>
+<p>Referencia del antecedente: Manky, W. O. (2025). <em>Doble desafio
+tecnologico: analisis de la exposicion a la automatizacion tradicional y
+a la inteligencia artificial generativa en el empleo peruano, utilizando
+datos de la ENAHO 2024</em>. Instituto Nacional de Estadistica e
+Informatica.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Agregar score de IA a los microdatos</span></span>
 <span><span class="va">epen_ia</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span> <span class="op">|&gt;</span></span>

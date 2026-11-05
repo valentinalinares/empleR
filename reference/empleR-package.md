@@ -13,6 +13,8 @@ index.
 
 Useful links:
 
+- <https://valentinalinares.github.io/empleR/>
+
 - <https://github.com/valentinalinares/empleR>
 
 - Report bugs at <https://github.com/valentinalinares/empleR/issues>
@@ -25,3 +27,8 @@ Useful links:
 Authors:
 
 - Valentina Linares Herrera <durgavalentinalinaresherrera@gmail.com>
+
+Other contributors:
+
+- Walter Omar Manky Bonilla (Autor del indice de exposicion a IA
+  incluido en el paquete) \[contributor\]

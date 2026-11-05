@@ -1,9 +1,11 @@
 # Cruzar ocupaciones con el indice de exposicion a inteligencia artificial
 
 Agrega a los microdatos el indice de exposicion a IA generativa por
-ocupacion, construido con Claude Sonnet 4.6 (Anthropic). El indice mide
-el grado en que las tareas de cada ocupacion pueden ser asistidas o
-sustituidas por IA generativa, usando un score continuo de 0 a 1.
+ocupacion, desarrollado por Walter Omar Manky Bonilla, con la asistencia
+de investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6
+(Anthropic). El indice mide el grado en que las tareas de cada ocupacion
+pueden ser asistidas o sustituidas por IA generativa, usando un score
+continuo de 0 a 1.
 
 ## Usage
 
@@ -96,6 +98,11 @@ por consenso. Cada tarea recibe:
 
 El indice final por ocupacion es la media de los scores de sus tareas.
 Correlacion con el indice de la OIT: r = 0.85.
+
+Esta corrida actualiza el enfoque publicado por Manky (2025), pero sus
+puntajes no son los publicados originalmente por el INEI: conserva
+scores continuos y aplica reglas revisadas para empates, ambiguedades y
+tipo de exposicion.
 
 ## Bases EPE (CO-95)
 

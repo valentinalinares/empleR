@@ -139,9 +139,22 @@ cobertura(dplyr::bind_rows(epe, epen))
 
 ## Indice de exposicion a inteligencia artificial
 
-[empleR](https://valentinalinares.github.io/empleR/) incluye un indice
-de exposicion a IA generativa construido con Claude Sonnet 4.6
-(Anthropic) para las ocupaciones del CNO 2015.
+[empleR](https://valentinalinares.github.io/empleR/) incluye una nueva
+corrida del indice de exposicion a IA generativa, desarrollada por
+Walter Omar Manky Bonilla, con la asistencia de investigacion de
+Valentina Linares Herrera, usando Claude Sonnet 4.6 (Anthropic) para las
+ocupaciones del CNO 2015. La corrida se realizo en abril de 2026 y su
+paquete metodologico fue versionado el 15 de junio de 2026. Actualiza el
+enfoque publicado por Manky (2025), conserva un score continuo y aplica
+reglas revisadas para empates, ambiguedades y tipo de exposicion; por
+ello sus valores no son los puntajes publicados originalmente por el
+INEI.
+
+Referencia del antecedente: Manky, W. O. (2025). *Doble desafio
+tecnologico: analisis de la exposicion a la automatizacion tradicional y
+a la inteligencia artificial generativa en el empleo peruano, utilizando
+datos de la ENAHO 2024*. Instituto Nacional de Estadistica e
+Informatica.
 
 ``` r
 
