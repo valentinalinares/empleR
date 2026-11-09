@@ -1,0 +1,48 @@
+.manual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.manual-card {
+  border: 1px solid #d9e5ec;
+  border-radius: 0.75rem;
+  color: #24323d;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.1rem 1.2rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.manual-card:hover {
+  border-color: #2c7fb8;
+  box-shadow: 0 0.35rem 1rem rgb(44 127 184 / 12%);
+  color: #1d5f8b;
+  transform: translateY(-2px);
+}
+
+.manual-card code {
+  font-size: 0.88rem;
+}
+
+.manual-step {
+  align-items: center;
+  background: #e6f2f8;
+  border-radius: 999px;
+  color: #1d5f8b;
+  display: inline-flex;
+  font-weight: 700;
+  height: 1.8rem;
+  justify-content: center;
+  width: 1.8rem;
+}
+
+@media (max-width: 576px) {
+  .manual-grid {
+    grid-template-columns: 1fr;
+  }
+}
