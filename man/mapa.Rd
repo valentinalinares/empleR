@@ -41,8 +41,9 @@ Un objeto \code{leaflet} (si \code{tipo = "leaflet"}) o \code{ggplot}
 }
 \description{
 Genera un mapa interactivo o estatico con indicadores del mercado laboral
-agregados por departamento, provincia o distrito. Usa los shapes oficiales
-del INEI via el paquete \pkg{geoperu}.
+agregados por departamento, provincia o distrito. El recorrido probado y
+recomendado en esta version es el departamental; los otros niveles requieren
+que el usuario revise cuidadosamente las llaves geograficas.
 }
 \examples{
 \dontrun{

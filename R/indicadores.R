@@ -2,7 +2,7 @@
 #'
 #' Calcula indicadores laborales incorporando el diseno muestral complejo de
 #' la EPEN mediante el paquete \pkg{survey}. Los datos deben ser microdatos
-#' procesados (output de [descargar()]) con al menos ocupados en la muestra.
+#' procesados o microdatos crudos de [descargar()] con personas ocupadas.
 #'
 #' Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
 #' regional, usa [resumen_nacional()], que devuelve los indicadores
@@ -24,7 +24,7 @@
 #'   tres: los numeros de conglomerado se repiten entre departamentos y
 #'   muestras, asi que el conglomerado solo no identifica una UPM.
 #' @param var_peso Nombre del factor de expansion. Detecta automaticamente
-#'   `weight` (procesados) o `FACTOR07` (datos crudos INEI).
+#'   `weight` (procesados) o `FAC300_ANUAL` (datos crudos EPEN).
 #'
 #' @return Un `data.frame` con el indicador calculado y error estandar,
 #'   agrupado segun `por`.
@@ -94,7 +94,10 @@ indicadores <- function(data,
   var_strata <- var_strata %||% .detectar_var(data, c("strata_code", "ESTRATO", "estrato"))
   psu_detectada <- is.null(var_psu)
   var_psu    <- var_psu    %||% .detectar_var(data, c("cluster_id", "CONGLOMERADO", "CONGLOME", "conglome"))
-  var_peso   <- var_peso   %||% .detectar_var(data, c("weight",      "FACTOR07", "FACTOR", "fexp"))
+  var_peso   <- var_peso   %||% .detectar_var(
+    data,
+    c("weight", "FAC300_ANUAL", "FACTOR07", "FACTOR", "fexp")
+  )
 
   if (is.null(var_peso)) {
     cli::cli_abort(c(
@@ -162,9 +165,18 @@ indicadores <- function(data,
   if (!var_objetivo %in% names(data)) {
     # Intentar equivalente en datos crudos INEI
     var_objetivo_raw <- switch(indicador,
-      ingreso_promedio = .detectar_var(data, c("P529A", "INGRESO", "ING_TOTAL")),
-      ingreso_mediano  = .detectar_var(data, c("P529A", "INGRESO", "ING_TOTAL")),
-      horas_promedio   = .detectar_var(data, c("P513T", "HORAS", "HRS_TOTAL"))
+      ingreso_promedio = .detectar_var(
+        data,
+        c("INGTOTP", "P529A", "INGRESO", "ING_TOTAL")
+      ),
+      ingreso_mediano = .detectar_var(
+        data,
+        c("INGTOTP", "P529A", "INGRESO", "ING_TOTAL")
+      ),
+      horas_promedio = .detectar_var(
+        data,
+        c("whoraT", "P513T", "HORAS", "HRS_TOTAL")
+      )
     )
     if (is.null(var_objetivo_raw)) {
       cli::cli_abort("Variable para '{indicador}' no encontrada en los datos.")

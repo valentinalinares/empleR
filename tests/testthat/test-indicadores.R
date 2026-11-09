@@ -46,3 +46,25 @@ test_that("la muestra trae identificadores del muestreo completos", {
                "household_id", "person_id")]
   expect_false(anyDuplicated(clave) > 0)
 })
+
+test_that("indicadores() reconoce nombres crudos del modulo 76", {
+  crudos <- data.frame(
+    MUESTRA = rep(1:2, each = 4),
+    CCDD = rep(c("15", "24"), each = 4),
+    CONGLOMERADO = rep(c("0001", "0002"), 4),
+    ESTRATO = rep(c(1, 1, 2, 2), 2),
+    FAC300_ANUAL = rep(100, 8),
+    INGTOTP = seq(1000, 1700, by = 100),
+    whoraT = rep(c(40, 48), 4)
+  )
+
+  ingreso <- suppressMessages(
+    indicadores(crudos, "ingreso_promedio")
+  )
+  horas <- suppressMessages(
+    indicadores(crudos, "horas_promedio")
+  )
+
+  expect_equal(ingreso$estimado, mean(crudos$INGTOTP))
+  expect_equal(horas$estimado, mean(crudos$whoraT))
+})

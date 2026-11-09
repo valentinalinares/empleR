@@ -1,8 +1,9 @@
 #' Aplicar etiquetas de valor a variables de la EPEN/EPE
 #'
 #' Convierte variables codificadas numericamente a factores con etiquetas
-#' legibles, siguiendo el diccionario oficial del INEI. Funciona tanto con
-#' datos crudos descargados con [descargar()] como con datos ya procesados.
+#' legibles, siguiendo los diccionarios documentados por el INEI. En la
+#' version actual reconoce los nombres comunes de las bases procesadas de
+#' `{empleR}`; no cambia automaticamente los nombres originales del modulo 76.
 #'
 #' @param data `data.frame` con microdatos de EPEN/EPE.
 #' @param vars Vector de nombres de variables a etiquetar. Si es `NULL`
@@ -11,6 +12,10 @@
 #'   etiquetadas como `factor`. Si `FALSE`, devuelve como `character`.
 #'
 #' @return El mismo `data.frame` con las variables seleccionadas convertidas.
+#'   Los codigos no presentes en el diccionario se devuelven como `NA`.
+#'
+#' @references INEI. Diccionario de variables EPEN anual 2023.
+#'   <https://www.inei.gob.pe/media/DATOS_ABIERTOS/EPEN_DEP/DICCIONARIO/2023/Anual-Ener-Dic/Diccionario.pdf>
 #'
 #' @export
 #'
@@ -72,7 +77,7 @@ etiquetar <- function(data, vars = NULL, as_factor = TRUE) {
     "4" = "Inactivo"
   ),
 
-  # --- Nivel educativo (education_code / P301A) ----------------------------
+  # --- Nivel educativo (education_code / C366 de la EPEN) ------------------
   education_code = c(
     "1"  = "Sin nivel",
     "2"  = "Inicial",
@@ -80,12 +85,12 @@ etiquetar <- function(data, vars = NULL, as_factor = TRUE) {
     "4"  = "Primaria completa",
     "5"  = "Secundaria incompleta",
     "6"  = "Secundaria completa",
-    "7"  = "Sup. no universitaria incompleta",
-    "8"  = "Sup. no universitaria completa",
-    "9"  = "Sup. universitaria incompleta",
-    "10" = "Sup. universitaria completa",
-    "11" = "Postgrado universitario",
-    "12" = "No especificado"
+    "7"  = "Basica especial",
+    "8"  = "Sup. no universitaria incompleta",
+    "9"  = "Sup. no universitaria completa",
+    "10" = "Sup. universitaria incompleta",
+    "11" = "Sup. universitaria completa",
+    "12" = "Maestria / Doctorado"
   ),
 
   # --- Sector institucional -----------------------------------------------

@@ -17,11 +17,13 @@ etiquetadas como \code{factor}. Si \code{FALSE}, devuelve como \code{character}.
 }
 \value{
 El mismo \code{data.frame} con las variables seleccionadas convertidas.
+Los codigos no presentes en el diccionario se devuelven como \code{NA}.
 }
 \description{
 Convierte variables codificadas numericamente a factores con etiquetas
-legibles, siguiendo el diccionario oficial del INEI. Funciona tanto con
-datos crudos descargados con \code{\link[=descargar]{descargar()}} como con datos ya procesados.
+legibles, siguiendo los diccionarios documentados por el INEI. En la
+version actual reconoce los nombres comunes de las bases procesadas de
+\code{{empleR}}; no cambia automaticamente los nombres originales del modulo 76.
 }
 \examples{
 # Etiquetar todas las variables con diccionario en la muestra
@@ -35,4 +37,8 @@ muestra_etiquetada <- etiquetar(
   muestra_epen_2024,
   vars = c("sex_code", "education_code", "institutional_sector_code")
 )
+}
+\references{
+INEI. Diccionario de variables EPEN anual 2023.
+\url{https://www.inei.gob.pe/media/DATOS_ABIERTOS/EPEN_DEP/DICCIONARIO/2023/Anual-Ener-Dic/Diccionario.pdf}
 }

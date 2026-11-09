@@ -1,15 +1,15 @@
-#' Construir panel de viviendas entre trimestres moviles de la EPEN
+#' Explorar viviendas repetidas entre periodos de la EPEN
 #'
 #' La EPEN Lima Metropolitana tiene un diseno de panel rotante a nivel de
-#' vivienda: cada vivienda es encuestada durante varios trimestres consecutivos
-#' antes de salir del panel. Esta funcion identifica y enlaza las mismas
-#' viviendas entre dos o mas trimestres, permitiendo analisis de transiciones
-#' laborales.
+#' vivienda. Esta funcion exploratoria enlaza registros que comparten una clave
+#' de vivienda u hogar entre dos o mas periodos. No identifica por si sola a la
+#' misma persona ni valida transiciones laborales individuales.
 #'
 #' @details
-#' La unidad de seguimiento en la EPEN es la **vivienda** (no el individuo),
-#' identificada por la combinacion `cluster_id + dwelling_id + household_id`.
-#' El `person_id` no siempre esta disponible en los datos procesados.
+#' **Estado experimental.** La clave predeterminada identifica hogares dentro de
+#' una vivienda, pero debe validarse contra las variables originales de muestra,
+#' region y panel de cada entrega. El `person_id` no siempre esta disponible y
+#' un mismo numero de orden no garantiza que sea la misma persona en otra visita.
 #'
 #' El panel es aplicable principalmente a la variante `lima_movil`, donde
 #' los trimestres se solapan (Ene-Feb-Mar, Feb-Mar-Abr, etc.) permitiendo
@@ -27,8 +27,9 @@
 #' @param labels_trimestre Vector de etiquetas para identificar cada trimestre
 #'   en la columna `trimestre`. Si es `NULL`, usa "T1", "T2", etc.
 #'
-#' @return Un `data.frame` en formato long (una fila por vivienda-trimestre)
-#'   con columna `trimestre` indicando el periodo.
+#' @return Un `data.frame` en formato long con las filas originales de cada
+#'   periodo y una columna `trimestre`. Puede haber varias personas por
+#'   vivienda y periodo.
 #'   Atributo `tasa_apareamiento` con el porcentaje de viviendas apareadas.
 #'
 #' @export
@@ -49,11 +50,8 @@
 #' # Ver tasa de apareamiento
 #' attr(panel_q1, "tasa_apareamiento")
 #'
-#' # Analizar transiciones: personas que cambiaron de estado laboral
-#' library(dplyr)
-#' panel_q1 |>
-#'   select(cluster_id, dwelling_id, household_id, trimestre, labor_status_code) |>
-#'   tidyr::pivot_wider(names_from = trimestre, values_from = labor_status_code)
+#' # El resultado permite auditar hogares repetidos. No debe interpretarse
+#' # como un panel de personas sin una validacion adicional de identificadores.
 #' }
 panel <- function(data_lista,
                   vars_id = c("cluster_id", "dwelling_id", "household_id"),
