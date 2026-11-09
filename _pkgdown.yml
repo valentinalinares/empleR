@@ -34,8 +34,11 @@ reference:
       - cobertura
   - title: Visualizacion
     contents:
-      - panel
       - mapa
+  - title: Experimental
+    desc: Funciones conservadas para evaluacion; no forman parte del flujo estable.
+    contents:
+      - panel
   - title: Datos incluidos
     contents:
       - muestra_epen_2024
@@ -51,7 +54,12 @@ reference:
       - shapes_provincias
 
 articles:
-  - title: Manual de uso
-    navbar: Manual de uso
+  - title: Empezar
+    navbar: Empezar
     contents:
       - empleR
+  - title: Guia del paquete
+    navbar: Guias
+    contents:
+      - funciones
+      - contexto-encuestas
