@@ -1,8 +1,10 @@
 #' Ver el catalogo de fuentes disponibles
 #'
-#' Muestra un inventario de todas las encuestas, anos y variantes disponibles
-#' para descargar con [descargar()]. Incluye EPEN (departamentos y Lima movil)
-#' y ENAHO anual, con el numero de filas y codigos ocupacionales por periodo.
+#' Muestra un inventario de las encuestas, anos y variantes procesadas por el
+#' proyecto. Incluye EPEN (departamentos y Lima movil) y ENAHO anual, con el
+#' numero de filas y codigos ocupacionales por periodo. En esta version,
+#' [descargar()] solo descarga EPEN; una entrada en el catalogo no implica que
+#' todas las fuentes tengan descarga automatica desde R.
 #'
 #' @param fuente Filtrar por fuente: `"EPEN"`, `"ENAHO"` o `"todas"` (por defecto).
 #' @param year Filtrar por ano. Si es `NULL` (por defecto), devuelve todos los anos.

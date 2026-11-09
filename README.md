@@ -74,7 +74,7 @@ es una estimación oficial del INEI.
 
 | Función | Para qué sirve |
 |---|---|
-| `catalogo()` | Consulta fuentes, años, variantes y periodos disponibles. |
+| `catalogo()` | Consulta fuentes, años, variantes y periodos procesados por el proyecto. |
 | `descargar()` | Descarga el módulo de empleo e ingresos de la EPEN y permite guardarlo en caché. |
 | `etiquetar()` | Convierte códigos de bases procesadas en categorías legibles. |
 | `cno()` | Describe CNO 2015 y homologa CO-95, conservando candidatos y estados de correspondencia. |
@@ -110,7 +110,8 @@ publicado por el INEI en 2025; los nuevos puntajes no deben atribuirse al INEI.
 ## Alcance actual
 
 - `descargar()` trabaja con entregas EPEN; una base EPE histórica debe ser
-  aportada por la persona usuaria.
+  aportada por la persona usuaria. Las entradas ENAHO de `catalogo()` describen
+  el inventario del proyecto, pero aún no tienen descarga automática aquí.
 - `etiquetar()` reconoce los nombres comunes de las bases procesadas. No
   renombra automáticamente todas las variables crudas del módulo 76.
 - `indicadores()` produce estimaciones ponderadas. La reconstrucción del diseño

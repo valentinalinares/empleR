@@ -28,8 +28,9 @@ reproducibles.
 
 ### `catalogo()`
 
-Permite saber qué fuente, variante, año y periodo reconoce el paquete antes de
-descargar archivos.
+Permite saber qué fuente, variante, año y periodo ha procesado el proyecto. La
+descarga automática de esta versión se limita a EPEN; las entradas ENAHO son
+parte del inventario y no implican que `descargar()` pueda obtenerlas.
 
 ```{r}
 catalogo(fuente = "EPEN", variante = "departamentos_anual")
