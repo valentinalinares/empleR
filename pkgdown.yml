@@ -5,7 +5,11 @@ articles:
   contexto-encuestas: contexto-encuestas.html
   empleR: empleR.html
   funciones: funciones.html
-last_built: 2026-11-09T15:33Z
+  manual-datos: manual-datos.html
+  manual-indicadores-mapas: manual-indicadores-mapas.html
+  manual-ocupaciones-ia: manual-ocupaciones-ia.html
+  manual-panel: manual-panel.html
+last_built: 2026-11-09T19:54Z
 urls:
   reference: https://valentinalinares.github.io/empleR/reference
   article: https://valentinalinares.github.io/empleR/articles

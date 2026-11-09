@@ -111,7 +111,8 @@ estable.
 [`enaho`](https://cran.r-project.org/package=enaho) descarga y combina
 la ENAHO y otras encuestas del INEI. En Argentina,
 [`eph`](https://packages.ropensci.org/eph) es un antecedente valioso
-para trabajar con una encuesta laboral permanente.
+para trabajar con una encuesta continua de hogares de propósitos
+múltiples, con un fuerte componente de mercado laboral.
 
 Lo propio de `empleR` es su foco en la EPE y la EPEN, y en el paso del
 CO-95 al CNO 2015. Mantiene visibles las correspondencias ambiguas y
@@ -213,9 +214,20 @@ estable.
 - [Introduccion a
   empleR](https://valentinalinares.github.io/empleR/articles/empleR.md):
 
-### Guia del paquete
+### Manual de empleR
 
-- [Funciones, ejemplos y
-  resultados](https://valentinalinares.github.io/empleR/articles/funciones.md):
+- [Manual de
+  empleR](https://valentinalinares.github.io/empleR/articles/funciones.md):
+- [Encontrar, descargar y etiquetar
+  datos](https://valentinalinares.github.io/empleR/articles/manual-datos.md):
+- [Ocupaciones, homologación e índice de
+  IA](https://valentinalinares.github.io/empleR/articles/manual-ocupaciones-ia.md):
+- [Indicadores ponderados y
+  mapas](https://valentinalinares.github.io/empleR/articles/manual-indicadores-mapas.md):
+- [Explorar hogares repetidos con
+  panel()](https://valentinalinares.github.io/empleR/articles/manual-panel.md):
+
+### Contexto
+
 - [De la EPE a la EPEN: qué cambió y por qué
   importa](https://valentinalinares.github.io/empleR/articles/contexto-encuestas.md):

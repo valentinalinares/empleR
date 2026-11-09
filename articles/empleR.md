@@ -22,9 +22,9 @@ estas series: la **ruptura de clasificadores ocupacionales** entre EPE
 
 Para una explicacion historica y metodologica, consulta [De la EPE a la
 EPEN](https://valentinalinares.github.io/empleR/articles/contexto-encuestas.md).
-Para ver entradas, resultados y limites de cada funcion, consulta
-[Funciones, ejemplos y
-resultados](https://valentinalinares.github.io/empleR/articles/funciones.md).
+Para ver entradas, resultados y limites de cada funcion, consulta el
+[Manual de
+empleR](https://valentinalinares.github.io/empleR/articles/funciones.md).
 
 ## Ver que datos estan disponibles
 
