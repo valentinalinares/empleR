@@ -1,10 +1,10 @@
 # Aplicar etiquetas de valor a variables de la EPEN/EPE
 
 Convierte variables codificadas numericamente a factores con etiquetas
-legibles, siguiendo el diccionario oficial del INEI. Funciona tanto con
-datos crudos descargados con
-[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
-como con datos ya procesados.
+legibles, siguiendo los diccionarios documentados por el INEI. En la
+version actual reconoce los nombres comunes de las bases procesadas de
+`{empleR}`; no cambia automaticamente los nombres originales del modulo
+76.
 
 ## Usage
 
@@ -30,7 +30,13 @@ etiquetar(data, vars = NULL, as_factor = TRUE)
 
 ## Value
 
-El mismo `data.frame` con las variables seleccionadas convertidas.
+El mismo `data.frame` con las variables seleccionadas convertidas. Los
+codigos no presentes en el diccionario se devuelven como `NA`.
+
+## References
+
+INEI. Diccionario de variables EPEN anual 2023.
+<https://www.inei.gob.pe/media/DATOS_ABIERTOS/EPEN_DEP/DICCIONARIO/2023/Anual-Ener-Dic/Diccionario.pdf>
 
 ## Examples
 

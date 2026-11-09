@@ -54,6 +54,14 @@
   detecta si el CSV usa `;` o `,`.
 - Ejemplos y vineta corregidos; alias de variables reales EPE y EPEN
   para la validacion de bases (`data-raw/validar_bases_reales.R`).
+- Nuevo sitio de documentacion con guias de funciones y de la transicion
+  EPE-EPEN, ejemplos ejecutados e imagenes reproducibles en el README.
+- [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
+  usa la codificacion educativa de `C366` documentada para la EPEN: 7 es
+  basica especial y 12 es maestria/doctorado.
+- [`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
+  se documenta como experimental y no se interpreta como un panel de
+  personas sin validacion adicional.
 
 ## empleR 0.0.0.9000
 

@@ -20,7 +20,11 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Manual de uso</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Empezar</h6></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
+    <li><a class="dropdown-item" href="../articles/funciones.html">Funciones, ejemplos y resultados</a></li>
+    <li><a class="dropdown-item" href="../articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -74,6 +78,11 @@
 <ul><li>
 <code><a href="../reference/descargar.html">descargar()</a></code> detecta si el CSV usa <code>;</code> o <code>,</code>.</li>
 <li>Ejemplos y vineta corregidos; alias de variables reales EPE y EPEN para la validacion de bases (<code>data-raw/validar_bases_reales.R</code>).</li>
+<li>Nuevo sitio de documentacion con guias de funciones y de la transicion EPE-EPEN, ejemplos ejecutados e imagenes reproducibles en el README.</li>
+<li>
+<code><a href="../reference/etiquetar.html">etiquetar()</a></code> usa la codificacion educativa de <code>C366</code> documentada para la EPEN: 7 es basica especial y 12 es maestria/doctorado.</li>
+<li>
+<code><a href="../reference/panel.html">panel()</a></code> se documenta como experimental y no se interpreta como un panel de personas sin validacion adicional.</li>
 </ul></div>
 </div>
     <div class="section level2">

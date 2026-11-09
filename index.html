@@ -38,7 +38,11 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Manual de uso</h6></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Empezar</h6></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
+    <li><a class="dropdown-item" href="articles/funciones.html">Funciones, ejemplos y resultados</a></li>
+    <li><a class="dropdown-item" href="articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
   </ul>
 </li>
       </ul>
@@ -57,16 +61,35 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="empler">empleR<a class="anchor" aria-label="anchor" href="#empler"></a>
 </h1></div>
-<p><code>empleR</code> reune herramientas para trabajar con encuestas laborales peruanas, ocupaciones y exposicion tecnologica. El paquete permite descargar y leer microdatos EPEN/EPE, armonizar codigos ocupacionales, calcular indicadores laborales y cruzar ocupaciones con un indice de exposicion a inteligencia artificial generativa.</p>
+<p><a href="https://github.com/valentinalinares/empleR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/valentinalinares/empleR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/valentinalinares/empleR/actions/workflows/lint.yaml" class="external-link"><img src="https://github.com/valentinalinares/empleR/actions/workflows/lint.yaml/badge.svg" alt="lint"></a> <a href="https://valentinalinares.github.io/empleR/"><img src="https://img.shields.io/badge/documentacion-pkgdown-2c7fb8" alt="sitio web"></a></p>
+<p><code>empleR</code> facilita el trabajo reproducible con las encuestas de empleo del Perú. Está pensado para estudiantes de pregrado y posgrado, docentes, investigadores y analistas que usan R y necesitan pasar de los archivos del INEI a ocupaciones comparables e indicadores documentados.</p>
+<p>La primera versión se concentra en la <strong>EPE</strong> de Lima Metropolitana y la <strong>EPEN</strong> nacional. No intenta reemplazar la documentación del INEI ni ofrecer una infraestructura genérica para todos los países.</p>
 <div class="section level2">
-<h2 id="instalacion">Instalacion<a class="anchor" aria-label="anchor" href="#instalacion"></a>
+<h2 id="qué-problema-resuelve">¿Qué problema resuelve?<a class="anchor" aria-label="anchor" href="#qu%C3%A9-problema-resuelve"></a>
+</h2>
+<p>En 2022 no solo cambió el nombre de la encuesta. La EPE estudiaba Lima Metropolitana y empleaba el clasificador ocupacional CO-95; la EPEN amplió la cobertura nacional y usa el CNO 2015. Por eso una serie no se vuelve comparable simplemente uniendo años.</p>
+<p><code>empleR</code> documenta esa ruptura y permite:</p>
+<ul>
+<li>consultar y descargar entregas de la EPEN;</li>
+<li>aplicar etiquetas legibles a variables procesadas;</li>
+<li>describir ocupaciones del CNO 2015;</li>
+<li>homologar CO-95 a CNO 2015 sin asignar a la fuerza los casos ambiguos;</li>
+<li>incorporar el índice ocupacional de exposición a IA y auditar su cobertura;</li>
+<li>obtener resúmenes e indicadores ponderados;</li>
+<li>representar resultados departamentales en mapas estáticos o interactivos.</li>
+</ul>
+<p>La <a href="https://valentinalinares.github.io/empleR/">documentación completa</a> incluye ejemplos, resultados y una explicación de los cambios entre EPE y EPEN.</p>
+</div>
+<div class="section level2">
+<h2 id="instalación">Instalación<a class="anchor" aria-label="anchor" href="#instalaci%C3%B3n"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"valentinalinares/empleR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="flujo-basico">Flujo basico<a class="anchor" aria-label="anchor" href="#flujo-basico"></a>
+<h2 id="un-ejemplo-completo">Un ejemplo completo<a class="anchor" aria-label="anchor" href="#un-ejemplo-completo"></a>
 </h2>
+<p>El paquete incluye una muestra de 2.000 personas ocupadas de la EPEN 2024 para que los ejemplos puedan ejecutarse sin descargar archivos grandes.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://valentinalinares.github.io/empleR/">empleR</a></span><span class="op">)</span></span>
 <span></span>
@@ -76,55 +99,100 @@
 <span></span>
 <span><span class="co"># Ingreso promedio por tipo de impacto de la IA</span></span>
 <span><span class="fu"><a href="reference/indicadores.html">indicadores</a></span><span class="op">(</span><span class="va">datos</span>, indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>, por <span class="op">=</span> <span class="st">"ia_tipo"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="qué-puntajes-contiene-el-índice">¿Qué puntajes contiene el índice?<a class="anchor" aria-label="anchor" href="#qu%C3%A9-puntajes-contiene-el-%C3%ADndice"></a>
+</h3>
+<div class="float">
+<img src="reference/figures/README-ia-distribucion.png" alt="Distribución del puntaje medio de exposición a IA entre ocupaciones del CNO 2015"><div class="figcaption">Distribución del puntaje medio de exposición a IA entre ocupaciones del CNO 2015</div>
+</div>
+<p>El puntaje es continuo y va de 0 a 1. Describe exposición potencial de las tareas de una ocupación, no la probabilidad de que desaparezca el empleo.</p>
+</div>
+<div class="section level3">
+<h3 id="qué-produce-mapa">¿Qué produce <code>mapa()</code>?<a class="anchor" aria-label="anchor" href="#qu%C3%A9-produce-mapa"></a>
+</h3>
+<div class="float">
+<img src="reference/figures/README-mapa.png" alt="Ejemplo de mapa departamental creado con empleR"><div class="figcaption">Ejemplo de mapa departamental creado con empleR</div>
+</div>
+<p>La figura es un ejemplo construido con la muestra incluida en el paquete; no es una estimación oficial del INEI.</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="que-ofrece">Que ofrece<a class="anchor" aria-label="anchor" href="#que-ofrece"></a>
+<h2 id="funciones-del-núcleo">Funciones del núcleo<a class="anchor" aria-label="anchor" href="#funciones-del-n%C3%BAcleo"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr>
+<th>Función</th>
+<th>Para qué sirve</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code><a href="reference/catalogo.html">catalogo()</a></code></td>
+<td>Consulta fuentes, años, variantes y periodos procesados por el proyecto.</td>
+</tr>
+<tr>
+<td><code><a href="reference/descargar.html">descargar()</a></code></td>
+<td>Descarga el módulo de empleo e ingresos de la EPEN y permite guardarlo en caché.</td>
+</tr>
+<tr>
+<td><code><a href="reference/etiquetar.html">etiquetar()</a></code></td>
+<td>Convierte códigos de bases procesadas en categorías legibles.</td>
+</tr>
+<tr>
+<td><code><a href="reference/cno.html">cno()</a></code></td>
+<td>Describe CNO 2015 y homologa CO-95, conservando candidatos y estados de correspondencia.</td>
+</tr>
+<tr>
+<td><code><a href="reference/ia_exposicion.html">ia_exposicion()</a></code></td>
+<td>Añade puntajes continuos de exposición a IA por ocupación.</td>
+</tr>
+<tr>
+<td><code><a href="reference/cobertura.html">cobertura()</a></code></td>
+<td>Mide cuántas observaciones y cuánto peso tienen código, homologación y puntaje.</td>
+</tr>
+<tr>
+<td><code><a href="reference/indicadores.html">indicadores()</a></code></td>
+<td>Calcula ingreso y horas ponderados; los errores estándar deben tratarse como provisionales.</td>
+</tr>
+<tr>
+<td><code><a href="reference/resumen_nacional.html">resumen_nacional()</a></code></td>
+<td>Consulta indicadores nacionales precalculados y documentados.</td>
+</tr>
+<tr>
+<td><code><a href="reference/mapa.html">mapa()</a></code></td>
+<td>Visualiza indicadores agregados; el nivel departamental es el recorrido recomendado.</td>
+</tr>
+</tbody>
+</table>
+<p><code><a href="reference/panel.html">panel()</a></code> se conserva como una herramienta <strong>experimental</strong> para auditar viviendas u hogares repetidos. No identifica por sí sola a la misma persona y no forma parte del recorrido recomendado de la primera versión estable.</p>
+</div>
+<div class="section level2">
+<h2 id="contexto-y-trabajo-relacionado">Contexto y trabajo relacionado<a class="anchor" aria-label="anchor" href="#contexto-y-trabajo-relacionado"></a>
+</h2>
+<p><code>empleR</code> no es el primer paquete para microdatos del Perú. Por ejemplo, <a href="https://cran.r-project.org/package=enaho" class="external-link"><code>enaho</code></a> descarga y combina ENAHO y otras encuestas del INEI. En Argentina, <a href="https://packages.ropensci.org/eph" class="external-link"><code>eph</code></a> ofrece un antecedente valioso para trabajar con una encuesta laboral permanente.</p>
+<p>El aporte específico de <code>empleR</code> es concentrarse en EPE/EPEN y en la ruptura CO-95–CNO 2015, manteniendo visibles las correspondencias ambiguas y permitiendo vincular ocupaciones con un índice peruano de exposición a IA.</p>
+<p>El índice fue desarrollado por Walter Omar Manky Bonilla, con asistencia de investigación de Valentina Linares Herrera. La corrida incluida en el paquete se realizó en abril de 2026 con Claude Sonnet 4.6 y su paquete metodológico fue versionado el 15 de junio de 2026. Es una actualización del estudio <a href="https://www.gob.pe/institucion/inei/informes-publicaciones/7453406-doble-desafio-tecnologico-analisis-de-la-exposicion-a-la-automatizacion-tradicional-y-a-la-inteligencia-artificial-generativa-en-el-empleo-peruano-utilizando-datos-de-la-enaho-2024" class="external-link"><em>Doble desafío tecnológico</em></a>, publicado por el INEI en 2025; los nuevos puntajes no deben atribuirse al INEI.</p>
+</div>
+<div class="section level2">
+<h2 id="alcance-actual">Alcance actual<a class="anchor" aria-label="anchor" href="#alcance-actual"></a>
 </h2>
 <ul>
 <li>
-<code><a href="reference/catalogo.html">catalogo()</a></code> lista fuentes, anos y variantes disponibles.</li>
+<code><a href="reference/descargar.html">descargar()</a></code> trabaja con entregas EPEN; una base EPE histórica debe ser aportada por la persona usuaria. Las entradas ENAHO de <code><a href="reference/catalogo.html">catalogo()</a></code> describen el inventario del proyecto, pero aún no tienen descarga automática aquí.</li>
 <li>
-<code><a href="reference/descargar.html">descargar()</a></code> obtiene microdatos de encuestas laborales.</li>
+<code><a href="reference/etiquetar.html">etiquetar()</a></code> reconoce los nombres comunes de las bases procesadas. No renombra automáticamente todas las variables crudas del módulo 76.</li>
 <li>
-<code><a href="reference/etiquetar.html">etiquetar()</a></code> aplica etiquetas legibles a variables codificadas.</li>
-<li>
-<code><a href="reference/cno.html">cno()</a></code> armoniza codigos ocupacionales hacia CNO 2015 (CO-95 de la EPE via la tabla de correspondencia del INEI, sin forzar casos ambiguos).</li>
-<li>
-<code><a href="reference/indicadores.html">indicadores()</a></code> calcula indicadores laborales con diseno muestral.</li>
-<li>
-<code><a href="reference/resumen_nacional.html">resumen_nacional()</a></code> devuelve indicadores nacionales pre-calculados.</li>
-<li>
-<code><a href="reference/ia_exposicion.html">ia_exposicion()</a></code> agrega scores de exposicion a IA por ocupacion (en EPE, sobre <code>cno_homologado</code>).</li>
-<li>
-<code><a href="reference/cobertura.html">cobertura()</a></code> resume la cobertura de homologacion y score por encuesta y ano.</li>
-<li>
-<code><a href="reference/panel.html">panel()</a></code> y <code><a href="reference/mapa.html">mapa()</a></code> ayudan a explorar resultados y visualizarlos.</li>
+<code><a href="reference/indicadores.html">indicadores()</a></code> produce estimaciones ponderadas. La reconstrucción del diseño permite errores estándar reproducibles, pero todavía no equivalentes a los errores oficiales del INEI.</li>
+<li>Los análisis longitudinales de personas y la ampliación a otros países se dejan fuera de la primera versión estable.</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="indice-de-exposicion-ia">Indice de exposicion IA<a class="anchor" aria-label="anchor" href="#indice-de-exposicion-ia"></a>
-</h2>
-<p>El dataset <code>indice_ia</code> usa la corrida Sonnet de abril de 2026, cuyo paquete metodologico fue versionado el 15 de junio de 2026. La unidad base es la tarea ocupacional; el score final por ocupacion es <code>mean_exposure_score</code> en escala 0-1. Los archivos fuente y validaciones estan documentados en <code>data-raw/02_build_indice_ia.R</code> y <code>data-raw/indice_exposicion/README.md</code>.</p>
-<p>El indice y la corrida actual fueron desarrollados por Walter Omar Manky Bonilla, con la asistencia de investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6. La corrida actualiza el enfoque publicado por Manky (2025), conserva un score continuo y usa reglas revisadas para empates, ambiguedades y tipo de exposicion; sus valores no son los puntajes publicados originalmente por el INEI.</p>
 </div>
 <div class="section level2">
 <h2 id="desarrollo">Desarrollo<a class="anchor" aria-label="anchor" href="#desarrollo"></a>
 </h2>
-<p>El paquete usa:</p>
-<ul>
-<li>GitHub Actions para <code>R CMD check</code>.</li>
-<li>
-<code>pkgdown</code> para publicar documentacion web.</li>
-<li>
-<code>lintr</code> y <code>styler</code> como convencion de calidad y formato.</li>
-</ul>
-<p>Comandos locales recomendados:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>El proyecto usa pruebas automatizadas, <code>R CMD check</code>, <code>lintr</code> y <code>pkgdown</code>. Para contribuir o reportar un problema, utiliza <a href="https://github.com/valentinalinares/empleR/issues" class="external-link">GitHub Issues</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

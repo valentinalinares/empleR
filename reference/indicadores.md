@@ -2,9 +2,9 @@
 
 Calcula indicadores laborales incorporando el diseno muestral complejo
 de la EPEN mediante el paquete survey. Los datos deben ser microdatos
-procesados (output de
-[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md))
-con al menos ocupados en la muestra.
+procesados o microdatos crudos de
+[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
+con personas ocupadas.
 
 ## Usage
 
@@ -59,7 +59,7 @@ indicadores(
 - var_peso:
 
   Nombre del factor de expansion. Detecta automaticamente `weight`
-  (procesados) o `FACTOR07` (datos crudos INEI).
+  (procesados) o `FAC300_ANUAL` (datos crudos EPEN).
 
 ## Value
 

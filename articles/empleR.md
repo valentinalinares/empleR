@@ -8,7 +8,7 @@ library(empleR)
 ## Que es empleR
 
 [empleR](https://valentinalinares.github.io/empleR/) es un paquete de R
-para descargar, procesar y analizar los microdatos de las encuestas de
+para descargar EPEN y procesar y analizar microdatos de las encuestas de
 empleo del Peru publicadas por el INEI:
 
 - **EPEN** (Encuesta Permanente de Empleo Nacional, 2022-presente):
@@ -19,6 +19,12 @@ empleo del Peru publicadas por el INEI:
 El paquete resuelve la principal dificultad tecnica de trabajar con
 estas series: la **ruptura de clasificadores ocupacionales** entre EPE
 (que usa CO-95, 3 digitos) y EPEN (que usa CNO 2015, 4 digitos).
+
+Para una explicacion historica y metodologica, consulta [De la EPE a la
+EPEN](https://valentinalinares.github.io/empleR/articles/contexto-encuestas.md).
+Para ver entradas, resultados y limites de cada funcion, consulta
+[Funciones, ejemplos y
+resultados](https://valentinalinares.github.io/empleR/articles/funciones.md).
 
 ## Ver que datos estan disponibles
 
@@ -35,16 +41,13 @@ catalogo(fuente = "EPEN", variante = "departamentos_anual")
 
 ``` r
 
-# 1. Descargar microdatos
-epen_2024 <- descargar(year = 2024)
+# 1. Practicar con la muestra procesada incluida en el paquete
+epen_2024 <- etiquetar(muestra_epen_2024)
 
-# 2. Aplicar etiquetas de valor
-epen_2024 <- etiquetar(epen_2024)
-
-# 3. Armonizar codigos ocupacionales (CNO 2015 automatico para 2024)
+# 2. Armonizar codigos ocupacionales (CNO 2015 automatico para 2024)
 epen_2024 <- cno(epen_2024)
 
-# 4. Calcular indicadores con diseno muestral
+# 3. Calcular indicadores ponderados
 ingreso_dep <- indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 
 # 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)
@@ -52,6 +55,12 @@ ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region
 mapa(ingreso_dep, var = "estimado",
      titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
 ```
+
+`descargar(year = 2024)` devuelve el modulo 76 con los nombres
+originales del INEI.
+[`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
+reconoce los nombres comunes de las bases procesadas; no renombra ni
+etiqueta automaticamente todas las columnas crudas.
 
 Las tasas de desempleo, actividad y empleo requieren la PEA completa y
 se consultan pre-calculadas con
@@ -62,11 +71,12 @@ se consultan pre-calculadas con
 resumen_nacional("EPEN", variante = "departamentos_anual")
 ```
 
-Con el operador pipe, el flujo se puede escribir de forma compacta:
+Con el operador pipe, el flujo reproducible sobre la muestra incluida se
+puede escribir de forma compacta:
 
 ``` r
 
-descargar(year = 2024) |>
+muestra_epen_2024 |>
   cno() |>
   ia_exposicion(incluir_tipo = TRUE) |>
   indicadores("ingreso_promedio", por = "ia_tipo")

@@ -25,10 +25,16 @@
 
 ## Visualizacion
 
-- [`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
-  : Construir panel de viviendas entre trimestres moviles de la EPEN
 - [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)
   : Visualizar indicadores laborales en un mapa regional del Peru
+
+## Experimental
+
+Funciones conservadas para evaluacion; no forman parte del flujo
+estable.
+
+- [`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
+  : Explorar viviendas repetidas entre periodos de la EPEN
 
 ## Datos incluidos
 

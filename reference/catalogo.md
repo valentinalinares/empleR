@@ -1,10 +1,12 @@
 # Ver el catalogo de fuentes disponibles
 
-Muestra un inventario de todas las encuestas, anos y variantes
-disponibles para descargar con
-[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md).
-Incluye EPEN (departamentos y Lima movil) y ENAHO anual, con el numero
-de filas y codigos ocupacionales por periodo.
+Muestra un inventario de las encuestas, anos y variantes procesadas por
+el proyecto. Incluye EPEN (departamentos y Lima movil) y ENAHO anual,
+con el numero de filas y codigos ocupacionales por periodo. En esta
+version,
+[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
+solo descarga EPEN; una entrada en el catalogo no implica que todas las
+fuentes tengan descarga automatica desde R.
 
 ## Usage
 
