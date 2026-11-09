@@ -97,7 +97,8 @@ otras encuestas del INEI. La diferencia de `empleR` es su foco en EPE/EPEN, la
 comparabilidad ocupacional y la auditoría de las correspondencias CO-95–CNO
 2015. Como antecedente internacional,
 [`eph`](https://packages.ropensci.org/eph) organiza la Encuesta Permanente de
-Hogares de Argentina.
+Hogares de Argentina, una encuesta continua de propósitos múltiples con un
+fuerte componente de mercado laboral.
 
 Esta delimitación es intencional. Incorporar otro país requeriría validar su
 encuesta, clasificadores, diseño y documentación como un producto propio; por

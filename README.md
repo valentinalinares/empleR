@@ -94,7 +94,8 @@ no forma parte del recorrido recomendado de la primera versión estable.
 [`enaho`](https://cran.r-project.org/package=enaho) descarga y combina ENAHO y
 otras encuestas del INEI. En Argentina,
 [`eph`](https://packages.ropensci.org/eph) ofrece un antecedente valioso para
-trabajar con una encuesta laboral permanente.
+trabajar con una encuesta continua de hogares que tiene un fuerte componente
+de mercado laboral, aunque no se limita a ese tema.
 
 El aporte específico de `empleR` es concentrarse en EPE/EPEN y en la ruptura
 CO-95–CNO 2015, manteniendo visibles las correspondencias ambiguas y
