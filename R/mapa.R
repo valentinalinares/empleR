@@ -1,8 +1,9 @@
 #' Visualizar indicadores laborales en un mapa regional del Peru
 #'
 #' Genera un mapa interactivo o estatico con indicadores del mercado laboral
-#' agregados por departamento, provincia o distrito. Usa los shapes oficiales
-#' del INEI via el paquete \pkg{geoperu}.
+#' agregados por departamento, provincia o distrito. El recorrido probado y
+#' recomendado en esta version es el departamental; los otros niveles requieren
+#' que el usuario revise cuidadosamente las llaves geograficas.
 #'
 #' @param data `data.frame` con un indicador agregado por unidad geografica
 #'   (output de [indicadores()] con el argumento `por`).

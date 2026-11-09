@@ -37,7 +37,7 @@ tres: los numeros de conglomerado se repiten entre departamentos y
 muestras, asi que el conglomerado solo no identifica una UPM.}
 
 \item{var_peso}{Nombre del factor de expansion. Detecta automaticamente
-\code{weight} (procesados) o \code{FACTOR07} (datos crudos INEI).}
+\code{weight} (procesados) o \code{FAC300_ANUAL} (datos crudos EPEN).}
 }
 \value{
 Un \code{data.frame} con el indicador calculado y error estandar,
@@ -46,7 +46,7 @@ agrupado segun \code{por}.
 \description{
 Calcula indicadores laborales incorporando el diseno muestral complejo de
 la EPEN mediante el paquete \pkg{survey}. Los datos deben ser microdatos
-procesados (output de \code{\link[=descargar]{descargar()}}) con al menos ocupados en la muestra.
+procesados o microdatos crudos de \code{\link[=descargar]{descargar()}} con personas ocupadas.
 }
 \details{
 Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
