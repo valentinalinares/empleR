@@ -34,7 +34,7 @@ CO-95, 3 digitos) y EPEN (que usa CNO 2015, 4 digitos).
 
 Para una explicacion historica y metodologica, consulta
 [De la EPE a la EPEN](contexto-encuestas.html). Para ver entradas, resultados y
-limites de cada funcion, consulta [Funciones, ejemplos y resultados](funciones.html).
+limites de cada funcion, consulta el [Manual de empleR](funciones.html).
 
 ## Ver que datos estan disponibles
 

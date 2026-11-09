@@ -1,0 +1,165 @@
+---
+title: "Encontrar, descargar y etiquetar datos"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Encontrar, descargar y etiquetar datos}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r setup}
+library(empleR)
+```
+
+Esta parte del manual cubre el inicio del flujo: saber qué información existe,
+descargar los microdatos de la EPEN y convertir códigos numéricos en categorías
+legibles.
+
+## `catalogo()`: saber qué está disponible
+
+### Para qué sirve
+
+`catalogo()` consulta el inventario de bases que el proyecto ha procesado. Es
+útil para revisar fuentes, años, variantes, periodos, número de filas y cantidad
+de códigos ocupacionales antes de comenzar un análisis.
+
+### Qué recibe
+
+| Argumento | Uso |
+|---|---|
+| `fuente` | Filtra `EPEN`, `ENAHO` o muestra `todas`. |
+| `year` | Selecciona uno o varios años. |
+| `variante` | Filtra bases departamentales anuales, Lima móvil o ENAHO anual. |
+
+### Qué hace y qué devuelve
+
+La función filtra el catálogo incluido en el paquete y devuelve un
+`data.frame`. No descarga datos. Una fila en el catálogo documenta que el
+proyecto procesó esa fuente; solo las entregas EPEN tienen descarga automática
+en la versión actual.
+
+```{r catalogo}
+disponibles <- catalogo(
+  fuente = "EPEN",
+  variante = "departamentos_anual"
+)
+disponibles
+```
+
+### Cómo aplicar el resultado
+
+Después de identificar el año y la variante, usa esos mismos valores en
+`descargar()`. Para consultar los trimestres móviles de Lima de un año:
+
+```{r catalogo-lima}
+catalogo(
+  fuente = "EPEN",
+  year = 2024,
+  variante = "lima_movil"
+)
+```
+
+## `descargar()`: obtener microdatos de la EPEN
+
+### Para qué sirve
+
+`descargar()` obtiene el módulo de empleo e ingresos de la EPEN desde el portal
+de microdatos del INEI. Puede guardar el resultado como archivo RDS para no
+repetir la descarga.
+
+### Qué recibe
+
+| Argumento | Uso |
+|---|---|
+| `year` | Año de la EPEN, entre los disponibles en el catálogo. |
+| `variante` | `departamentos_anual` o `lima_movil`. |
+| `periodo` | Nombre del trimestre móvil; solo se usa con `lima_movil`. |
+| `destfile` | Ruta opcional para guardar y reutilizar una copia local. |
+| `quiet` | Controla los mensajes de progreso de la descarga. |
+
+### Qué hace por dentro
+
+1. Si `destfile` ya existe, lee esa copia.
+2. Busca la URL que corresponde al año, variante y periodo.
+3. Descarga el ZIP del INEI a una ubicación temporal.
+4. Detecta el CSV y su separador.
+5. Lee las columnas con sus nombres originales y, si se solicitó, guarda el RDS.
+
+### Qué devuelve
+
+Devuelve un `data.frame` con el módulo original de empleo e ingresos. Incluye
+ocupados, desocupados e inactivos; por eso sirve para construir indicadores que
+requieren la población completa. Los nombres de las variables siguen la
+nomenclatura del INEI.
+
+```{r descargar, eval=FALSE}
+epen_2024 <- descargar(
+  year = 2024,
+  variante = "departamentos_anual",
+  destfile = "datos/epen_2024.rds"
+)
+```
+
+La función todavía no descarga archivos históricos de la EPE. Para esa
+encuesta debes partir de los archivos que hayas obtenido del INEI.
+
+## `etiquetar()`: convertir códigos en categorías legibles
+
+### Para qué sirve
+
+En los microdatos, muchas variables usan números para representar categorías.
+Por ejemplo, `sex_code = 1` significa “Hombre” y `sex_code = 2` significa
+“Mujer”. `etiquetar()` reemplaza esos códigos por etiquetas comprensibles.
+
+### Qué recibe
+
+| Argumento | Uso |
+|---|---|
+| `data` | Base procesada que contiene variables reconocidas por el paquete. |
+| `vars` | Variables que quieres etiquetar; `NULL` usa todas las disponibles. |
+| `as_factor` | Devuelve factores si es `TRUE` o texto si es `FALSE`. |
+
+### Qué hace y qué devuelve
+
+La función identifica las variables que tienen un diccionario interno, busca la
+etiqueta de cada código y devuelve la misma base con esas columnas convertidas.
+No cambia el número de filas ni crea una base resumida.
+
+```{r etiquetar}
+ejemplo <- muestra_epen_2024[1:8, c(
+  "sex_code", "education_code", "is_rural"
+)]
+
+antes <- ejemplo
+despues <- etiquetar(ejemplo)
+
+antes
+despues
+```
+
+### Cómo interpretar el resultado
+
+Las etiquetas facilitan tablas y gráficos. Si necesitas conservar los códigos
+para una operación posterior, guarda una copia o etiqueta solo las variables
+que usarás para presentar resultados.
+
+```{r etiquetar-seleccion}
+etiquetar(
+  muestra_epen_2024[1:8, ],
+  vars = c("sex_code", "education_code"),
+  as_factor = FALSE
+)[, c("sex_code", "education_code")]
+```
+
+`etiquetar()` reconoce los nombres de las bases procesadas por el proyecto. No
+renombra ni interpreta automáticamente todas las columnas originales del
+módulo 76.
+
+## Siguiente paso
+
+Con una base preparada, continúa con [Ocupaciones, homologación e índice de
+IA](manual-ocupaciones-ia.html).
