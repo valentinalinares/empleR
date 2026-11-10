@@ -78,8 +78,8 @@ evitar descargas repetidas.</p>
 
 
 <dl><dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Ano de la encuesta. EPEN disponible: 2022-2025.
-Ver <code><a href="catalogo.html">catalogo()</a></code> para la lista completa.</p></dd>
+<dd><p>Ano de la encuesta. Los anos disponibles dependen de la
+variante; ver <code><a href="catalogo.html">catalogo()</a></code> para la lista actual.</p></dd>
 
 
 <dt id="arg-variante">variante<a class="anchor" aria-label="anchor" href="#arg-variante"></a></dt>
@@ -96,7 +96,10 @@ Ver <code><a href="catalogo.html">catalogo()</a></code> para la lista completa d
 
 <dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
 <dd><p>Ruta local donde cachear el resultado como <code>.rds</code>.
-Si el archivo ya existe, se usa la version en cache sin descargar.
+Si el archivo ya existe, se usa la version en cache solamente cuando
+corresponde a la misma encuesta, variante, ano, periodo y URL. Los caches
+creados por versiones anteriores, que no guardaban esta informacion, no
+se reutilizan automaticamente.
 Si es <code>NULL</code> (por defecto), descarga sin guardar cache permanente.</p></dd>
 
 
@@ -108,12 +111,15 @@ Si es <code>NULL</code> (por defecto), descarga sin guardar cache permanente.</p
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Un <code>data.frame</code> con los microdatos crudos del modulo de Empleo e
 Ingresos de la EPEN. Las columnas siguen la nomenclatura original del
-INEI (e.g. <code>C308_COD</code>, <code>FACTOR07</code>, <code>ESTRATO</code>, <code>CONGLOME</code>).
+INEI (e.g. <code>C308_COD</code>, <code>FAC300_ANUAL</code>, <code>ESTRATO</code>, <code>CONGLOMERADO</code>). Para
+conservar codigos y ceros iniciales, todas las columnas se leen como
+texto; los campos vacios y el texto <code>NA</code> se devuelven como valores
+faltantes.
 Usar <code><a href="etiquetar.html">etiquetar()</a></code> para aplicar etiquetas de valor y <code><a href="cno.html">cno()</a></code> para
 agregar descripciones de ocupaciones.</p>
 <p><strong>A diferencia de <a href="muestra_epen_2024.html">muestra_epen_2024</a>, estos datos incluyen todos los
 estados laborales</strong>: ocupados, desocupados abiertos, desocupados ocultos
-e inactivos. La variable <code>OCA500</code> (o equivalente) indica el estado laboral
+e inactivos. La variable <code>OCUP300</code> (o equivalente) indica el estado laboral
 de cada persona, lo que permite calcular tasas de desempleo y actividad.</p>
     </div>
 

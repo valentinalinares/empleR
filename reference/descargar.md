@@ -21,9 +21,9 @@ descargar(
 
 - year:
 
-  Ano de la encuesta. EPEN disponible: 2022-2025. Ver
+  Ano de la encuesta. Los anos disponibles dependen de la variante; ver
   [`catalogo()`](https://valentinalinares.github.io/empleR/reference/catalogo.md)
-  para la lista completa.
+  para la lista actual.
 
 - variante:
 
@@ -43,8 +43,11 @@ descargar(
 - destfile:
 
   Ruta local donde cachear el resultado como `.rds`. Si el archivo ya
-  existe, se usa la version en cache sin descargar. Si es `NULL` (por
-  defecto), descarga sin guardar cache permanente.
+  existe, se usa la version en cache solamente cuando corresponde a la
+  misma encuesta, variante, ano, periodo y URL. Los caches creados por
+  versiones anteriores, que no guardaban esta informacion, no se
+  reutilizan automaticamente. Si es `NULL` (por defecto), descarga sin
+  guardar cache permanente.
 
 - quiet:
 
@@ -54,7 +57,10 @@ descargar(
 
 Un `data.frame` con los microdatos crudos del modulo de Empleo e
 Ingresos de la EPEN. Las columnas siguen la nomenclatura original del
-INEI (e.g. `C308_COD`, `FACTOR07`, `ESTRATO`, `CONGLOME`). Usar
+INEI (e.g. `C308_COD`, `FAC300_ANUAL`, `ESTRATO`, `CONGLOMERADO`). Para
+conservar codigos y ceros iniciales, todas las columnas se leen como
+texto; los campos vacios y el texto `NA` se devuelven como valores
+faltantes. Usar
 [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
 para aplicar etiquetas de valor y
 [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
@@ -64,7 +70,7 @@ para agregar descripciones de ocupaciones.
 [muestra_epen_2024](https://valentinalinares.github.io/empleR/reference/muestra_epen_2024.md),
 estos datos incluyen todos los estados laborales**: ocupados,
 desocupados abiertos, desocupados ocultos e inactivos. La variable
-`OCA500` (o equivalente) indica el estado laboral de cada persona, lo
+`OCUP300` (o equivalente) indica el estado laboral de cada persona, lo
 que permite calcular tasas de desempleo y actividad.
 
 ## Examples
