@@ -280,10 +280,6 @@ descargar <- function(year,
 
 #' @noRd
 .leer_zip_inei <- function(path_zip) {
-  dir_tmp <- tempfile()
-  dir.create(dir_tmp)
-  on.exit(unlink(dir_tmp, recursive = TRUE, force = TRUE), add = TRUE)
-
   contenido <- tryCatch(
     suppressWarnings(utils::unzip(path_zip, list = TRUE)),
     error = function(e) {
@@ -314,26 +310,29 @@ descargar <- function(year,
     cli::cli_abort("El ZIP contiene una ruta de archivo no segura.")
   }
 
-  extraidos <- tryCatch(
-    suppressWarnings(utils::unzip(
-      path_zip,
-      files = nombre_csv,
-      exdir = dir_tmp
-    )),
-    error = function(e) {
-      cli::cli_abort("No se pudo extraer el CSV del ZIP.", parent = e)
-    }
-  )
-  archivos_csv <- extraidos[file.exists(extraidos)]
-
-  if (length(archivos_csv) != 1) {
-    cli::cli_abort("No se pudo localizar el CSV extraido del ZIP.")
+  # Se lee el archivo directamente desde el ZIP. En Windows, algunos ZIP del
+  # INEI codifican de forma distinta los acentos del nombre interno (por
+  # ejemplo, "Publicacion"). Extraerlo y volver a localizarlo por su ruta
+  # puede fallar aunque el contenido sea valido; la conexion unz() evita esa
+  # conversion del nombre.
+  abrir_csv <- function() {
+    tryCatch(
+      unz(path_zip, nombre_csv, open = "rb"),
+      error = function(e) {
+        cli::cli_abort("No se pudo abrir el CSV dentro del ZIP.", parent = e)
+      }
+    )
   }
 
   # Detectar el separador (INEI usa ; o ,) contando en la cabecera.
   # read_csv2 no falla con archivos separados por coma: los lee como una sola
   # columna, por eso no sirve como fallback con tryCatch.
-  cabecera <- readLines(archivos_csv[1], n = 1, warn = FALSE, encoding = "latin1")
+  leer_cabecera <- function() {
+    conexion <- abrir_csv()
+    on.exit(close(conexion), add = TRUE)
+    readLines(conexion, n = 1, warn = FALSE, encoding = "latin1")
+  }
+  cabecera <- leer_cabecera()
   n_pyc  <- lengths(regmatches(cabecera, gregexpr(";", cabecera, fixed = TRUE)))
   n_coma <- lengths(regmatches(cabecera, gregexpr(",", cabecera, fixed = TRUE)))
   delim  <- if (n_pyc >= n_coma) ";" else ","
@@ -341,17 +340,22 @@ descargar <- function(year,
   # Los microdatos crudos se leen como texto. Esto evita que el muestreo usado
   # para inferir tipos convierta valores validos en NA y conserva ceros a la
   # izquierda en los identificadores.
-  datos <- readr::read_delim(
-    archivos_csv[1],
-    delim = delim,
-    col_types = readr::cols(.default = readr::col_character()),
-    na = c("", "NA"),
-    trim_ws = FALSE,
-    show_col_types = FALSE,
-    progress = FALSE,
-    name_repair = "minimal",
-    locale = readr::locale(encoding = "latin1")
-  )
+  leer_datos <- function() {
+    conexion <- abrir_csv()
+    on.exit(close(conexion), add = TRUE)
+    readr::read_delim(
+      conexion,
+      delim = delim,
+      col_types = readr::cols(.default = readr::col_character()),
+      na = c("", "NA"),
+      trim_ws = FALSE,
+      show_col_types = FALSE,
+      progress = FALSE,
+      name_repair = "minimal",
+      locale = readr::locale(encoding = "latin1")
+    )
+  }
+  datos <- leer_datos()
 
   problemas <- readr::problems(datos)
   if (nrow(problemas) > 0) {

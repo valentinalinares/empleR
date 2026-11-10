@@ -14,3 +14,16 @@ zip_dir <- function(dir) {
   utils::zip(zip_path, files = list.files(dir), flags = "-q")
   zip_path
 }
+
+zip_con_nombre_utf8 <- function() {
+  skip_if_not_installed("jsonlite")
+  contenido <- paste0(
+    "UEsDBBQAAAgIANxral1Qkd3WFgAAABQAAAAVAAAAUHVibGljYWNpw7NuIEVQRU4u",
+    "Y3N2c/Z38XT3tw5z9PEP4jIwMLQuzuQCAFBLAQIUABQAAAgIANxral1Qkd3WFg",
+    "AAABQAAAAVAAAAAAAAAAAAAAAAAAAAAABQdWJsaWNhY2nDs24gRVBFTi5jc3ZQ",
+    "SwUGAAAAAAEAAQBDAAAASQAAAAAA"
+  )
+  path <- tempfile(fileext = ".zip")
+  writeBin(jsonlite::base64_dec(contenido), path)
+  path
+}
