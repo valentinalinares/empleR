@@ -34,6 +34,13 @@ test_that(".leer_zip_inei() conserva tipos mixtos y ceros iniciales", {
   expect_equal(nrow(readr::problems(datos)), 0L)
 })
 
+test_that(".leer_zip_inei() admite nombres internos con acentos", {
+  datos <- .leer_zip_inei(zip_con_nombre_utf8())
+
+  expect_equal(datos$CODIGO, "001")
+  expect_equal(datos$VALOR, "si")
+})
+
 test_that(".leer_zip_inei() rechaza ZIP sin CSV o con varios CSV", {
   dir_sin_csv <- nuevo_dir_temporal()
   writeLines("contenido", file.path(dir_sin_csv, "notas.txt"))

@@ -2,40 +2,57 @@
 % Please edit documentation in R/etiquetar.R
 \name{etiquetar}
 \alias{etiquetar}
-\title{Aplicar etiquetas de valor a variables de la EPEN/EPE}
+\title{Aplicar etiquetas de valor a variables de la EPEN}
 \usage{
-etiquetar(data, vars = NULL, as_factor = TRUE)
+etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
 }
 \arguments{
-\item{data}{\code{data.frame} con microdatos de EPEN/EPE.}
+\item{data}{\code{data.frame} con microdatos de la EPEN.}
 
 \item{vars}{Vector de nombres de variables a etiquetar. Si es \code{NULL}
-(por defecto), etiqueta todas las variables con diccionario disponible.}
+(por defecto), usa todas las variables reconocidas presentes en \code{data}.}
 
-\item{as_factor}{Logico. Si \code{TRUE} (por defecto), devuelve las variables
-etiquetadas como \code{factor}. Si \code{FALSE}, devuelve como \code{character}.}
+\item{as_factor}{Logico. Si \code{TRUE} (por defecto), devuelve las etiquetas
+como factores. Si \code{FALSE}, las devuelve como texto.}
+
+\item{reemplazar}{Logico. Si es \code{FALSE} (por defecto), conserva los codigos
+y agrega columnas de etiquetas. Usa \code{TRUE} solo para reproducir el
+comportamiento anterior, que reemplaza las columnas seleccionadas.}
 }
 \value{
-El mismo \code{data.frame} con las variables seleccionadas convertidas.
-Los codigos no presentes en el diccionario se devuelven como \code{NA}.
+El mismo \code{data.frame}. Por defecto agrega una columna de etiqueta
+por concepto reconocido y conserva las columnas originales. Los nombres
+posibles son \code{sex_label}, \code{labor_status_label}, \code{education_label},
+\code{institutional_sector_label}, \code{occupational_category_label},
+\code{firm_size_label}, \code{area_label} e \code{income_periodicity_label}.
 }
 \description{
-Convierte variables codificadas numericamente a factores con etiquetas
-legibles, siguiendo los diccionarios documentados por el INEI. En la
-version actual reconoce los nombres comunes de las bases procesadas de
-\code{{empleR}}; no cambia automaticamente los nombres originales del modulo 76.
+Interpreta variables codificadas de la EPEN siguiendo los diccionarios
+oficiales del INEI. Reconoce tanto los nombres originales del modulo 76
+(\code{C207}, \code{OCUP300}, \code{C366}, \code{C310}, \code{C311}, \code{C317}, \code{C338} y \code{AREA}) como
+sus equivalentes en las bases procesadas de \code{{empleR}}.
+}
+\details{
+Por defecto conserva intacta cada columna de codigos y agrega una columna
+terminada en \verb{_label}. Esta separacion permite usar las etiquetas para
+tablas y graficos sin perder los codigos necesarios para validar o procesar
+los microdatos. Los valores ausentes siguen ausentes; un codigo no incluido
+en el diccionario genera una advertencia y su etiqueta queda en \code{NA}.
 }
 \examples{
-# Etiquetar todas las variables con diccionario en la muestra
+# Conserva sex_code y crea sex_label
 muestra_etiquetada <- etiquetar(muestra_epen_2024)
+table(muestra_etiquetada$sex_label)
 
-# Verificar resultado
-table(muestra_etiquetada$sex_code)
+# Funciona tambien con nombres originales del modulo 76
+crudos <- data.frame(C207 = c("1", "2"), C366 = c("6", "11"))
+etiquetar(crudos, as_factor = FALSE)
 
-# Solo etiquetar variables especificas
-muestra_etiquetada <- etiquetar(
+# Compatibilidad con el comportamiento anterior
+etiquetar(
   muestra_epen_2024,
-  vars = c("sex_code", "education_code", "institutional_sector_code")
+  vars = c("sex_code", "education_code"),
+  reemplazar = TRUE
 )
 }
 \references{
