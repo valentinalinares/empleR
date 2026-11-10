@@ -40,7 +40,10 @@
 
 ## Otros
 
-* `descargar()` detecta si el CSV usa `;` o `,`.
+* `descargar()` detecta si el CSV usa `;` o `,` y lee todas las columnas
+  crudas como texto para conservar codigos, ceros iniciales y valores mixtos.
+  Los caches nuevos registran ano, variante, periodo y URL; los caches antiguos
+  sin esos metadatos deben regenerarse.
 * Ejemplos y vineta corregidos; alias de variables reales EPE y EPEN para la
   validacion de bases (`data-raw/validar_bases_reales.R`).
 * Nuevo sitio de documentacion con guias de funciones y de la transicion
