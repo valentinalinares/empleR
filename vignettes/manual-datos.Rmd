@@ -112,22 +112,24 @@ encuesta debes partir de los archivos que hayas obtenido del INEI.
 ### Para qué sirve
 
 En los microdatos, muchas variables usan números para representar categorías.
-Por ejemplo, `sex_code = 1` significa “Hombre” y `sex_code = 2` significa
-“Mujer”. `etiquetar()` reemplaza esos códigos por etiquetas comprensibles.
+Por ejemplo, `C207 = 1` significa “Hombre” y `C207 = 2` significa “Mujer”.
+`etiquetar()` agrega una versión legible sin borrar el código original.
 
 ### Qué recibe
 
 | Argumento | Uso |
 |---|---|
-| `data` | Base procesada que contiene variables reconocidas por el paquete. |
+| `data` | Base cruda o procesada que contiene variables reconocidas por el paquete. |
 | `vars` | Variables que quieres etiquetar; `NULL` usa todas las disponibles. |
 | `as_factor` | Devuelve factores si es `TRUE` o texto si es `FALSE`. |
+| `reemplazar` | Conserva los códigos si es `FALSE`; `TRUE` reproduce el comportamiento anterior. |
 
 ### Qué hace y qué devuelve
 
 La función identifica las variables que tienen un diccionario interno, busca la
-etiqueta de cada código y devuelve la misma base con esas columnas convertidas.
-No cambia el número de filas ni crea una base resumida.
+etiqueta de cada código y devuelve la misma base con columnas nuevas terminadas
+en `_label`. No cambia el número de filas ni los códigos de origen. Si encuentra
+un código fuera del diccionario, lo advierte y deja su etiqueta en `NA`.
 
 ```{r etiquetar}
 ejemplo <- muestra_epen_2024[1:8, c(
@@ -138,26 +140,55 @@ antes <- ejemplo
 despues <- etiquetar(ejemplo)
 
 antes
-despues
+despues[, c(
+  "sex_code", "sex_label",
+  "education_code", "education_label",
+  "is_rural", "area_label"
+)]
 ```
 
 ### Cómo interpretar el resultado
 
-Las etiquetas facilitan tablas y gráficos. Si necesitas conservar los códigos
-para una operación posterior, guarda una copia o etiqueta solo las variables
-que usarás para presentar resultados.
+Las etiquetas facilitan tablas y gráficos, mientras que los códigos se mantienen
+disponibles para comprobaciones o transformaciones posteriores.
 
 ```{r etiquetar-seleccion}
 etiquetar(
   muestra_epen_2024[1:8, ],
   vars = c("sex_code", "education_code"),
   as_factor = FALSE
-)[, c("sex_code", "education_code")]
+)[, c("sex_code", "sex_label", "education_code", "education_label")]
 ```
 
-`etiquetar()` reconoce los nombres de las bases procesadas por el proyecto. No
-renombra ni interpreta automáticamente todas las columnas originales del
-módulo 76.
+La conexión con una descarga cruda es directa:
+
+```{r etiquetar-crudos, eval=FALSE}
+epen_2024 <- descargar(year = 2024)
+epen_2024 <- etiquetar(epen_2024)
+
+# C207 permanece intacta; sex_label contiene Hombre/Mujer
+table(epen_2024$C207, epen_2024$sex_label, useNA = "ifany")
+
+# El codigo ocupacional sigue disponible para el paso siguiente
+epen_2024 <- cno(epen_2024)
+```
+
+Los nombres originales y procesados reconocidos son:
+
+| Concepto | Variable original | Variable procesada | Etiqueta creada |
+|---|---|---|---|
+| Sexo | `C207` | `sex_code` | `sex_label` |
+| Condicion de actividad | `OCUP300` | `labor_status_code` | `labor_status_label` |
+| Nivel educativo | `C366` | `education_code` | `education_label` |
+| Categoria ocupacional | `C310` | `occupational_category_code` | `occupational_category_label` |
+| Sector institucional | `C311` | `institutional_sector_code` | `institutional_sector_label` |
+| Tamano de empresa | `C317` | `firm_size_code` | `firm_size_label` |
+| Periodicidad del ingreso | `C338` | `income_periodicity_code` | `income_periodicity_label` |
+| Area | `AREA` | `is_rural` | `area_label` |
+
+La codificacion de `AREA` no es la misma en ambas versiones: el dato original
+usa 1/2 y `is_rural` usa 0/1. `etiquetar()` aplica el diccionario que corresponde
+a cada nombre. No interpreta automaticamente las demas columnas del modulo 76.
 
 ## Siguiente paso
 
