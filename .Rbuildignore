@@ -6,5 +6,6 @@
 ^docs$
 ^pkgdown$
 ^\.lintr$
+^\.git$
 ^demo_mapa_ia\.png$
 ^\.DS_Store$
