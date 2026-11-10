@@ -1,0 +1,5 @@
+"year","zip","zip_member","sha256","rows","columns","parse_problems","all_columns_character","structural_rows_match","fields_per_row_match","control_columns_match","elapsed_seconds"
+2022,"790-Modulo76.zip","EPEN 2022 BD_Publicación Dpto.csv","ee64092dcf3d144ddc3a76f5d26af6717dececa2c2bc4a429e42e99157e9e9d2",439523,131,0,TRUE,TRUE,TRUE,TRUE,17.71
+2023,"874-Modulo76.zip","EPEN 2023 BD_Publicación Dpto.csv","80b270a27a170af5c27390f5ed9dcdefc2e13b5201ecb982f1bd7cdea705759f",449202,132,0,TRUE,TRUE,TRUE,TRUE,16.64
+2024,"935-Modulo76.zip","EPEN 2024 BD_Publicacion Dpto.csv","a33d062bc3f7bdfe86b91f89beadf13b32ad590f384dd79f1d24b79ae25c86e2",465598,132,0,TRUE,TRUE,TRUE,TRUE,17.36
+2025,"1001-Modulo76.zip","EPEN 2025 BD_Publicacion Dpto.csv","56892e6aa9749bd1c50be664431cdb0eee5f96295cf3261c44aff735747de830",471438,132,0,TRUE,TRUE,TRUE,TRUE,16.77
