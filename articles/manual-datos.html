@@ -261,9 +261,9 @@ legibles<a class="anchor" aria-label="anchor" href="#etiquetar-convertir-c%C3%B3
 <h3 id="para-qué-sirve-2">Para qué sirve<a class="anchor" aria-label="anchor" href="#para-qu%C3%A9-sirve-2"></a>
 </h3>
 <p>En los microdatos, muchas variables usan números para representar
-categorías. Por ejemplo, <code>sex_code = 1</code> significa “Hombre” y
-<code>sex_code = 2</code> significa “Mujer”. <code><a href="../reference/etiquetar.html">etiquetar()</a></code>
-reemplaza esos códigos por etiquetas comprensibles.</p>
+categorías. Por ejemplo, <code>C207 = 1</code> significa “Hombre” y
+<code>C207 = 2</code> significa “Mujer”. <code><a href="../reference/etiquetar.html">etiquetar()</a></code> agrega
+una versión legible sin borrar el código original.</p>
 </div>
 <div class="section level3">
 <h3 id="qué-recibe-2">Qué recibe<a class="anchor" aria-label="anchor" href="#qu%C3%A9-recibe-2"></a>
@@ -280,7 +280,7 @@ reemplaza esos códigos por etiquetas comprensibles.</p>
 <tbody>
 <tr class="odd">
 <td><code>data</code></td>
-<td>Base procesada que contiene variables reconocidas por el
+<td>Base cruda o procesada que contiene variables reconocidas por el
 paquete.</td>
 </tr>
 <tr class="even">
@@ -293,6 +293,11 @@ disponibles.</td>
 <td>Devuelve factores si es <code>TRUE</code> o texto si es
 <code>FALSE</code>.</td>
 </tr>
+<tr class="even">
+<td><code>reemplazar</code></td>
+<td>Conserva los códigos si es <code>FALSE</code>; <code>TRUE</code>
+reproduce el comportamiento anterior.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -301,8 +306,9 @@ disponibles.</td>
 </h3>
 <p>La función identifica las variables que tienen un diccionario
 interno, busca la etiqueta de cada código y devuelve la misma base con
-esas columnas convertidas. No cambia el número de filas ni crea una base
-resumida.</p>
+columnas nuevas terminadas en <code>_label</code>. No cambia el número
+de filas ni los códigos de origen. Si encuentra un código fuera del
+diccionario, lo advierte y deja su etiqueta en <code>NA</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ejemplo</span> <span class="op">&lt;-</span> <span class="va">muestra_epen_2024</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"sex_code"</span>, <span class="st">"education_code"</span>, <span class="st">"is_rural"</span></span>
@@ -310,7 +316,7 @@ resumida.</p>
 <span></span>
 <span><span class="va">antes</span> <span class="op">&lt;-</span> <span class="va">ejemplo</span></span>
 <span><span class="va">despues</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="va">ejemplo</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 3 variable(s) etiquetadas.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 3 columna(s) de etiquetas agregada(s).</span></span>
 <span></span>
 <span><span class="va">antes</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
@@ -324,46 +330,127 @@ resumida.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        1              8        0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        2             11        0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>        1              6        1</span></span>
-<span><span class="va">despues</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 3</span></span></span>
-<span><span class="co">#&gt;   sex_code education_code                   is_rural</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Mujer    Sup. no universitaria completa   Urbano  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Hombre   Secundaria incompleta            Rural   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Mujer    Primaria incompleta              Urbano  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Mujer    Sin nivel                        Rural   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Hombre   Primaria incompleta              Rural   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Hombre   Sup. no universitaria incompleta Urbano  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Mujer    Sup. universitaria completa      Urbano  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Hombre   Secundaria completa              Rural</span></span></code></pre></div>
+<span><span class="va">despues</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"sex_code"</span>, <span class="st">"sex_label"</span>,</span>
+<span>  <span class="st">"education_code"</span>, <span class="st">"education_label"</span>,</span>
+<span>  <span class="st">"is_rural"</span>, <span class="st">"area_label"</span></span>
+<span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 6</span></span></span>
+<span><span class="co">#&gt;   sex_code sex_label education_code education_label          is_rural area_label</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        2 Mujer                  9 Superior no universitar…        0 Urbano    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        1 Hombre                 5 Secundaria incompleta           1 Rural     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        2 Mujer                  3 Primaria incompleta             0 Urbano    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        2 Mujer                  1 Sin nivel                       1 Rural     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        1 Hombre                 3 Primaria incompleta             1 Rural     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        1 Hombre                 8 Superior no universitar…        0 Urbano    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        2 Mujer                 11 Superior universitaria …        0 Urbano    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>        1 Hombre                 6 Secundaria completa             1 Rural</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="cómo-interpretar-el-resultado">Cómo interpretar el resultado<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-interpretar-el-resultado"></a>
 </h3>
-<p>Las etiquetas facilitan tablas y gráficos. Si necesitas conservar los
-códigos para una operación posterior, guarda una copia o etiqueta solo
-las variables que usarás para presentar resultados.</p>
+<p>Las etiquetas facilitan tablas y gráficos, mientras que los códigos
+se mantienen disponibles para comprobaciones o transformaciones
+posteriores.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/etiquetar.html">etiquetar</a></span><span class="op">(</span></span>
 <span>  <span class="va">muestra_epen_2024</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="op">]</span>,</span>
 <span>  vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sex_code"</span>, <span class="st">"education_code"</span><span class="op">)</span>,</span>
 <span>  as_factor <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sex_code"</span>, <span class="st">"education_code"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 2 variable(s) etiquetadas.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 2</span></span></span>
-<span><span class="co">#&gt;   sex_code education_code                  </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Mujer    Sup. no universitaria completa  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Hombre   Secundaria incompleta           </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Mujer    Primaria incompleta             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Mujer    Sin nivel                       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Hombre   Primaria incompleta             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Hombre   Sup. no universitaria incompleta</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Mujer    Sup. universitaria completa     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Hombre   Secundaria completa</span></span></code></pre></div>
-<p><code><a href="../reference/etiquetar.html">etiquetar()</a></code> reconoce los nombres de las bases procesadas
-por el proyecto. No renombra ni interpreta automáticamente todas las
-columnas originales del módulo 76.</p>
+<span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sex_code"</span>, <span class="st">"sex_label"</span>, <span class="st">"education_code"</span>, <span class="st">"education_label"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> 2 columna(s) de etiquetas agregada(s).</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 4</span></span></span>
+<span><span class="co">#&gt;   sex_code sex_label education_code education_label                     </span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                               </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        2 Mujer                  9 Superior no universitaria completa  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        1 Hombre                 5 Secundaria incompleta               </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        2 Mujer                  3 Primaria incompleta                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        2 Mujer                  1 Sin nivel                           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        1 Hombre                 3 Primaria incompleta                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        1 Hombre                 8 Superior no universitaria incompleta</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        2 Mujer                 11 Superior universitaria completa     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>        1 Hombre                 6 Secundaria completa</span></span></code></pre></div>
+<p>La conexión con una descarga cruda es directa:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/descargar.html">descargar</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/etiquetar.html">etiquetar</a></span><span class="op">(</span><span class="va">epen_2024</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># C207 permanece intacta; sex_label contiene Hombre/Mujer</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">epen_2024</span><span class="op">$</span><span class="va">C207</span>, <span class="va">epen_2024</span><span class="op">$</span><span class="va">sex_label</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># El codigo ocupacional sigue disponible para el paso siguiente</span></span>
+<span><span class="va">epen_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="va">epen_2024</span><span class="op">)</span></span></code></pre></div>
+<p>Los nombres originales y procesados reconocidos son:</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Concepto</th>
+<th>Variable original</th>
+<th>Variable procesada</th>
+<th>Etiqueta creada</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Sexo</td>
+<td><code>C207</code></td>
+<td><code>sex_code</code></td>
+<td><code>sex_label</code></td>
+</tr>
+<tr class="even">
+<td>Condicion de actividad</td>
+<td><code>OCUP300</code></td>
+<td><code>labor_status_code</code></td>
+<td><code>labor_status_label</code></td>
+</tr>
+<tr class="odd">
+<td>Nivel educativo</td>
+<td><code>C366</code></td>
+<td><code>education_code</code></td>
+<td><code>education_label</code></td>
+</tr>
+<tr class="even">
+<td>Categoria ocupacional</td>
+<td><code>C310</code></td>
+<td><code>occupational_category_code</code></td>
+<td><code>occupational_category_label</code></td>
+</tr>
+<tr class="odd">
+<td>Sector institucional</td>
+<td><code>C311</code></td>
+<td><code>institutional_sector_code</code></td>
+<td><code>institutional_sector_label</code></td>
+</tr>
+<tr class="even">
+<td>Tamano de empresa</td>
+<td><code>C317</code></td>
+<td><code>firm_size_code</code></td>
+<td><code>firm_size_label</code></td>
+</tr>
+<tr class="odd">
+<td>Periodicidad del ingreso</td>
+<td><code>C338</code></td>
+<td><code>income_periodicity_code</code></td>
+<td><code>income_periodicity_label</code></td>
+</tr>
+<tr class="even">
+<td>Area</td>
+<td><code>AREA</code></td>
+<td><code>is_rural</code></td>
+<td><code>area_label</code></td>
+</tr>
+</tbody>
+</table>
+<p>La codificacion de <code>AREA</code> no es la misma en ambas
+versiones: el dato original usa 1/2 y <code>is_rural</code> usa 0/1.
+<code><a href="../reference/etiquetar.html">etiquetar()</a></code> aplica el diccionario que corresponde a cada
+nombre. No interpreta automaticamente las demas columnas del modulo
+76.</p>
 </div>
 </div>
 <div class="section level2">

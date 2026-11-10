@@ -7,7 +7,7 @@
 - [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
   : Descargar microdatos de la EPEN desde el portal del INEI
 - [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
-  : Aplicar etiquetas de valor a variables de la EPEN/EPE
+  : Aplicar etiquetas de valor a variables de la EPEN
 
 ## Ocupaciones e indicadores
 

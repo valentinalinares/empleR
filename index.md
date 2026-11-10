@@ -91,7 +91,7 @@ al INEI.
 |----|----|
 | [`catalogo()`](https://valentinalinares.github.io/empleR/reference/catalogo.md) | Consulta las fuentes, años, variantes y periodos procesados por el proyecto. |
 | [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md) | Descarga el módulo de empleo e ingresos de la EPEN y permite guardarlo en caché. Por ahora solo funciona con la EPEN. |
-| [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md) | Convierte los códigos de las bases procesadas en categorías legibles. |
+| [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md) | Añade categorías legibles a variables crudas o procesadas de la EPEN sin borrar sus códigos. |
 | [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md) | Describe ocupaciones del CNO 2015 y homologa el CO-95 sin forzar los casos ambiguos. Conserva los candidatos y el estado de cada correspondencia. |
 | [`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md) | Añade a cada ocupación su puntaje de exposición a IA. |
 | [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md) | Muestra cuántas observaciones, y cuánta población ponderada, tienen código, homologación y puntaje. |
@@ -128,8 +128,10 @@ IA.
   como parte del inventario del proyecto, pero todavía no se puede
   descargar desde el paquete.
 - [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
-  reconoce los nombres más comunes de las bases procesadas, pero no
-  renombra todas las variables crudas del módulo 76.
+  cubre ocho conceptos documentados del módulo 76, entre ellos sexo,
+  educación, condición de actividad, categoría ocupacional y área. Las
+  demás variables crudas permanecen intactas hasta contar con un
+  diccionario verificado.
 - [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
   produce estimaciones ponderadas y reconstruye el diseño muestral, así
   que sus errores estándar son reproducibles. Aún no se ha comprobado

@@ -59,8 +59,10 @@ mapa(ingreso_dep, var = "estimado",
 `descargar(year = 2024)` devuelve el modulo 76 con los nombres
 originales del INEI.
 [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
-reconoce los nombres comunes de las bases procesadas; no renombra ni
-etiqueta automaticamente todas las columnas crudas.
+reconoce ocho variables crudas del modulo y sus equivalentes procesados.
+Conserva los codigos y agrega columnas terminadas en `_label`; no
+intenta interpretar automaticamente las demas columnas sin un
+diccionario verificado.
 
 Las tasas de desempleo, actividad y empleo requieren la PEA completa y
 se consultan pre-calculadas con

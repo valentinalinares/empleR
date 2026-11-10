@@ -128,9 +128,11 @@ entradas, resultados y limites de cada funcion, consulta el <a href="funciones.h
 <span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span><span class="va">ingreso_dep</span>, var <span class="op">=</span> <span class="st">"estimado"</span>,</span>
 <span>     titulo <span class="op">=</span> <span class="st">"Ingreso laboral promedio por departamento, EPEN 2024"</span><span class="op">)</span></span></code></pre></div>
 <p><code>descargar(year = 2024)</code> devuelve el modulo 76 con los
-nombres originales del INEI. <code><a href="../reference/etiquetar.html">etiquetar()</a></code> reconoce los
-nombres comunes de las bases procesadas; no renombra ni etiqueta
-automaticamente todas las columnas crudas.</p>
+nombres originales del INEI. <code><a href="../reference/etiquetar.html">etiquetar()</a></code> reconoce ocho
+variables crudas del modulo y sus equivalentes procesados. Conserva los
+codigos y agrega columnas terminadas en <code>_label</code>; no intenta
+interpretar automaticamente las demas columnas sin un diccionario
+verificado.</p>
 <p>Las tasas de desempleo, actividad y empleo requieren la PEA completa
 y se consultan pre-calculadas con <code><a href="../reference/resumen_nacional.html">resumen_nacional()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
