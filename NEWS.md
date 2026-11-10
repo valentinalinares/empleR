@@ -48,8 +48,11 @@
   validacion de bases (`data-raw/validar_bases_reales.R`).
 * Nuevo sitio de documentacion con guias de funciones y de la transicion
   EPE-EPEN, ejemplos ejecutados e imagenes reproducibles en el README.
-* `etiquetar()` usa la codificacion educativa de `C366` documentada para la
-  EPEN: 7 es basica especial y 12 es maestria/doctorado.
+* `etiquetar()` reconoce los nombres originales del modulo 76 y los nombres
+  procesados. Conserva los codigos y crea columnas `_label` por defecto;
+  `reemplazar = TRUE` mantiene el comportamiento anterior. Se corrigieron las
+  etiquetas de `C310`, `C311`, `C317` y `C338` contra el diccionario oficial,
+  ademas de conservar la codificacion educativa de `C366`.
 * `panel()` se documenta como experimental y no se interpreta como un panel de
   personas sin validacion adicional.
 
