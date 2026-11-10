@@ -208,8 +208,9 @@
 #' Poligonos departamentales del Peru (sf)
 #'
 #' Shapes a nivel departamento (25 unidades) pre-computados desde el dataset
-#' `geoperu::peru` usando el motor GEOS (sin s2). Usados internamente por
-#' [mapa()] cuando `nivel = "departamento"`.
+#' `geoperu::peru` usando el motor GEOS (sin s2). Son los poligonos que usa
+#' [mapa()] por defecto. Incluyen Callao como departamento propio (codigo
+#' UBIGEO `07`).
 #'
 #' @format Un objeto `sf` con 25 filas y columnas:
 #'   \describe{
@@ -224,8 +225,10 @@
 #' Poligonos provinciales del Peru (sf)
 #'
 #' Shapes a nivel provincia (196 unidades) pre-computados desde el dataset
-#' `geoperu::peru` usando el motor GEOS (sin s2). Usados internamente por
-#' [mapa()] cuando `nivel = "provincia"`.
+#' `geoperu::peru` usando el motor GEOS (sin s2). [mapa()] no los usa en esta
+#' version: las bases de la EPEN no identifican la provincia. Se conservan
+#' como referencia; si los unes a tus propios datos, usa departamento y
+#' provincia juntos como llave.
 #'
 #' @format Un objeto `sf` con 196 filas y columnas:
 #'   \describe{

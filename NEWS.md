@@ -1,5 +1,27 @@
 # empleR 0.1.0
 
+## Cambios de alcance
+
+* Se retiro la funcion experimental `panel()`. Enlazar viviendas u hogares
+  entre entregas de la EPEN no permite afirmar que se sigue a la misma persona:
+  la clave omitia muestra y region, y no distinguia una entrevista repetida en
+  trimestres moviles solapados de una visita nueva. La funcion volvera solo
+  despues de validar la unidad de seguimiento y sus claves. Su ultima version
+  puede consultarse en el historial del repositorio con
+  `git show 31dca788fa6685663f516b6ee5a9921eaf65c809:R/panel.R`.
+* `mapa()` solo admite el nivel departamental. `nivel = "provincia"` y
+  `nivel = "distrito"` producen un error: las bases de la EPEN identifican el
+  departamento (`CCDD`), pero no la provincia ni el distrito, y los nombres de
+  distritos se repiten entre departamentos.
+* `mapa()` se une por codigo UBIGEO (`CCDD` o `region_code`) o por nombre de
+  departamento, sin distinguir mayusculas ni tildes. Ya no hace falta construir
+  la columna `departamento` a partir de `region_code`. Rechaza departamentos
+  repetidos y codigos que contradicen el nombre; avisa de filas sin poligono y
+  de departamentos sin dato. Las etiquetas del mapa interactivo muestran
+  `sin dato` en lugar de `NA` y ya no redondean tasas pequenas a cero.
+* `geoperu` deja de ser una dependencia: solo se usaba para el nivel distrital.
+  `sf` pasa a declararse de forma explicita.
+
 ## Homologacion EPE (CO-95) y EPEN (CNO 2015)
 
 * `cno()` homologa CO-95 -> CNO 2015 con la tabla oficial del INEI
@@ -53,8 +75,6 @@
   `reemplazar = TRUE` mantiene el comportamiento anterior. Se corrigieron las
   etiquetas de `C310`, `C311`, `C317` y `C338` contra el diccionario oficial,
   ademas de conservar la codificacion educativa de `C366`.
-* `panel()` se documenta como experimental y no se interpreta como un panel de
-  personas sin validacion adicional.
 
 # empleR 0.0.0.9000
 

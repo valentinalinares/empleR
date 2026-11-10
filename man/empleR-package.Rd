@@ -6,7 +6,7 @@
 \alias{empleR-package}
 \title{empleR: Tools for Analyzing Peru's National Employment Surveys (EPEN/EPE)}
 \description{
-Provides tools to download, read, and analyze microdata from Peru's national employment surveys: the Encuesta Permanente de Empleo Nacional (EPEN, 2022-present) and its predecessor the Encuesta Permanente de Empleo (EPE, until 2021). Key features include automatic harmonization of occupational classifiers (CNO 2015 and CO-95), calculation of labor market indicators using complex survey design, regional visualization via interactive maps, and integration with an AI occupational exposure index.
+Provides tools to download, read, and analyze microdata from Peru's national employment surveys: the Encuesta Permanente de Empleo Nacional (EPEN, 2022-present) and its predecessor the Encuesta Permanente de Empleo (EPE, until 2021). Key features include automatic harmonization of occupational classifiers (CNO 2015 and CO-95), calculation of labor market indicators using complex survey design, department-level maps, and integration with an AI occupational exposure index.
 }
 \seealso{
 Useful links:

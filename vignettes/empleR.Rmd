@@ -58,8 +58,7 @@ epen_2024 <- cno(epen_2024)
 # 3. Calcular indicadores ponderados
 ingreso_dep <- indicadores(epen_2024, "ingreso_promedio", por = "region_code")
 
-# 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)
-ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
+# 4. Visualizar en mapa (region_code es el codigo UBIGEO del departamento)
 mapa(ingreso_dep, var = "estimado",
      titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
 ```
@@ -176,7 +175,6 @@ ia_dep <- do.call(rbind, lapply(split(epen_ia, epen_ia$region_code), function(d)
     ia_score_mean = stats::weighted.mean(d$ia_score_mean[ok], d$weight[ok])
   )
 }))
-ia_dep$departamento <- shapes_departamentos$departamento[ia_dep$region_code]
 mapa(ia_dep, var = "ia_score_mean",
      titulo = "Exposicion a IA generativa por departamento, 2024")
 ```

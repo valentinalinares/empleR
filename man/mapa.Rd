@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapa.R
 \name{mapa}
 \alias{mapa}
-\title{Visualizar indicadores laborales en un mapa regional del Peru}
+\title{Visualizar un indicador por departamento del Peru}
 \usage{
 mapa(
   data,
@@ -15,13 +15,13 @@ mapa(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} con un indicador agregado por unidad geografica
-(output de \code{\link[=indicadores]{indicadores()}} con el argumento \code{por}).}
+\item{data}{\code{data.frame} con una fila por departamento, por ejemplo la
+salida de \code{\link[=indicadores]{indicadores()}} con \code{por = "region_code"}.}
 
-\item{var}{Nombre de la columna numerica a visualizar en el mapa.}
+\item{var}{Nombre de la columna numerica que se representara con colores.}
 
-\item{nivel}{Nivel geografico. Opciones: \code{"departamento"} (por defecto),
-\code{"provincia"}, \code{"distrito"}.}
+\item{nivel}{Nivel geografico. Solo se admite \code{"departamento"}; los niveles
+\code{"provincia"} y \code{"distrito"} producen un error informativo.}
 
 \item{tipo}{Tipo de visualizacion: \code{"leaflet"} (por defecto, interactivo)
 o \code{"ggplot"} (estatico, para exportar).}
@@ -32,26 +32,61 @@ de la variable.}
 \item{paleta}{Paleta de colores para el gradiente. Por defecto \code{"YlOrRd"}.
 Acepta cualquier paleta de \pkg{RColorBrewer}.}
 
-\item{shapes}{Objeto \code{sf} con los poligonos. Si es \code{NULL} (por defecto),
-se descarga automaticamente con \pkg{geoperu}.}
+\item{shapes}{Objeto \code{sf} con una columna \code{departamento} y un poligono por
+departamento. Si es \code{NULL} (por defecto), usa \link{shapes_departamentos}.}
 }
 \value{
 Un objeto \code{leaflet} (si \code{tipo = "leaflet"}) o \code{ggplot}
-(si \code{tipo = "ggplot"}).
+(si \code{tipo = "ggplot"}). En ambos casos los datos del mapa conservan los
+poligonos de \code{shapes} y las columnas de \code{data} asignadas a cada
+departamento.
 }
 \description{
-Genera un mapa interactivo o estatico con indicadores del mercado laboral
-agregados por departamento, provincia o distrito. El recorrido probado y
-recomendado en esta version es el departamental; los otros niveles requieren
-que el usuario revise cuidadosamente las llaves geograficas.
+Une una tabla con una fila por departamento a los poligonos incluidos en el
+paquete y devuelve un mapa interactivo (\code{leaflet}) o estatico (\code{ggplot2}).
+La funcion no calcula indicadores: recibe resultados ya agregados, por
+ejemplo la salida de \code{\link[=indicadores]{indicadores()}} con \code{por = "region_code"}.
+}
+\details{
+\strong{Nivel geografico.} Esta version solo admite departamentos. Las bases de
+la EPEN que descarga el paquete identifican el departamento (\code{CCDD}), pero no
+la provincia ni el distrito, y los nombres de distritos se repiten entre
+departamentos. Por eso \code{nivel = "provincia"} y \code{nivel = "distrito"} producen
+un error en lugar de un cruce que podria asignar valores al territorio
+equivocado.
+
+\strong{Llave de union.} La funcion busca, en este orden:
+\enumerate{
+\item un codigo de departamento del UBIGEO del INEI en \code{CCDD} o \code{region_code}
+(de 1 a 25, con o sin cero a la izquierda);
+\item un nombre de departamento en \code{departamento}, \code{DEPARTAMENTO}, \code{dep} o
+\code{region}, sin distinguir mayusculas ni tildes.
+}
+
+Si la tabla trae codigo y nombre, ambos deben corresponder al mismo
+departamento. Nombres como \code{"Lima Metropolitana"} no se asignan al
+departamento de Lima: son otro ambito geografico.
+
+\strong{Controles.} \code{mapa()} rechaza departamentos repetidos, por ejemplo cuando
+el resultado de \code{\link[=indicadores]{indicadores()}} se agrupo por departamento y sexo; filtra o
+agrega antes de mapear. Tambien avisa cuando una fila no corresponde a
+ningun poligono y cuando un departamento queda sin dato. Nunca copia ni
+reparte valores entre departamentos. En las bases anuales de la EPEN
+2022-2025 el codigo \code{07} (Callao) no aparece, por lo que Callao se muestra
+sin dato.
+
+\strong{Interpretacion.} Un mapa representa los valores que recibe. No demuestra
+que la encuesta sea representativa para cada departamento ni que las
+diferencias de color sean estadisticamente significativas. Antes de
+comparar territorios, revisa el diseno muestral, el numero de observaciones
+y la precision de cada estimacion.
 }
 \examples{
 \dontrun{
-# Ingreso promedio por departamento. region_code (1-25) sigue el orden
-# alfabetico de los departamentos, igual que shapes_departamentos.
+# Ingreso promedio por departamento. region_code es el codigo UBIGEO
+# del departamento (CCDD en las bases originales de la EPEN).
 ingreso_dep <- indicadores(muestra_epen_2024, "ingreso_promedio",
                            por = "region_code")
-ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
 
 # Mapa interactivo (leaflet)
 mapa(ingreso_dep, var = "estimado", titulo = "Ingreso promedio (S/)")

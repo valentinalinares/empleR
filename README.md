@@ -84,12 +84,11 @@ abril de 2026 con Claude Sonnet 4.6, y su paquete metodológico se versionó el
 | `cobertura()` | Muestra cuántas observaciones, y cuánta población ponderada, tienen código, homologación y puntaje. |
 | `indicadores()` | Calcula ingreso y horas ponderados. Los errores estándar todavía son provisionales. |
 | `resumen_nacional()` | Consulta indicadores nacionales precalculados y documentados. |
-| `mapa()` | Muestra indicadores agregados en mapas estáticos o interactivos. Se recomienda usarlo a nivel departamental. |
+| `mapa()` | Muestra indicadores agregados por departamento en mapas estáticos o interactivos. Se une por código UBIGEO o nombre y avisa de departamentos sin dato. |
 
-`panel()` está disponible como herramienta **experimental** para revisar
-viviendas u hogares que aparecen más de una vez. Por sí sola no identifica a la
-misma persona y no forma parte del uso recomendado en la primera versión
-estable.
+La función experimental `panel()` se retiró de esta versión: enlazar viviendas
+u hogares entre periodos no basta para seguir a las mismas personas, y esa
+validación sigue pendiente. El detalle está en `NEWS.md`.
 
 ## Contexto y trabajo relacionado
 

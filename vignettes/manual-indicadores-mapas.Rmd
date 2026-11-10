@@ -117,44 +117,48 @@ Estos resultados son productos reproducibles del pipeline del proyecto. Al
 citarlos, identifica la fuente y la variante; no los presentes como una API o
 una tabla oficial publicada directamente por el INEI.
 
-## `mapa()`: representar un indicador agregado
+## `mapa()`: representar un indicador por departamento
 
 ### Para qué sirve
 
-`mapa()` une una tabla de resultados con los polígonos geográficos del Perú y
-produce un mapa estático o interactivo. La función espera datos ya agregados;
-no calcula el indicador dentro del mapa.
+`mapa()` une una tabla de resultados con los polígonos de los 25 departamentos
+del Perú y produce un mapa estático o interactivo. La función espera datos ya
+agregados, con una fila por departamento; no calcula el indicador dentro del
+mapa.
 
 ### Qué recibe
 
 | Argumento | Uso |
 |---|---|
-| `data` | Tabla con una fila por unidad geográfica. |
+| `data` | Tabla con una fila por departamento. |
 | `var` | Columna numérica que se representará con colores. |
-| `nivel` | Departamento, provincia o distrito. |
+| `nivel` | Solo `"departamento"` en esta versión. |
 | `tipo` | `ggplot` para una figura estática o `leaflet` para un mapa interactivo. |
 | `titulo` | Título del mapa y de la leyenda. |
 | `paleta` | Paleta de colores. |
-| `shapes` | Polígonos propios si no deseas usar los incluidos. |
+| `shapes` | Polígonos propios, con una columna `departamento`, si no deseas usar los incluidos. |
 
 ### Qué hace por dentro
 
-1. Obtiene los polígonos del nivel geográfico solicitado.
-2. Detecta la columna que permite unir los resultados con esos polígonos.
-3. Añade el indicador a cada unidad geográfica y avisa si alguna queda sin dato.
-4. Construye un objeto `ggplot` o `leaflet`.
+1. Busca la llave del departamento: primero un código UBIGEO en `CCDD` o
+   `region_code`; si no lo hay, un nombre en `departamento`. Los nombres se
+   comparan sin distinguir mayúsculas ni tildes.
+2. Si la tabla trae código y nombre, comprueba que ambos indiquen el mismo
+   departamento.
+3. Rechaza departamentos repetidos y avisa de filas que no corresponden a
+   ningún polígono.
+4. Asigna cada valor al polígono de su departamento y avisa de los
+   departamentos que quedan sin dato.
+5. Construye un objeto `ggplot` o `leaflet`.
 
 ### Ejemplo de aplicación
 
-```{r mapa, warning=FALSE}
+```{r mapa}
 ingreso_dep <- indicadores(
   muestra_epen_2024,
   indicador = "ingreso_promedio",
   por = "region_code"
 )
-
-ingreso_dep$departamento <-
-  shapes_departamentos$departamento[ingreso_dep$region_code]
 
 mapa(
   ingreso_dep,
@@ -164,11 +168,31 @@ mapa(
 )
 ```
 
-El mapa demuestra el funcionamiento de la función. La muestra de 2.000
-personas no ofrece estimaciones departamentales oficiales. Para resultados
-sustantivos debes usar la base completa, comprobar el ámbito de estimación y
-revisar la cobertura de cada departamento.
+La tabla trae `region_code`, el código UBIGEO del departamento, así que no
+hace falta añadir nombres. El aviso sobre Callao es esperado: en las bases
+anuales de la EPEN 2022–2025 el código `07` no aparece. `mapa()` deja ese
+polígono sin dato; no copia ni reparte el valor de Lima.
 
-El nivel departamental es el recorrido validado en esta versión. Si trabajas a
-nivel provincial o distrital, revisa de manera explícita las llaves geográficas
-y los dominios que permite el diseño de la encuesta.
+### Qué no hace
+
+- **No trabaja con provincias ni distritos.** Las bases de la EPEN identifican
+  el departamento, no la provincia ni el distrito, y muchos nombres de
+  distritos se repiten entre departamentos. Pedir esos niveles produce un
+  error en lugar de un cruce que podría asignar valores al territorio
+  equivocado.
+- **No reconoce ámbitos que no son departamentos.** Una fila de
+  "Lima Metropolitana" no se asigna al departamento de Lima: genera un aviso y
+  no se dibuja.
+- **No resuelve grupos dentro del departamento.** Si calculaste un indicador
+  por departamento y sexo, hay dos filas por departamento. Filtra un grupo o
+  calcula el indicador solo por departamento antes de mapear.
+
+### Cómo interpretar el mapa
+
+Un mapa representa los valores que recibe. No demuestra que la encuesta sea
+representativa para cada departamento ni que las diferencias de color sean
+estadísticamente significativas. El ejemplo anterior usa la muestra de 2.000
+personas incluida en el paquete y no ofrece estimaciones departamentales
+válidas. Para resultados sustantivos usa la base completa, revisa el número de
+observaciones y la precisión de cada estimación, y comprueba qué dominios
+permite el diseño de la encuesta.
