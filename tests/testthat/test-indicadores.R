@@ -8,6 +8,11 @@ test_that("indicadores() calcula nacional y por grupo", {
   )
   expect_equal(nrow(por_sexo), length(unique(muestra_epen_2024$sex)))
   expect_true(all(por_sexo$estimado > 0))
+  expect_true(all(c(
+    "n_universo", "n_estimacion", "n_sin_peso", "n_peso_invalido",
+    "n_sin_indicador", "n_indicador_invalido", "n_fuera_definicion",
+    "poblacion_representada"
+  ) %in% names(nacional)))
 })
 
 test_that("indicadores() rechaza indicadores no soportados", {
@@ -29,19 +34,26 @@ test_that("la UPM combina muestra, region y conglomerado", {
 })
 
 test_that("indicadores() usa estrato y UPM compuesta con la muestra", {
-  expect_no_warning(
-    suppressMessages(r <- indicadores(muestra_epen_2024[!is.na(muestra_epen_2024$weight), ], "ingreso_promedio"))
+  expect_no_error(
+    suppressWarnings(suppressMessages(
+      r <- indicadores(
+        muestra_epen_2024[!is.na(muestra_epen_2024$weight), ],
+        "ingreso_promedio"
+      )
+    ))
   )
   expect_true(r$error_std > 0)
 })
 
 test_that("la muestra trae identificadores del muestreo completos", {
   m <- muestra_epen_2024
-  expect_equal(ncol(m), 35L)
+  expect_equal(ncol(m), 36L)
   expect_false(anyNA(m$strata_code))
   expect_false(anyNA(m$sample_id))
   expect_type(m$cluster_id, "character")
   expect_true(any(startsWith(m$cluster_id, "0")))
+  expect_false(anyNA(m$hours_week_total))
+  expect_true(any(m$hours_week_total != m$hours_week))
   clave <- m[c("month", "sample_id", "region_code", "cluster_id", "dwelling_id",
                "household_id", "person_id")]
   expect_false(anyDuplicated(clave) > 0)
@@ -54,7 +66,7 @@ test_that("indicadores() reconoce nombres crudos del modulo 76", {
     CONGLOMERADO = rep(c("0001", "0002"), 4),
     ESTRATO = rep(c(1, 1, 2, 2), 2),
     FAC300_ANUAL = rep(100, 8),
-    INGTOTP = seq(1000, 1700, by = 100),
+    ingtrabw = as.character(seq(1000, 1700, by = 100)),
     whoraT = rep(c(40, 48), 4)
   )
 
@@ -65,6 +77,76 @@ test_that("indicadores() reconoce nombres crudos del modulo 76", {
     indicadores(crudos, "horas_promedio")
   )
 
-  expect_equal(ingreso$estimado, mean(crudos$INGTOTP))
+  expect_equal(ingreso$estimado, mean(as.numeric(crudos$ingtrabw)))
   expect_equal(horas$estimado, mean(crudos$whoraT))
+})
+
+test_that("indicadores() filtra ocupados y convierte columnas de texto", {
+  crudos <- data.frame(
+    OCUP300 = c("1", "1", "2", "4"),
+    FAC300_ANUAL = c("1", "3", "100", "100"),
+    ingtrabw = c("100", "300", "9999", "9999"),
+    whoraT = c("20", "40", "99", "99")
+  )
+
+  ingreso <- suppressWarnings(indicadores(crudos, "ingreso_promedio"))
+  horas <- suppressWarnings(indicadores(crudos, "horas_promedio"))
+
+  expect_equal(ingreso$estimado, 250)
+  expect_equal(horas$estimado, 35)
+  expect_equal(ingreso$n_universo, 2L)
+  expect_equal(ingreso$n_estimacion, 2L)
+})
+
+test_that("indicadores() exige elegir entre varios factores", {
+  datos <- data.frame(
+    FAC300_ANUAL = c(1, 1),
+    FAC_T300 = c(2, 2),
+    ingtrabw = c(100, 200)
+  )
+  expect_error(
+    indicadores(datos, "ingreso_promedio"),
+    "varios factores"
+  )
+  expect_no_error(suppressWarnings(
+    indicadores(datos, "ingreso_promedio", var_peso = "FAC300_ANUAL")
+  ))
+})
+
+test_that("indicadores() audita pesos y valores excluidos", {
+  datos <- data.frame(
+    weight = c("1", "", "0", "Inf", "2", "3", "4"),
+    labor_income_work_weighted = c("100", "200", "300", "400", "", "x", "0")
+  )
+  r <- suppressWarnings(indicadores(datos, "ingreso_promedio"))
+
+  expect_equal(r$n_universo, 7L)
+  expect_equal(r$n_estimacion, 1L)
+  expect_equal(r$n_sin_peso, 1L)
+  expect_equal(r$n_peso_invalido, 2L)
+  expect_equal(r$n_sin_indicador, 1L)
+  expect_equal(r$n_indicador_invalido, 1L)
+  expect_equal(r$n_fuera_definicion, 1L)
+  expect_equal(r$poblacion_representada, 1)
+  expect_equal(r$estimado, 100)
+})
+
+test_that("la mediana ponderada usa la regla matematica", {
+  datos <- data.frame(
+    weight = c(1, 1, 1, 1),
+    labor_income_work_weighted = c(10, 20, 30, 40)
+  )
+  r <- suppressWarnings(indicadores(datos, "ingreso_mediano"))
+  expect_equal(r$estimado, 20)
+})
+
+test_that("horas totales no se sustituyen por horas de ocupacion principal", {
+  datos <- data.frame(weight = 1:2, hours_week = c(40, 45))
+  expect_error(
+    indicadores(datos, "horas_promedio"),
+    "var_indicador"
+  )
+  expect_no_error(suppressWarnings(
+    indicadores(datos, "horas_promedio", var_indicador = "hours_week")
+  ))
 })

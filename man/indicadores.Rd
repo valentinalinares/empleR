@@ -10,7 +10,10 @@ indicadores(
   por = NULL,
   var_strata = NULL,
   var_psu = NULL,
-  var_peso = NULL
+  var_peso = NULL,
+  var_estado = NULL,
+  codigo_ocupado = "1",
+  var_indicador = NULL
 )
 }
 \arguments{
@@ -18,9 +21,11 @@ indicadores(
 
 \item{indicador}{Nombre del indicador a calcular:
 \itemize{
-\item \code{"ingreso_promedio"}: Ingreso laboral mensual medio (ocupados).
-\item \code{"horas_promedio"}: Horas trabajadas promedio semanales (ocupados).
-\item \code{"ingreso_mediano"}: Mediana del ingreso mensual (ocupados).
+\item \code{"ingreso_promedio"}: ingreso mensual medio proveniente del trabajo,
+sumando ocupaciones principal y secundaria e ingresos extraordinarios.
+\item \code{"horas_promedio"}: total medio de horas trabajadas en la semana en
+todas las ocupaciones.
+\item \code{"ingreso_mediano"}: mediana del mismo ingreso mensual.
 }}
 
 \item{por}{Variable(s) de agrupacion: \code{"sex"}, \code{"region_code"},
@@ -36,23 +41,57 @@ INEI). Si se detecta y la base trae tambien la muestra (\code{sample_id} o
 tres: los numeros de conglomerado se repiten entre departamentos y
 muestras, asi que el conglomerado solo no identifica una UPM.}
 
-\item{var_peso}{Nombre del factor de expansion. Detecta automaticamente
-\code{weight} (procesados) o \code{FAC300_ANUAL} (datos crudos EPEN).}
+\item{var_peso}{Nombre del factor de expansion. Si existe un solo candidato,
+lo detecta automaticamente. Si encuentra mas de uno (por ejemplo,
+\code{FAC_T300} y \code{FAC300_ANUAL}), exige elegirlo de forma explicita.}
+
+\item{var_estado}{Nombre de la variable de condicion de actividad. Detecta
+\code{labor_status_code} o \code{OCUP300}. \code{NULL} permite la deteccion automatica.}
+
+\item{codigo_ocupado}{Codigo que identifica a las personas ocupadas en
+\code{var_estado}. En la EPEN es \code{"1"}.}
+
+\item{var_indicador}{Nombre de la variable numerica que se desea resumir.
+Normalmente no hace falta indicarla: para ingreso se usan
+\code{labor_income_work_weighted} o \code{ingtrabw}, y para horas
+\code{hours_week_total} o \code{whoraT}. Sirve para solicitar expresamente otro
+concepto, como el ingreso o las horas de la ocupacion principal.}
 }
 \value{
-Un \code{data.frame} con el indicador calculado y error estandar,
-agrupado segun \code{por}.
+Un \code{data.frame} con el indicador calculado, el error estandar
+provisional y columnas de auditoria: \code{n_universo}, \code{n_estimacion},
+\code{n_sin_peso}, \code{n_peso_invalido}, \code{n_sin_indicador},
+\code{n_indicador_invalido}, \code{n_fuera_definicion} y
+\code{poblacion_representada}. Los conteos de problemas no son mutuamente
+excluyentes.
 }
 \description{
-Calcula indicadores laborales incorporando el diseno muestral complejo de
-la EPEN mediante el paquete \pkg{survey}. Los datos deben ser microdatos
-procesados o microdatos crudos de \code{\link[=descargar]{descargar()}} con personas ocupadas.
+Calcula indicadores laborales de la poblacion ocupada incorporando el
+diseno muestral complejo de la EPEN mediante el paquete \pkg{survey}. Si la
+base contiene \code{OCUP300} o \code{labor_status_code}, conserva de forma explicita
+el codigo de ocupado. Si no contiene una variable de condicion de actividad,
+supone que las filas recibidas ya corresponden a personas ocupadas.
 }
 \details{
 Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
 regional, usa \code{\link[=resumen_nacional]{resumen_nacional()}}, que devuelve los indicadores
 pre-calculados del pipeline INEI con la muestra completa de la PEA.
 }
+\section{Definiciones y tratamiento de faltantes}{
+
+Los indicadores de ingreso excluyen valores iguales o menores que cero.
+Esta regla reproduce el ingreso medio oficial de la EPEN, que resume las
+remuneraciones positivas de trabajadores dependientes e independientes. Las
+horas incluyen ceros validos. En todos los indicadores se excluyen del
+calculo los pesos ausentes, no numericos, no finitos o no positivos, y los
+valores del indicador ausentes, no numericos o no finitos. La salida informa
+cuantos casos se excluyeron por cada motivo.
+
+La mediana usa la regla matematica de \code{\link[survey:svyquantile]{survey::svyquantile()}}: el extremo
+inferior del intervalo donde la funcion de distribucion ponderada alcanza
+0.5 (\code{qrule = "math"}).
+}
+
 \section{Diseno muestral provisional}{
 
 Las fichas EPEN describen un diseno probabilistico, estratificado, de areas

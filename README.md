@@ -82,7 +82,7 @@ abril de 2026 con Claude Sonnet 4.6, y su paquete metodológico se versionó el
 | `cno()` | Describe ocupaciones del CNO 2015 y homologa el CO-95 sin forzar los casos ambiguos. Conserva los candidatos y el estado de cada correspondencia. |
 | `ia_exposicion()` | Añade a cada ocupación su puntaje de exposición a IA. |
 | `cobertura()` | Muestra cuántas observaciones, y cuánta población ponderada, tienen código, homologación y puntaje. |
-| `indicadores()` | Calcula ingreso y horas ponderados. Los errores estándar todavía son provisionales. |
+| `indicadores()` | Calcula ingreso y horas ponderados para la población ocupada y muestra los casos usados o excluidos. Los errores estándar todavía son provisionales. |
 | `resumen_nacional()` | Consulta indicadores nacionales precalculados y documentados. |
 | `mapa()` | Muestra indicadores agregados para los 25 ámbitos departamentales oficiales de la EPEN. Distingue Lima Metropolitana y Callao de Región Lima. |
 
@@ -113,9 +113,10 @@ las ocupaciones con un índice peruano de exposición a IA.
   sexo, educación, condición de actividad, categoría ocupacional y área. Las
   demás variables crudas permanecen intactas hasta contar con un diccionario
   verificado.
-- `indicadores()` produce estimaciones ponderadas y reconstruye el diseño
-  muestral, así que sus errores estándar son reproducibles. Aún no se ha
-  comprobado que reproduzcan los errores estándar publicados por el INEI.
+- `indicadores()` usa el ingreso total proveniente del trabajo y las horas de
+  todas las ocupaciones. Sus estimaciones puntuales se contrastaron con los
+  microdatos y las cifras oficiales de 2022 a 2025. La reconstrucción del
+  diseño muestral y sus errores estándar siguen siendo provisionales.
 - La primera versión estable no incluye análisis longitudinales de personas ni
   encuestas de otros países.
 

@@ -80,6 +80,7 @@ raw_geo <- raw |>
     .dwelling_key = as.character(SELVIV),
     .household_key = as.character(HOGAR),
     .person_key = as.character(as.integer(C201)),
+    hours_week_total = as.numeric(whoraT),
     division_lima = as.integer(DIVISION_LIMA)
   )
 stopifnot(!anyDuplicated(raw_geo[claves]))
@@ -134,9 +135,10 @@ if (file.exists(anterior)) {
 
 stopifnot(
   nrow(muestra) == 2000L,
-  ncol(muestra) == 35L,
+  ncol(muestra) == 36L,
   !anyNA(muestra$sample_id),
   !anyNA(muestra$strata_code),
+  !anyNA(muestra$hours_week_total),
   all(!is.na(muestra$division_lima[muestra$region_code == 15])),
   all(is.na(muestra$division_lima[muestra$region_code != 15])),
   !anyDuplicated(muestra[c("month", "sample_id", "region_code", "cluster_id",

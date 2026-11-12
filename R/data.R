@@ -24,7 +24,10 @@
 #'     \item{labor_status_code}{Estado laboral: **siempre 1 (Ocupado)** en este dataset.}
 #'     \item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
 #'     \item{labor_income_monthly}{Ingreso laboral mensual en soles.}
-#'     \item{hours_week}{Horas trabajadas por semana.}
+#'     \item{hours_week}{Horas trabajadas en la ocupacion principal
+#'       (`C318_T`).}
+#'     \item{hours_week_total}{Horas trabajadas en todas las ocupaciones
+#'       durante la semana (`whoraT`).}
 #'     \item{weight}{Factor de expansion (peso muestral).}
 #'     \item{sex_code, age, education_code}{Variables sociodemograficas.}
 #'   }

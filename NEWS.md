@@ -50,6 +50,16 @@
 
 ## Diseno muestral
 
+* `indicadores()` explicita el universo ocupado, convierte de forma controlada
+  los datos numericos recibidos como texto y exige elegir `var_peso` cuando
+  existen factores para mas de un periodo. La salida informa casos usados,
+  faltantes, valores invalidos y poblacion representada.
+* El ingreso usa las ocupaciones principal y secundaria con ingresos
+  extraordinarios (`ingtrabw`) y excluye valores no positivos, en concordancia
+  con el indicador publicado por el INEI. Las horas usan el total semanal en
+  todas las ocupaciones (`whoraT`). Los estimadores puntuales se validaron con
+  los ZIP oficiales EPEN 2022-2025 y reproducen el ingreso oficial dentro del
+  redondeo publicado.
 * `indicadores()` forma la UPM con muestra + region + conglomerado cuando la
   base trae `sample_id` y `region_code`. El diseno se documenta como
   provisional hasta contar con la especificacion oficial.
@@ -59,7 +69,9 @@
 * `muestra_epen_2024` se regenera desde la base corregida de
   `ia_empleo_peru` (mismas 2.000 personas): codigos CNO completados a la
   izquierda, `sample_id`, estrato e identificadores reconstruidos. Incorpora
-  `division_lima`, contrastada con `DIVISION_LIMA` del ZIP oficial de 2024.
+  `division_lima`, contrastada con `DIVISION_LIMA` del ZIP oficial de 2024, y
+  `hours_week_total`, recuperada de `whoraT` sin reemplazar las horas de la
+  ocupacion principal.
 * `cno_2015` incluye el grupo primario 5321 con sus tareas oficiales y
   restaura las tareas de 5223.
 * Nuevos datasets `co_1995` y `equivalencia_co95`.

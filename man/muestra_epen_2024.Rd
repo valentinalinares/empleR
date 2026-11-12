@@ -26,7 +26,10 @@ empresa (\code{C317}) y periodicidad del pago (\code{C338}, solo dependientes).}
 \item{labor_status_code}{Estado laboral: \strong{siempre 1 (Ocupado)} en este dataset.}
 \item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
 \item{labor_income_monthly}{Ingreso laboral mensual en soles.}
-\item{hours_week}{Horas trabajadas por semana.}
+\item{hours_week}{Horas trabajadas en la ocupacion principal
+(\code{C318_T}).}
+\item{hours_week_total}{Horas trabajadas en todas las ocupaciones
+durante la semana (\code{whoraT}).}
 \item{weight}{Factor de expansion (peso muestral).}
 \item{sex_code, age, education_code}{Variables sociodemograficas.}
 }

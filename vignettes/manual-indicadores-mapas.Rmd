@@ -29,8 +29,10 @@ departamentales que publica la EPEN.
 ### Para qué sirve
 
 `indicadores()` calcula el ingreso laboral promedio o mediano y las horas
-semanales promedio. Puede obtener un resultado nacional o separar la estimación
-por sexo, región u otras variables de la base.
+semanales promedio de la población ocupada. El ingreso incluye las ocupaciones
+principal y secundaria y los ingresos extraordinarios; las horas corresponden
+al total trabajado en todas las ocupaciones. Puede obtener un resultado
+nacional o separar la estimación por sexo, región u otras variables de la base.
 
 ### Qué recibe
 
@@ -42,20 +44,30 @@ por sexo, región u otras variables de la base.
 | `var_strata` | Nombre del estrato si no se detecta automáticamente. |
 | `var_psu` | Nombre de la unidad primaria de muestreo. |
 | `var_peso` | Nombre del factor de expansión. |
+| `var_estado` | Variable que identifica la condición de actividad. |
+| `codigo_ocupado` | Código de ocupado; en la EPEN es `1`. |
+| `var_indicador` | Variable alternativa, solo para medir otro concepto. |
 
 ### Qué hace por dentro
 
-1. Detecta el peso, el estrato y el conglomerado disponibles.
-2. Elimina del cálculo las filas cuyo peso es ausente o no positivo.
-3. Cuando existen las variables necesarias, construye una UPM con muestra,
+1. Conserva a las personas ocupadas cuando la base trae su condición de
+   actividad.
+2. Detecta el peso, el estrato y el conglomerado disponibles. Si hay varios
+   pesos, pide elegir el que corresponde al periodo.
+3. Convierte de forma controlada los pesos y valores que llegan como texto.
+4. Excluye del cálculo los pesos ausentes o inválidos y registra sus conteos.
+5. Para ingreso, conserva remuneraciones positivas; para horas, admite ceros.
+6. Cuando existen las variables necesarias, construye una UPM con muestra,
    región y conglomerado.
-4. Crea un diseño con el paquete `survey`.
-5. Calcula el indicador y su error estándar para el total o para cada grupo.
+7. Crea un diseño con el paquete `survey`.
+8. Calcula el indicador y su error estándar para el total o para cada grupo.
 
 ### Qué devuelve
 
-El resultado contiene el nombre del indicador, `estimado` y `error_std`. Si
-usas `por`, conserva además las columnas que identifican cada grupo.
+El resultado contiene el nombre del indicador, `estimado` y `error_std`. También
+informa el universo, los casos usados, los faltantes o valores inválidos y la
+población representada por las observaciones que entraron al cálculo. Si usas
+`por`, conserva además las columnas que identifican cada grupo.
 
 ```{r indicadores}
 ingreso_sexo <- indicadores(
@@ -79,7 +91,10 @@ indicadores(
 ### Cómo interpretar el resultado
 
 `estimado` incorpora el factor de expansión, por lo que no equivale al promedio
-simple de las filas. `error_std` describe la precisión bajo el diseño
+simple de las filas. La mediana usa el extremo inferior del intervalo donde la
+distribución ponderada alcanza 0,5, la regla matemática de `survey`.
+
+`error_std` describe la precisión bajo el diseño
 reconstruido por el paquete. Debe tratarse como provisional: todavía no se ha
 comprobado que esa reconstrucción reproduzca los errores estándar publicados
 por el INEI.
