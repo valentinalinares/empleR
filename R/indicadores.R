@@ -67,8 +67,12 @@
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024)
 #'
-#' # Ingreso promedio por departamento (codigo de region 1-25)
-#' indicadores(epen_2024, "ingreso_promedio", por = "region_code")
+#' # Ingreso por ambito departamental EPEN; Lima requiere su division
+#' indicadores(
+#'   epen_2024,
+#'   "ingreso_promedio",
+#'   por = c("region_code", "division_lima")
+#' )
 #'
 #' # Horas trabajadas por sector institucional
 #' indicadores(epen_2024, "horas_promedio", por = "institutional_sector_code")

@@ -2,62 +2,83 @@
 % Please edit documentation in R/mapa.R
 \name{mapa}
 \alias{mapa}
-\title{Visualizar indicadores laborales en un mapa regional del Peru}
+\title{Visualizar un indicador por ambito departamental de la EPEN}
 \usage{
 mapa(
   data,
   var,
   nivel = "departamento",
-  tipo = "leaflet",
+  tipo = c("leaflet", "ggplot"),
   titulo = NULL,
   paleta = "YlOrRd",
   shapes = NULL
 )
 }
 \arguments{
-\item{data}{\code{data.frame} con un indicador agregado por unidad geografica
-(output de \code{\link[=indicadores]{indicadores()}} con el argumento \code{por}).}
+\item{data}{\code{data.frame} con una fila por ambito departamental EPEN. Para
+resultados de \code{\link[=indicadores]{indicadores()}}, usa
+\code{por = c("region_code", "division_lima")}.}
 
-\item{var}{Nombre de la columna numerica a visualizar en el mapa.}
+\item{var}{Nombre de la columna numerica que se representara con colores.}
 
-\item{nivel}{Nivel geografico. Opciones: \code{"departamento"} (por defecto),
-\code{"provincia"}, \code{"distrito"}.}
+\item{nivel}{Nivel geografico. Solo se admite \code{"departamento"}; los niveles
+\code{"provincia"} y \code{"distrito"} producen un error informativo.}
 
 \item{tipo}{Tipo de visualizacion: \code{"leaflet"} (por defecto, interactivo)
-o \code{"ggplot"} (estatico, para exportar).}
+o \code{"ggplot"} (estatico).}
 
-\item{titulo}{Titulo del mapa y la leyenda. Si es \code{NULL}, usa el nombre
-de la variable.}
+\item{titulo}{Titulo del mapa y de la leyenda. Si es \code{NULL}, usa \code{var}.}
 
-\item{paleta}{Paleta de colores para el gradiente. Por defecto \code{"YlOrRd"}.
-Acepta cualquier paleta de \pkg{RColorBrewer}.}
+\item{paleta}{Paleta de colores de \code{leaflet} o \code{ggplot2}.}
 
-\item{shapes}{Objeto \code{sf} con los poligonos. Si es \code{NULL} (por defecto),
-se descarga automaticamente con \pkg{geoperu}.}
+\item{shapes}{Objeto \code{sf} opcional con \code{geo_id}, \code{departamento} y una
+geometria por ambito EPEN. Si es \code{NULL}, se construyen los poligonos
+oficiales a partir de \link{shapes_departamentos} y \link{shapes_provincias}.}
 }
 \value{
-Un objeto \code{leaflet} (si \code{tipo = "leaflet"}) o \code{ggplot}
-(si \code{tipo = "ggplot"}).
+Un objeto \code{leaflet} o \code{ggplot}.
 }
 \description{
-Genera un mapa interactivo o estatico con indicadores del mercado laboral
-agregados por departamento, provincia o distrito. El recorrido probado y
-recomendado en esta version es el departamental; los otros niveles requieren
-que el usuario revise cuidadosamente las llaves geograficas.
+Une una tabla con una fila por ambito departamental de la Encuesta
+Permanente de Empleo Nacional (EPEN) a los poligonos incluidos en el paquete
+y devuelve un mapa interactivo (\code{leaflet}) o estatico (\code{ggplot2}). La funcion
+recibe resultados ya agregados; no calcula indicadores.
+}
+\details{
+\strong{Ambitos de la EPEN.} El INEI no publica los resultados de Lima como un
+unico departamento. Distingue \code{DIVISION_LIMA = 1}, Lima Metropolitana y la
+Provincia Constitucional del Callao, de \code{DIVISION_LIMA = 2}, Region Lima
+(las otras nueve provincias del departamento). Por ello, cuando \code{CCDD} o
+\code{region_code} vale 15, \code{\link[=mapa]{mapa()}} exige tambien \code{DIVISION_LIMA} o
+\code{division_lima}. Nunca asigna ese valor solo al poligono de Lima.
+
+Los otros 23 departamentos conservan su ambito habitual. En total, el mapa
+contiene 25 ambitos departamentales EPEN. Los poligonos de los dos ambitos
+de Lima se construyen a partir de los poligonos provinciales incluidos en el
+paquete.
+
+\strong{Llave de union.} La funcion admite:
+\enumerate{
+\item \code{CCDD} o \code{region_code}, mas \code{DIVISION_LIMA} o \code{division_lima} para el
+codigo 15; o
+\item un nombre oficial en \code{ambito_epen}, \code{departamento}, \code{DEPARTAMENTO}, \code{dep}
+o \code{region}.
+}
+
+Si hay varias columnas geograficas, todas las que tengan un valor deben
+coincidir. Los codigos invalidos y las contradicciones producen un error.
+Los nombres no reconocidos se informan y no se dibujan.
+
+\strong{Nivel geografico.} Esta version no admite provincias ni distritos. Un
+mapa representa los valores que recibe, pero no demuestra representatividad
+ni significancia estadistica. Revisa el diseno muestral, el numero de
+observaciones y la precision antes de comparar territorios.
 }
 \examples{
-\dontrun{
-# Ingreso promedio por departamento. region_code (1-25) sigue el orden
-# alfabetico de los departamentos, igual que shapes_departamentos.
-ingreso_dep <- indicadores(muestra_epen_2024, "ingreso_promedio",
-                           por = "region_code")
-ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
-
-# Mapa interactivo (leaflet)
-mapa(ingreso_dep, var = "estimado", titulo = "Ingreso promedio (S/)")
-
-# Mapa estatico (ggplot2)
-mapa(ingreso_dep, var = "estimado", tipo = "ggplot",
-     titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
-}
+ingreso_dep <- indicadores(
+  muestra_epen_2024,
+  "ingreso_promedio",
+  por = c("region_code", "division_lima")
+)
+mapa(ingreso_dep, "estimado", tipo = "ggplot")
 }

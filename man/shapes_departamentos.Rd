@@ -19,7 +19,8 @@ shapes_departamentos
 }
 \description{
 Shapes a nivel departamento (25 unidades) pre-computados desde el dataset
-\code{geoperu::peru} usando el motor GEOS (sin s2). Usados internamente por
-\code{\link[=mapa]{mapa()}} cuando \code{nivel = "departamento"}.
+\code{geoperu::peru} usando el motor GEOS (sin s2). \code{\link[=mapa]{mapa()}} los combina con
+\link{shapes_provincias} para representar los ambitos departamentales de la EPEN.
+Incluyen Callao como departamento politico propio (codigo UBIGEO \code{07}).
 }
 \keyword{datasets}

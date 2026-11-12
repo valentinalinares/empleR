@@ -37,7 +37,7 @@ test_that("indicadores() usa estrato y UPM compuesta con la muestra", {
 
 test_that("la muestra trae identificadores del muestreo completos", {
   m <- muestra_epen_2024
-  expect_equal(ncol(m), 34L)
+  expect_equal(ncol(m), 35L)
   expect_false(anyNA(m$strata_code))
   expect_false(anyNA(m$sample_id))
   expect_type(m$cluster_id, "character")

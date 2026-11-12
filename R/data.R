@@ -3,10 +3,14 @@
 #' Submuestra aleatoria de 2.000 filas de la EPEN 2024
 #' (variante departamentos_anual) para uso en ejemplos y pruebas.
 #'
-#' @format Un `data.frame` con 2.000 filas y 34 columnas. Variables principales:
+#' @format Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
 #'   \describe{
 #'     \item{year, month}{Ano y mes de referencia.}
-#'     \item{region_code}{Codigo de departamento (1-25).}
+#'     \item{region_code}{Codigo CCDD de la EPEN. El codigo 15 incluye los dos
+#'       ambitos de Lima y Callao.}
+#'     \item{division_lima}{Division geografica cuando `region_code = 15`:
+#'       1 = Lima Metropolitana y Provincia Constitucional del Callao;
+#'       2 = Region Lima. En los otros departamentos es `NA`.}
 #'     \item{sample_id}{Identificador de muestra (`MUESTRA`, character).}
 #'     \item{strata_code}{Estrato (`ESTRATO`, 1-8).}
 #'     \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
@@ -208,8 +212,9 @@
 #' Poligonos departamentales del Peru (sf)
 #'
 #' Shapes a nivel departamento (25 unidades) pre-computados desde el dataset
-#' `geoperu::peru` usando el motor GEOS (sin s2). Usados internamente por
-#' [mapa()] cuando `nivel = "departamento"`.
+#' `geoperu::peru` usando el motor GEOS (sin s2). [mapa()] los combina con
+#' [shapes_provincias] para representar los ambitos departamentales de la EPEN.
+#' Incluyen Callao como departamento politico propio (codigo UBIGEO `07`).
 #'
 #' @format Un objeto `sf` con 25 filas y columnas:
 #'   \describe{
@@ -224,8 +229,10 @@
 #' Poligonos provinciales del Peru (sf)
 #'
 #' Shapes a nivel provincia (196 unidades) pre-computados desde el dataset
-#' `geoperu::peru` usando el motor GEOS (sin s2). Usados internamente por
-#' [mapa()] cuando `nivel = "provincia"`.
+#' `geoperu::peru` usando el motor GEOS (sin s2). [mapa()] los usa internamente
+#' para construir los dos ambitos oficiales del codigo 15: Lima Metropolitana
+#' y Callao, y Region Lima. Si los unes a tus propios datos, usa departamento y
+#' provincia juntos como llave.
 #'
 #' @format Un objeto `sf` con 196 filas y columnas:
 #'   \describe{

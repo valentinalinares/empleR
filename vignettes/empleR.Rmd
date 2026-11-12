@@ -24,7 +24,7 @@ library(empleR)
 microdatos de las encuestas de empleo del Peru publicadas por el INEI:
 
 - **EPEN** (Encuesta Permanente de Empleo Nacional, 2022-presente): cobertura
-  nacional por departamentos.
+  nacional y resultados en ámbitos departamentales.
 - **EPE** (Encuesta Permanente de Empleo, hasta 2021): cobertura solo Lima
   Metropolitana.
 
@@ -56,12 +56,15 @@ epen_2024 <- etiquetar(muestra_epen_2024)
 epen_2024 <- cno(epen_2024)
 
 # 3. Calcular indicadores ponderados
-ingreso_dep <- indicadores(epen_2024, "ingreso_promedio", por = "region_code")
+ingreso_dep <- indicadores(
+  epen_2024,
+  "ingreso_promedio",
+  por = c("region_code", "division_lima")
+)
 
-# 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)
-ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
+# 4. Visualizar los 25 ambitos departamentales oficiales de la EPEN
 mapa(ingreso_dep, var = "estimado",
-     titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
+     titulo = "Ingreso laboral promedio por ambito EPEN, 2024")
 ```
 
 `descargar(year = 2024)` devuelve el modulo 76 con los nombres originales del
@@ -168,17 +171,22 @@ epen_ia <- descargar(year = 2024) |>
 # Ver distribucion del score
 summary(epen_ia$ia_score_mean)
 
-# Exposicion media por departamento en mapa (promedio ponderado por peso)
-ia_dep <- do.call(rbind, lapply(split(epen_ia, epen_ia$region_code), function(d) {
+# Exposicion media por ambito EPEN (promedio ponderado por peso)
+llave <- interaction(
+  epen_ia$region_code,
+  ifelse(is.na(epen_ia$division_lima), 0L, epen_ia$division_lima),
+  drop = TRUE
+)
+ia_dep <- do.call(rbind, lapply(split(epen_ia, llave), function(d) {
   ok <- !is.na(d$ia_score_mean)
   data.frame(
     region_code   = d$region_code[1],
+    division_lima = d$division_lima[1],
     ia_score_mean = stats::weighted.mean(d$ia_score_mean[ok], d$weight[ok])
   )
 }))
-ia_dep$departamento <- shapes_departamentos$departamento[ia_dep$region_code]
 mapa(ia_dep, var = "ia_score_mean",
-     titulo = "Exposicion a IA generativa por departamento, 2024")
+     titulo = "Exposicion a IA generativa por ambito EPEN, 2024")
 ```
 
 ## Datos de ejemplo

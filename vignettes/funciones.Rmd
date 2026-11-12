@@ -31,11 +31,6 @@ seguir un flujo completo o ir directamente a la función que necesitas.
     <strong>Calcular y visualizar resultados</strong>
     <span><code>indicadores()</code>, <code>resumen_nacional()</code> y <code>mapa()</code></span>
   </a>
-  <a class="manual-card" href="manual-panel.html">
-    <span class="manual-step">4</span>
-    <strong>Explorar hogares repetidos</strong>
-    <span><code>panel()</code>, función experimental</span>
-  </a>
 </div>
 
 ## El recorrido general

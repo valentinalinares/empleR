@@ -1,5 +1,30 @@
 # empleR 0.1.0
 
+## Cambios de alcance
+
+* Se retiro la funcion experimental `panel()`. Enlazar viviendas u hogares
+  entre entregas de la EPEN no permite afirmar que se sigue a la misma persona:
+  la clave omitia muestra y region, y no distinguia una entrevista repetida en
+  trimestres moviles solapados de una visita nueva. La funcion volvera solo
+  despues de validar la unidad de seguimiento y sus claves. Su ultima version
+  puede consultarse en el historial del repositorio con
+  `git show 31dca788fa6685663f516b6ee5a9921eaf65c809:R/panel.R`.
+* `mapa()` solo admite los 25 ambitos departamentales que publica la EPEN.
+  Conserva los 23 departamentos ordinarios y separa el codigo `15` mediante
+  `DIVISION_LIMA`: `15-1` es Lima Metropolitana y Callao, y `15-2` es Region
+  Lima. No inventa un codigo `07` para Callao ni lo deja como un poligono sin
+  dato.
+* Para el codigo `15`, `mapa()` exige `DIVISION_LIMA` o `division_lima`.
+  Tambien acepta los nombres oficiales sin distinguir mayusculas ni tildes.
+  Rechaza llaves contradictorias y ambitos repetidos; avisa de filas sin
+  poligono y de ambitos sin dato. Las etiquetas interactivas muestran
+  `sin dato` en lugar de `NA` y conservan tasas pequenas.
+* `nivel = "provincia"` y `nivel = "distrito"` producen un error: las bases
+  procesadas no tienen una llave territorial suficiente para esos niveles.
+  `geoperu` deja de ser una dependencia de ejecucion y queda solo como
+  dependencia sugerida para reconstruir los datos espaciales; `sf` pasa a
+  declararse de forma explicita.
+
 ## Homologacion EPE (CO-95) y EPEN (CNO 2015)
 
 * `cno()` homologa CO-95 -> CNO 2015 con la tabla oficial del INEI
@@ -33,7 +58,8 @@
 
 * `muestra_epen_2024` se regenera desde la base corregida de
   `ia_empleo_peru` (mismas 2.000 personas): codigos CNO completados a la
-  izquierda, `sample_id`, estrato e identificadores reconstruidos.
+  izquierda, `sample_id`, estrato e identificadores reconstruidos. Incorpora
+  `division_lima`, contrastada con `DIVISION_LIMA` del ZIP oficial de 2024.
 * `cno_2015` incluye el grupo primario 5321 con sus tareas oficiales y
   restaura las tareas de 5223.
 * Nuevos datasets `co_1995` y `equivalencia_co95`.
@@ -53,8 +79,6 @@
   `reemplazar = TRUE` mantiene el comportamiento anterior. Se corrigieron las
   etiquetas de `C310`, `C311`, `C317` y `C338` contra el diccionario oficial,
   ademas de conservar la codificacion educativa de `C366`.
-* `panel()` se documenta como experimental y no se interpreta como un panel de
-  personas sin validacion adicional.
 
 # empleR 0.0.0.9000
 

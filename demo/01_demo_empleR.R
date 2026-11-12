@@ -124,46 +124,29 @@ dat_ia2 <- dat |> ia_exposicion(incluir_tipo = TRUE)
 names(dat_ia2)  # ahora incluye tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo
 
 
-# ---- 8. PANEL: seguimiento de viviendas en el tiempo --------
-
-# Simular dos trimestres (en la práctica usar descargar() con lima_movil)
-t1 <- muestra_epen_2024[1:500, ]
-t2 <- muestra_epen_2024[300:800, ]
-
-panel_df <- panel(
-  list(t1, t2),
-  labels_trimestre = c("T1-2024", "T2-2024")
-)
-
-# Tasa de apareamiento (% de viviendas seguidas entre trimestres)
-attr(panel_df, "tasa_apareamiento")
-
-# Viviendas en ambos trimestres
-head(panel_df[, c("cluster_id", "dwelling_id", "trimestre", "labor_status_code")])
-
-
-# ---- 9. MAPA: visualización regional ------------------------
+# ---- 8. MAPA: ámbitos departamentales oficiales de la EPEN --
 
 library(dplyr)
 
-# Preparar datos: score IA promedio por departamento
+# Preparar datos: score IA promedio por ámbito.
+# Lima requiere también division_lima: 1 = Lima Metropolitana y Callao;
+# 2 = Región Lima.
 scores_dep <- dat_ia |>
-  group_by(region_code) |>
+  group_by(region_code, division_lima) |>
   summarise(ia_score_mean = mean(ia_score_mean, na.rm = TRUE),
             .groups = "drop") |>
-  filter(!is.na(ia_score_mean)) |>
-  mutate(departamento = sort(shapes_departamentos$departamento)[region_code])
+  filter(!is.na(ia_score_mean))
 
 # Mapa estático (ggplot2) — se ve en el panel Plots de Positron
 mapa(scores_dep,
      var    = "ia_score_mean",
      nivel  = "departamento",
      tipo   = "ggplot",
-     titulo = "Exposición a IA por departamento (EPEN 2024)")
+     titulo = "Exposición a IA por ámbito departamental (EPEN 2024)")
 
 # Mapa interactivo (leaflet) — se ve en el panel Viewer de Positron
 mapa(scores_dep,
      var    = "ia_score_mean",
      nivel  = "departamento",
      tipo   = "leaflet",
-     titulo = "Exposición a IA por departamento (EPEN 2024)")
+     titulo = "Exposición a IA por ámbito departamental (EPEN 2024)")
