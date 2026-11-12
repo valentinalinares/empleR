@@ -4,7 +4,7 @@ dir.create("man/figures", recursive = TRUE, showWarnings = FALSE)
 
 load("data/indice_ia.rda")
 load("data/muestra_epen_2024.rda")
-load("data/shapes_departamentos.rda")
+pkgload::load_all(".", quiet = TRUE)
 
 fig_ia <- ggplot2::ggplot(
   indice_ia[!is.na(indice_ia$mean_exposure_score), ],
@@ -25,7 +25,10 @@ fig_ia <- ggplot2::ggplot(
     subtitle = "Puntaje medio entre tareas del CNO 2015",
     x = "Puntaje medio (0 a 1)",
     y = "N\u00famero de ocupaciones",
-    caption = "\u00cdndice: Walter Omar Manky Bonilla; asistencia: Valentina Linares Herrera"
+    caption = paste(
+      "\u00cdndice: Walter Omar Manky Bonilla;",
+      "asistencia: Valentina Linares Herrera"
+    )
   ) +
   ggplot2::theme_minimal(base_size = 12)
 
@@ -43,11 +46,17 @@ validos <- muestra_epen_2024[
     muestra_epen_2024$weight > 0,
 ]
 
+llave <- interaction(
+  validos$region_code,
+  ifelse(is.na(validos$division_lima), 0L, validos$division_lima),
+  drop = TRUE
+)
 ingreso_dep <- do.call(
   rbind,
-  lapply(split(validos, validos$region_code), function(datos) {
+  lapply(split(validos, llave), function(datos) {
     data.frame(
       region_code = datos$region_code[1],
+      division_lima = datos$division_lima[1],
       ingreso = stats::weighted.mean(
         datos$labor_income_monthly,
         datos$weight,
@@ -56,40 +65,20 @@ ingreso_dep <- do.call(
     )
   })
 )
-ingreso_dep$departamento <-
-  shapes_departamentos$departamento[ingreso_dep$region_code]
 
-idx <- match(
-  shapes_departamentos$departamento,
-  ingreso_dep$departamento
-)
-mapa_datos <- shapes_departamentos
-mapa_datos$ingreso <- ingreso_dep$ingreso[idx]
-
-fig_mapa <- ggplot2::ggplot(mapa_datos) +
-  ggplot2::geom_sf(
-    ggplot2::aes(fill = ingreso),
-    color = "white",
-    linewidth = 0.25
-  ) +
-  ggplot2::scale_fill_distiller(
-    palette = "YlOrRd",
-    direction = 1,
-    name = "S/ mensuales",
-    na.value = "#D9D9D9"
-  ) +
+fig_mapa <- mapa(
+  ingreso_dep,
+  var = "ingreso",
+  tipo = "ggplot",
+  titulo = "S/ mensuales"
+) +
   ggplot2::labs(
-    title = "Ingreso laboral promedio por departamento",
+    title = "Ingreso laboral promedio por \u00e1mbito departamental EPEN",
     subtitle = "Ejemplo con la muestra incluida; no es una estimaci\u00f3n oficial",
     caption = "Fuente: muestra_epen_2024 incluida en empleR"
   ) +
-  ggplot2::theme_void(base_size = 12) +
   ggplot2::theme(
-    plot.title = ggplot2::element_text(face = "bold"),
     plot.background = ggplot2::element_rect(fill = "white", color = NA),
-    panel.background = ggplot2::element_rect(fill = "white", color = NA),
-    legend.text = ggplot2::element_text(color = "#333333"),
-    legend.title = ggplot2::element_text(color = "#333333"),
     plot.subtitle = ggplot2::element_text(color = "#333333"),
     plot.caption = ggplot2::element_text(color = "#555555")
   )

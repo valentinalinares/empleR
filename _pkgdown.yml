@@ -39,10 +39,6 @@ reference:
   - title: Visualizacion
     contents:
       - mapa
-  - title: Experimental
-    desc: Funciones conservadas para evaluacion; no forman parte del flujo estable.
-    contents:
-      - panel
   - title: Datos incluidos
     contents:
       - muestra_epen_2024
@@ -69,8 +65,12 @@ articles:
       - manual-datos
       - manual-ocupaciones-ia
       - manual-indicadores-mapas
-      - manual-panel
   - title: Contexto
     navbar: Guias
     contents:
       - contexto-encuestas
+
+# panel() se retiro en la version 0.1.0; las paginas antiguas llevan a NEWS.
+redirects:
+  - ["reference/panel.html", "news/index.html"]
+  - ["articles/manual-panel.html", "news/index.html"]

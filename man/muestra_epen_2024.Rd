@@ -5,10 +5,14 @@
 \alias{muestra_epen_2024}
 \title{Muestra de microdatos EPEN 2024 (solo ocupados)}
 \format{
-Un \code{data.frame} con 2.000 filas y 34 columnas. Variables principales:
+Un \code{data.frame} con 2.000 filas y 35 columnas. Variables principales:
 \describe{
 \item{year, month}{Ano y mes de referencia.}
-\item{region_code}{Codigo de departamento (1-25).}
+\item{region_code}{Codigo CCDD de la EPEN. El codigo 15 incluye los dos
+ambitos de Lima y Callao.}
+\item{division_lima}{Division geografica cuando \code{region_code = 15}:
+1 = Lima Metropolitana y Provincia Constitucional del Callao;
+2 = Region Lima. En los otros departamentos es \code{NA}.}
 \item{sample_id}{Identificador de muestra (\code{MUESTRA}, character).}
 \item{strata_code}{Estrato (\code{ESTRATO}, 1-8).}
 \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y

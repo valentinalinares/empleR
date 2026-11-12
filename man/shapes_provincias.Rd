@@ -20,7 +20,9 @@ shapes_provincias
 }
 \description{
 Shapes a nivel provincia (196 unidades) pre-computados desde el dataset
-\code{geoperu::peru} usando el motor GEOS (sin s2). Usados internamente por
-\code{\link[=mapa]{mapa()}} cuando \code{nivel = "provincia"}.
+\code{geoperu::peru} usando el motor GEOS (sin s2). \code{\link[=mapa]{mapa()}} los usa internamente
+para construir los dos ambitos oficiales del codigo 15: Lima Metropolitana
+y Callao, y Region Lima. Si los unes a tus propios datos, usa departamento y
+provincia juntos como llave.
 }
 \keyword{datasets}
