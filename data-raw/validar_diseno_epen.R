@@ -7,9 +7,12 @@ suppressPackageStartupMessages(library(survey))
 
 options(survey.lonely.psu = "adjust")
 
-raiz <- file.path(
-  "C:/Users/VALENTINALINARES/Downloads/ROpenSci/data/raw/inei_data_core",
-  "epen_lima"
+raiz <- Sys.getenv(
+  "EMPLER_EPEN_LIMA_RAW_ROOT",
+  unset = file.path(
+    "C:/Users/VALENTINALINARES/Downloads/ROpenSci/data/raw/inei_data_core",
+    "epen_lima"
+  )
 )
 
 fuentes <- data.frame(

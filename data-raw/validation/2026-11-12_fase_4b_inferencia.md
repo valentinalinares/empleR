@@ -17,10 +17,13 @@ sola UPM.
 ## Fuentes y archivos usados
 
 - EPEN Lima Metropolitana, octubre-noviembre-diciembre de 2024 y 2025:
-  cuadro 1.13 de los archivos oficiales de errores muestrales.
+  cuadro 1.13 de los archivos oficiales de errores muestrales
+  ([2024](https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Error_Muestral_por_Trimestre.pdf),
+  [2025](https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2025-45/Error_Muestral_por_Trimestre.pdf)).
 - EPEN anual 2024: *Perú: Comportamiento de los indicadores del mercado
   laboral a nivel nacional y en 27 ciudades*, cuadros 7.1 y 7.2, páginas
-  impresas 98 y 99.
+  impresas 98 y 99
+  ([publicación](https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf)).
 - Ficha técnica EPEN 2024: diseño probabilístico, estratificado de manera
   implícita, bietápico e independiente; conglomerado como UPM.
 - Diccionario EPEN 2024: identificadores y variables usadas para reconstruir
@@ -105,3 +108,15 @@ especificación válida.
   `2026-11-12`.
 
 Entorno de ejecución: R 4.5.1, `survey` 4.4-8 y `data.table` 1.17.8.
+
+## Revisión independiente de cierre
+
+La revisión del 12 de noviembre de 2026 volvió a ejecutar el contraste
+trimestral desde los ZIP, verificó la transcripción de los cuadros oficiales y
+revisó las fórmulas y dominios del script. No encontró discrepancias de cálculo.
+Se corrigieron dos aspectos de reproducibilidad y comunicación:
+
+- la raíz de los ZIP trimestrales puede configurarse ahora mediante
+  `EMPLER_EPEN_LIMA_RAW_ROOT`;
+- la documentación distingue el diseño trimestral validado, sin estrato
+  explícito, del diseño anual departamental validado con `ESTRATO`.

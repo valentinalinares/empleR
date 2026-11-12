@@ -103,8 +103,9 @@ inferior del intervalo donde la funcion de distribucion ponderada alcanza
 Las fichas EPEN describen un diseno probabilistico, estratificado, de areas
 y bietapico, independiente en cada departamento. La UPM implementada combina
 muestra, region y conglomerado porque los numeros de conglomerado se
-reutilizan entre departamentos. El estrato que se usa es \code{ESTRATO}
-(\code{strata_code}), tal como lo publica el INEI.
+reutilizan entre departamentos. En la base anual departamental validada se
+usa \code{ESTRATO} (\code{strata_code}). En la variante trimestral movil de Lima
+validada no se usa un estrato explicito: se debe indicar \code{var_strata = NA}.
 
 Esta reconstruccion se contrasto con 24 estimaciones, errores estandar, CV y
 DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
