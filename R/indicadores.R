@@ -39,13 +39,17 @@
 #'   `labor_income_work_weighted` o `ingtrabw`, y para horas
 #'   `hours_week_total` o `whoraT`. Sirve para solicitar expresamente otro
 #'   concepto, como el ingreso o las horas de la ocupacion principal.
+#' @param incluir_inferencia Logico. Si es `FALSE` (por defecto), devuelve solo
+#'   la estimacion puntual y la auditoria. Si es `TRUE`, agrega `error_std`
+#'   usando la aproximacion de diseno documentada abajo. La inferencia requiere
+#'   identificadores completos de UPM y, cuando se usa, de estrato.
 #'
-#' @return Un `data.frame` con el indicador calculado, el error estandar
-#'   provisional y columnas de auditoria: `n_universo`, `n_estimacion`,
+#' @return Un `data.frame` con el indicador calculado y columnas de auditoria:
+#'   `n_universo`, `n_estimacion`,
 #'   `n_sin_peso`, `n_peso_invalido`, `n_sin_indicador`,
 #'   `n_indicador_invalido`, `n_fuera_definicion` y
-#'   `poblacion_representada`. Los conteos de problemas no son mutuamente
-#'   excluyentes.
+#'   `poblacion_representada`. Si `incluir_inferencia = TRUE`, agrega
+#'   `error_std`. Los conteos de problemas no son mutuamente excluyentes.
 #'
 #' @section Definiciones y tratamiento de faltantes:
 #' Los indicadores de ingreso excluyen valores iguales o menores que cero.
@@ -60,27 +64,39 @@
 #' inferior del intervalo donde la funcion de distribucion ponderada alcanza
 #' 0.5 (`qrule = "math"`).
 #'
-#' @section Diseno muestral provisional:
+#' @section Inferencia experimental:
 #' Las fichas EPEN describen un diseno probabilistico, estratificado, de areas
 #' y bietapico, independiente en cada departamento. La UPM implementada combina
 #' muestra, region y conglomerado porque los numeros de conglomerado se
 #' reutilizan entre departamentos. El estrato que se usa es `ESTRATO`
 #' (`strata_code`), tal como lo publica el INEI.
 #'
-#' La documentacion publica localizada no especifica la combinacion operativa
-#' completa del estrato de varianza, el tratamiento de las visitas panel, las
-#' UPM de inclusion forzosa ni las etapas finales de calibracion de
-#' `FAC300_ANUAL`. Tampoco explica el tratamiento oficial de filas sin factor,
-#' que esta funcion excluye con aviso. Los errores estandar son, por tanto,
-#' aproximaciones reproducibles basadas en el diseno publico y no deben
-#' presentarse como errores oficiales del INEI.
+#' Esta reconstruccion se contrasto con 24 estimaciones, errores estandar, CV y
+#' DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
+#' y con ocho estimaciones y CV de ingreso anual nacional de 2024. Los estimados
+#' y CV se reproducen al redondeo publicado. El contraste respalda el calculo
+#' como aproximacion, pero no demuestra que sea el algoritmo interno del INEI.
 #'
+#' No se aplica correccion por poblacion finita porque los microdatos publicos
+#' no incluyen los totales del marco necesarios para cada etapa. Tampoco se
+#' inventan estratos ni UPM faltantes: si se solicita inferencia y esos
+#' identificadores estan incompletos, la funcion se detiene. Para una variante
+#' documentada sin estrato explicito se puede usar `var_strata = NA`.
+#'
+# nolint start: line_length_linter.
 #' @references
 #' INEI. Ficha tecnica EPEN 2024.
 #' <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Ficha_Tecnica.pdf>
 #'
 #' INEI. Diccionario EPEN 2024.
 #' <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Diccionario.pdf>
+#'
+#' INEI. Errores muestrales EPEN, octubre-diciembre 2024.
+#' <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Error_Muestral_por_Trimestre.pdf>
+#'
+#' INEI. Peru: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
+#' <https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf>
+# nolint end
 #'
 #' @seealso [resumen_nacional()] para indicadores pre-calculados (incluyendo
 #'   tasas de desempleo y actividad). [indicadores_epen] para el dataset
@@ -116,7 +132,8 @@ indicadores <- function(data,
                         var_peso   = NULL,
                         var_estado = NULL,
                         codigo_ocupado = "1",
-                        var_indicador = NULL) {
+                        var_indicador = NULL,
+                        incluir_inferencia = FALSE) {
 
   indicadores_validos <- c("ingreso_promedio", "horas_promedio", "ingreso_mediano")
 
@@ -134,6 +151,10 @@ indicadores <- function(data,
   if (nrow(data) == 0L) {
     cli::cli_abort("{.arg data} no contiene filas.")
   }
+  if (!is.logical(incluir_inferencia) || length(incluir_inferencia) != 1L ||
+        is.na(incluir_inferencia)) {
+    cli::cli_abort("{.arg incluir_inferencia} debe ser `TRUE` o `FALSE`.")
+  }
   if (!is.null(por)) {
     faltan_por <- setdiff(por, names(data))
     if (length(faltan_por) > 0L) {
@@ -146,7 +167,13 @@ indicadores <- function(data,
 
   # Detectar variables de diseno muestral y exigir una eleccion cuando hay
   # mas de un factor compatible con periodos distintos.
-  var_strata <- var_strata %||% .detectar_var(data, c("strata_code", "ESTRATO", "estrato"))
+  omitir_strata <- length(var_strata) == 1L && is.na(var_strata)
+  if (omitir_strata) var_strata <- NULL
+  if (!omitir_strata) {
+    var_strata <- var_strata %||% .detectar_var(
+      data, c("strata_code", "ESTRATO", "estrato")
+    )
+  }
   psu_detectada <- is.null(var_psu)
   var_psu    <- var_psu    %||% .detectar_var(data, c("cluster_id", "CONGLOMERADO", "CONGLOME", "conglome"))
   candidatos_peso <- intersect(
@@ -265,45 +292,69 @@ indicadores <- function(data,
   # dominio para conservar la estructura muestral de las demas filas ocupadas.
   data_diseno <- data[data$.peso_valido, , drop = FALSE]
 
-  # Un identificador de diseno incompleto impide construir svydesign(). No se
-  # eliminan personas ni se inventan codigos: se conserva el estimador puntual
-  # con un diseno simplificado y se deja la advertencia para la fase inferencial.
+  # La estimacion puntual no depende de reconstruir UPM o estratos. La
+  # inferencia, cuando se solicita, exige identificadores completos.
   .es_util <- function(v, data) {
     if (is.null(v) || !v %in% names(data)) return(FALSE)
     x <- data[[v]]
     !any(is.na(x) | trimws(as.character(x)) == "")
   }
-  if (!.es_util(var_strata, data_diseno)) {
-    if (!is.null(var_strata)) {
-      cli::cli_warn(
-        "{.field {var_strata}} esta incompleta; no se usara para el error estandar."
-      )
-    }
-    var_strata <- NULL
+  if (incluir_inferencia && !.es_util(var_psu, data_diseno)) {
+    cli::cli_abort(c(
+      "No se puede calcular la inferencia con una UPM ausente o incompleta.",
+      "i" = "Revisa {.arg var_psu} y los identificadores de la base."
+    ))
   }
-  if (!.es_util(var_psu, data_diseno)) {
-    if (!is.null(var_psu)) {
-      cli::cli_warn(
-        "{.field {var_psu}} esta incompleta; no se usara para el error estandar."
+  if (incluir_inferencia && !is.null(var_strata) &&
+        !.es_util(var_strata, data_diseno)) {
+    cli::cli_abort(c(
+      "No se puede calcular la inferencia con estratos incompletos.",
+      "i" = "No se imputan estratos faltantes.",
+      "i" = paste0(
+        "Usa {.code var_strata = NA} solo si la documentacion de la variante ",
+        "respalda un diseno sin estrato explicito."
       )
-    }
-    var_psu <- NULL
+    ))
   }
 
-  # UPM compuesta: muestra + region + conglomerado
-  if (psu_detectada && !is.null(var_psu)) {
+  # UPM compuesta: muestra + region + conglomerado. Solo se forma cuando la
+  # UPM fue detectada automaticamente; una eleccion explicita se respeta.
+  if (incluir_inferencia && psu_detectada) {
     data_diseno <- .upm_compuesta(data_diseno, var_psu)
     if (".upm" %in% names(data_diseno)) var_psu <- ".upm"
   }
 
-  # Construir diseno muestral
-  if (!is.null(var_strata) && !is.null(var_psu)) {
+  if (incluir_inferencia &&
+        length(unique(data_diseno[[var_psu]])) < 2L) {
+    cli::cli_abort(
+      "La inferencia requiere por lo menos dos UPM distintas."
+    )
+  }
+
+  if (incluir_inferencia && !is.null(var_strata)) {
+    pares <- unique(data_diseno[, c(var_strata, var_psu), drop = FALSE])
+    n_upm_por_estrato <- table(pares[[var_strata]])
+    n_estratos_solitarios <- sum(n_upm_por_estrato == 1L)
+    if (n_estratos_solitarios > 0L) {
+      cli::cli_abort(c(
+        "La base contiene {n_estratos_solitarios} estrato(s) con una sola UPM.",
+        "i" = paste0(
+          "El tratamiento oficial no esta documentado; no se aplica una ",
+          "correccion automatica."
+        )
+      ))
+    }
+  }
+
+  # Construir el diseno para el estimador puntual o, si se solicita, para la
+  # aproximacion inferencial.
+  if (incluir_inferencia && !is.null(var_strata)) {
     cli::cli_inform(
       c("i" = paste0(
-        "Diseno muestral provisional: estrato {.field {var_strata}} y UPM ",
+        "Inferencia experimental: estrato {.field {var_strata}} y UPM ",
         "{.field {var_psu}}; ver {.code ?indicadores}."
       )),
-      .frequency = "once", .frequency_id = "empleR_diseno_provisional"
+      .frequency = "once", .frequency_id = "empleR_inferencia_experimental"
     )
     diseno <- survey::svydesign(
       ids     = stats::reformulate(var_psu),
@@ -312,9 +363,20 @@ indicadores <- function(data,
       data    = data_diseno,
       nest    = TRUE
     )
+  } else if (incluir_inferencia) {
+    cli::cli_inform(
+      c("i" = paste0(
+        "Inferencia experimental sin estrato explicito y UPM ",
+        "{.field {var_psu}}; ver {.code ?indicadores}."
+      )),
+      .frequency = "once", .frequency_id = "empleR_inferencia_sin_estrato"
+    )
+    diseno <- survey::svydesign(
+      ids = stats::reformulate(var_psu),
+      weights = ~.peso,
+      data = data_diseno
+    )
   } else {
-    # Diseno sin estratificacion ni PSU (menos preciso, pero funcional)
-    cli::cli_warn("Diseno muestral simplificado: no se encontraron strata/PSU.")
     diseno <- survey::svydesign(
       ids     = ~1,
       weights = ~.peso,
@@ -324,7 +386,7 @@ indicadores <- function(data,
   diseno <- diseno[data_diseno$.usar_indicador, ]
   formula_var <- ~.valor
 
-  # Calcular y devolver data.frame limpio con columnas: estimado, error_std
+  # Calcular y devolver la estimacion; el error solo se agrega bajo solicitud.
   if (is.null(por)) {
     if (indicador == "ingreso_mediano") {
       res <- survey::svyquantile(
@@ -336,9 +398,11 @@ indicadores <- function(data,
     # coef() funciona tanto para svymean como para svyquantile (survey >= 4.1)
     resultado <- data.frame(
       indicador  = indicador,
-      estimado   = as.numeric(stats::coef(res)),
-      error_std  = as.numeric(survey::SE(res))
+      estimado   = as.numeric(stats::coef(res))
     )
+    if (incluir_inferencia) {
+      resultado$error_std <- as.numeric(survey::SE(res))
+    }
   } else {
     formula_por <- stats::reformulate(por)
     if (indicador == "ingreso_mediano") {
@@ -355,13 +419,20 @@ indicadores <- function(data,
     resultado       <- res_df[, c(por), drop = FALSE]
     resultado$indicador <- indicador
     resultado$estimado  <- as.numeric(stats::coef(res))
-    resultado$error_std <- as.numeric(survey::SE(res))
+    if (incluir_inferencia) {
+      resultado$error_std <- as.numeric(survey::SE(res))
+    }
   }
 
   if (is.null(por)) {
     resultado <- dplyr::bind_cols(resultado, auditoria)
   } else {
     resultado <- dplyr::left_join(resultado, auditoria, by = por)
+  }
+  attr(resultado, "inferencia") <- if (incluir_inferencia) {
+    "experimental"
+  } else {
+    "no_calculada"
   }
   resultado
 }

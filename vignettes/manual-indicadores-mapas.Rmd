@@ -47,27 +47,30 @@ nacional o separar la estimación por sexo, región u otras variables de la base
 | `var_estado` | Variable que identifica la condición de actividad. |
 | `codigo_ocupado` | Código de ocupado; en la EPEN es `1`. |
 | `var_indicador` | Variable alternativa, solo para medir otro concepto. |
+| `incluir_inferencia` | Agrega el error estándar experimental; por defecto es `FALSE`. |
 
 ### Qué hace por dentro
 
 1. Conserva a las personas ocupadas cuando la base trae su condición de
    actividad.
-2. Detecta el peso, el estrato y el conglomerado disponibles. Si hay varios
-   pesos, pide elegir el que corresponde al periodo.
+2. Detecta el peso disponible. Si hay varios, pide elegir el que corresponde
+   al periodo.
 3. Convierte de forma controlada los pesos y valores que llegan como texto.
 4. Excluye del cálculo los pesos ausentes o inválidos y registra sus conteos.
 5. Para ingreso, conserva remuneraciones positivas; para horas, admite ceros.
-6. Cuando existen las variables necesarias, construye una UPM con muestra,
-   región y conglomerado.
-7. Crea un diseño con el paquete `survey`.
-8. Calcula el indicador y su error estándar para el total o para cada grupo.
+6. Calcula el indicador para el total o para cada grupo.
+7. Si solicitas inferencia, detecta estrato y conglomerado y construye una UPM
+   con muestra, región y conglomerado. No sustituye identificadores faltantes.
+8. Calcula el error estándar con el paquete `survey` y marca el resultado como
+   inferencia experimental.
 
 ### Qué devuelve
 
-El resultado contiene el nombre del indicador, `estimado` y `error_std`. También
-informa el universo, los casos usados, los faltantes o valores inválidos y la
-población representada por las observaciones que entraron al cálculo. Si usas
-`por`, conserva además las columnas que identifican cada grupo.
+El resultado contiene el nombre del indicador y `estimado`. También informa el
+universo, los casos usados, los faltantes o valores inválidos y la población
+representada por las observaciones que entraron al cálculo. Si usas `por`,
+conserva además las columnas que identifican cada grupo. `error_std` aparece
+solo cuando usas `incluir_inferencia = TRUE`.
 
 ```{r indicadores}
 ingreso_sexo <- indicadores(
@@ -94,10 +97,25 @@ indicadores(
 simple de las filas. La mediana usa el extremo inferior del intervalo donde la
 distribución ponderada alcanza 0,5, la regla matemática de `survey`.
 
-`error_std` describe la precisión bajo el diseño
-reconstruido por el paquete. Debe tratarse como provisional: todavía no se ha
-comprobado que esa reconstrucción reproduzca los errores estándar publicados
-por el INEI.
+La inferencia se solicita de forma explícita:
+
+```{r indicadores-inferencia}
+indicadores(
+  muestra_epen_2024,
+  indicador = "ingreso_promedio",
+  por = "sex",
+  incluir_inferencia = TRUE
+)
+```
+
+`error_std` describe la precisión bajo el diseño reconstruido por el paquete.
+La especificación se contrastó con 24 celdas oficiales de Lima Metropolitana
+de octubre-diciembre de 2024 y 2025 y con ocho CV anuales de ingreso de 2024.
+Los estimados y CV coinciden al redondeo publicado. Aun así, el resultado se
+mantiene como experimental: la documentación pública no identifica todas las
+decisiones internas del INEI y no permite aplicar una corrección por población
+finita. Si faltan UPM o estratos, la función se detiene en lugar de simplificar
+el diseño sin avisar.
 
 La muestra incluida contiene únicamente personas ocupadas. Es adecuada para
 practicar con ingreso y horas, pero no para calcular tasas de actividad,

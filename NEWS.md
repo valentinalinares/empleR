@@ -60,9 +60,15 @@
   todas las ocupaciones (`whoraT`). Los estimadores puntuales se validaron con
   los ZIP oficiales EPEN 2022-2025 y reproducen el ingreso oficial dentro del
   redondeo publicado.
-* `indicadores()` forma la UPM con muestra + region + conglomerado cuando la
-  base trae `sample_id` y `region_code`. El diseno se documenta como
-  provisional hasta contar con la especificacion oficial.
+* `indicadores()` devuelve por defecto estimaciones puntuales. La inferencia
+  se solicita con `incluir_inferencia = TRUE`, agrega `error_std` y queda
+  marcada como experimental. Ya no reemplaza silenciosamente un diseno
+  incompleto por uno basado solo en pesos: una UPM o un estrato faltante
+  produce un error explicativo.
+* La UPM combina muestra + region + conglomerado cuando esos identificadores
+  estan disponibles. La aproximacion reproduce al redondeo publicado 24 CV
+  trimestrales de 2024-2025 y ocho CV anuales de ingreso de 2024. No usa
+  correccion por poblacion finita porque faltan los totales del marco por etapa.
 
 ## Datos
 

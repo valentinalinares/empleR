@@ -13,7 +13,8 @@ indicadores(
   var_peso = NULL,
   var_estado = NULL,
   codigo_ocupado = "1",
-  var_indicador = NULL
+  var_indicador = NULL,
+  incluir_inferencia = FALSE
 )
 }
 \arguments{
@@ -56,14 +57,19 @@ Normalmente no hace falta indicarla: para ingreso se usan
 \code{labor_income_work_weighted} o \code{ingtrabw}, y para horas
 \code{hours_week_total} o \code{whoraT}. Sirve para solicitar expresamente otro
 concepto, como el ingreso o las horas de la ocupacion principal.}
+
+\item{incluir_inferencia}{Logico. Si es \code{FALSE} (por defecto), devuelve solo
+la estimacion puntual y la auditoria. Si es \code{TRUE}, agrega \code{error_std}
+usando la aproximacion de diseno documentada abajo. La inferencia requiere
+identificadores completos de UPM y, cuando se usa, de estrato.}
 }
 \value{
-Un \code{data.frame} con el indicador calculado, el error estandar
-provisional y columnas de auditoria: \code{n_universo}, \code{n_estimacion},
+Un \code{data.frame} con el indicador calculado y columnas de auditoria:
+\code{n_universo}, \code{n_estimacion},
 \code{n_sin_peso}, \code{n_peso_invalido}, \code{n_sin_indicador},
 \code{n_indicador_invalido}, \code{n_fuera_definicion} y
-\code{poblacion_representada}. Los conteos de problemas no son mutuamente
-excluyentes.
+\code{poblacion_representada}. Si \code{incluir_inferencia = TRUE}, agrega
+\code{error_std}. Los conteos de problemas no son mutuamente excluyentes.
 }
 \description{
 Calcula indicadores laborales de la poblacion ocupada incorporando el
@@ -92,7 +98,7 @@ inferior del intervalo donde la funcion de distribucion ponderada alcanza
 0.5 (\code{qrule = "math"}).
 }
 
-\section{Diseno muestral provisional}{
+\section{Inferencia experimental}{
 
 Las fichas EPEN describen un diseno probabilistico, estratificado, de areas
 y bietapico, independiente en cada departamento. La UPM implementada combina
@@ -100,13 +106,17 @@ muestra, region y conglomerado porque los numeros de conglomerado se
 reutilizan entre departamentos. El estrato que se usa es \code{ESTRATO}
 (\code{strata_code}), tal como lo publica el INEI.
 
-La documentacion publica localizada no especifica la combinacion operativa
-completa del estrato de varianza, el tratamiento de las visitas panel, las
-UPM de inclusion forzosa ni las etapas finales de calibracion de
-\code{FAC300_ANUAL}. Tampoco explica el tratamiento oficial de filas sin factor,
-que esta funcion excluye con aviso. Los errores estandar son, por tanto,
-aproximaciones reproducibles basadas en el diseno publico y no deben
-presentarse como errores oficiales del INEI.
+Esta reconstruccion se contrasto con 24 estimaciones, errores estandar, CV y
+DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
+y con ocho estimaciones y CV de ingreso anual nacional de 2024. Los estimados
+y CV se reproducen al redondeo publicado. El contraste respalda el calculo
+como aproximacion, pero no demuestra que sea el algoritmo interno del INEI.
+
+No se aplica correccion por poblacion finita porque los microdatos publicos
+no incluyen los totales del marco necesarios para cada etapa. Tampoco se
+inventan estratos ni UPM faltantes: si se solicita inferencia y esos
+identificadores estan incompletos, la funcion se detiene. Para una variante
+documentada sin estrato explicito se puede usar \code{var_strata = NA}.
 }
 
 \examples{
@@ -136,6 +146,12 @@ INEI. Ficha tecnica EPEN 2024.
 
 INEI. Diccionario EPEN 2024.
 \url{https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Diccionario.pdf}
+
+INEI. Errores muestrales EPEN, octubre-diciembre 2024.
+\url{https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Error_Muestral_por_Trimestre.pdf}
+
+INEI. Peru: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
+\url{https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf}
 }
 \seealso{
 \code{\link[=resumen_nacional]{resumen_nacional()}} para indicadores pre-calculados (incluyendo

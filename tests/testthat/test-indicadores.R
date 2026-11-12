@@ -1,7 +1,9 @@
 test_that("indicadores() calcula nacional y por grupo", {
   nacional <- suppressWarnings(indicadores(muestra_epen_2024, "ingreso_promedio"))
   expect_equal(nrow(nacional), 1)
-  expect_true(all(c("estimado", "error_std") %in% names(nacional)))
+  expect_true("estimado" %in% names(nacional))
+  expect_false("error_std" %in% names(nacional))
+  expect_equal(attr(nacional, "inferencia"), "no_calculada")
 
   por_sexo <- suppressWarnings(
     indicadores(muestra_epen_2024, "ingreso_mediano", por = "sex")
@@ -38,11 +40,69 @@ test_that("indicadores() usa estrato y UPM compuesta con la muestra", {
     suppressWarnings(suppressMessages(
       r <- indicadores(
         muestra_epen_2024[!is.na(muestra_epen_2024$weight), ],
-        "ingreso_promedio"
+        "ingreso_promedio",
+        incluir_inferencia = TRUE
       )
     ))
   )
   expect_true(r$error_std > 0)
+  expect_equal(attr(r, "inferencia"), "experimental")
+})
+
+test_that("la inferencia no simplifica identificadores incompletos", {
+  datos <- data.frame(
+    sample_id = c("1", "1", "1", "1"),
+    region_code = c("15", "15", "15", "15"),
+    cluster_id = c("001", "001", "002", "002"),
+    strata_code = c("1", "1", NA, NA),
+    weight = rep(1, 4),
+    labor_income_work_weighted = c(100, 200, 300, 400)
+  )
+
+  expect_error(
+    indicadores(
+      datos, "ingreso_promedio", incluir_inferencia = TRUE
+    ),
+    "estratos incompletos"
+  )
+  expect_no_error(suppressMessages(
+    resultado <- indicadores(
+      datos,
+      "ingreso_promedio",
+      var_strata = NA,
+      incluir_inferencia = TRUE
+    )
+  ))
+  expect_true(resultado$error_std > 0)
+})
+
+test_that("la inferencia exige una UPM", {
+  datos <- data.frame(
+    weight = c(1, 2),
+    labor_income_work_weighted = c(100, 200)
+  )
+  expect_error(
+    indicadores(datos, "ingreso_promedio", incluir_inferencia = TRUE),
+    "UPM"
+  )
+})
+
+test_that("la inferencia valida sus argumentos y el numero de UPM", {
+  datos <- data.frame(
+    cluster_id = c("001", "002"),
+    weight = c(1, 2),
+    labor_income_work_weighted = c(100, 200)
+  )
+
+  expect_error(
+    indicadores(datos, "ingreso_promedio", incluir_inferencia = NA),
+    "debe ser `TRUE` o `FALSE`"
+  )
+  datos$cluster_id <- "unica"
+  expect_error(
+    indicadores(datos, "ingreso_promedio", incluir_inferencia = TRUE),
+    "por lo menos dos UPM"
+  )
 })
 
 test_that("la muestra trae identificadores del muestreo completos", {
