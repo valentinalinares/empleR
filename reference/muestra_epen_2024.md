@@ -11,7 +11,7 @@ muestra_epen_2024
 
 ## Format
 
-Un `data.frame` con 2.000 filas y 34 columnas. Variables principales:
+Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
 
 - year, month:
 
@@ -19,7 +19,14 @@ Un `data.frame` con 2.000 filas y 34 columnas. Variables principales:
 
 - region_code:
 
-  Codigo de departamento (1-25).
+  Codigo CCDD de la EPEN. El codigo 15 incluye los dos ambitos de Lima y
+  Callao.
+
+- division_lima:
+
+  Division geografica cuando `region_code = 15`: 1 = Lima Metropolitana
+  y Provincia Constitucional del Callao; 2 = Region Lima. En los otros
+  departamentos es `NA`.
 
 - sample_id:
 

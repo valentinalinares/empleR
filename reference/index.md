@@ -26,15 +26,7 @@
 ## Visualizacion
 
 - [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)
-  : Visualizar indicadores laborales en un mapa regional del Peru
-
-## Experimental
-
-Funciones conservadas para evaluacion; no forman parte del flujo
-estable.
-
-- [`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
-  : Explorar viviendas repetidas entre periodos de la EPEN
+  : Visualizar un indicador por ambito departamental de la EPEN
 
 ## Datos incluidos
 

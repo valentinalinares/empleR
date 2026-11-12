@@ -12,7 +12,7 @@ para descargar EPEN y procesar y analizar microdatos de las encuestas de
 empleo del Peru publicadas por el INEI:
 
 - **EPEN** (Encuesta Permanente de Empleo Nacional, 2022-presente):
-  cobertura nacional por departamentos.
+  cobertura nacional y resultados en ámbitos departamentales.
 - **EPE** (Encuesta Permanente de Empleo, hasta 2021): cobertura solo
   Lima Metropolitana.
 
@@ -48,12 +48,15 @@ epen_2024 <- etiquetar(muestra_epen_2024)
 epen_2024 <- cno(epen_2024)
 
 # 3. Calcular indicadores ponderados
-ingreso_dep <- indicadores(epen_2024, "ingreso_promedio", por = "region_code")
+ingreso_dep <- indicadores(
+  epen_2024,
+  "ingreso_promedio",
+  por = c("region_code", "division_lima")
+)
 
-# 5. Visualizar en mapa (region_code 1-25 sigue el orden alfabetico)
-ingreso_dep$departamento <- shapes_departamentos$departamento[ingreso_dep$region_code]
+# 4. Visualizar los 25 ambitos departamentales oficiales de la EPEN
 mapa(ingreso_dep, var = "estimado",
-     titulo = "Ingreso laboral promedio por departamento, EPEN 2024")
+     titulo = "Ingreso laboral promedio por ambito EPEN, 2024")
 ```
 
 `descargar(year = 2024)` devuelve el modulo 76 con los nombres
@@ -178,17 +181,22 @@ epen_ia <- descargar(year = 2024) |>
 # Ver distribucion del score
 summary(epen_ia$ia_score_mean)
 
-# Exposicion media por departamento en mapa (promedio ponderado por peso)
-ia_dep <- do.call(rbind, lapply(split(epen_ia, epen_ia$region_code), function(d) {
+# Exposicion media por ambito EPEN (promedio ponderado por peso)
+llave <- interaction(
+  epen_ia$region_code,
+  ifelse(is.na(epen_ia$division_lima), 0L, epen_ia$division_lima),
+  drop = TRUE
+)
+ia_dep <- do.call(rbind, lapply(split(epen_ia, llave), function(d) {
   ok <- !is.na(d$ia_score_mean)
   data.frame(
     region_code   = d$region_code[1],
+    division_lima = d$division_lima[1],
     ia_score_mean = stats::weighted.mean(d$ia_score_mean[ok], d$weight[ok])
   )
 }))
-ia_dep$departamento <- shapes_departamentos$departamento[ia_dep$region_code]
 mapa(ia_dep, var = "ia_score_mean",
-     titulo = "Exposicion a IA generativa por departamento, 2024")
+     titulo = "Exposicion a IA generativa por ambito EPEN, 2024")
 ```
 
 ## Datos de ejemplo
@@ -200,7 +208,7 @@ para practicar sin necesidad de descargar datos:
 
 # Ver estructura de la muestra
 str(muestra_epen_2024)
-#> tibble [2,000 × 34] (S3: tbl_df/tbl/data.frame)
+#> tibble [2,000 × 35] (S3: tbl_df/tbl/data.frame)
 #>  $ source                    : chr [1:2000] "EPEN" "EPEN" "EPEN" "EPEN" ...
 #>  $ survey_variant            : chr [1:2000] "departamentos_anual" "departamentos_anual" "departamentos_anual" "departamentos_anual" ...
 #>  $ period_label              : chr [1:2000] "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" ...
@@ -235,6 +243,7 @@ str(muestra_epen_2024)
 #>  $ education_code            : num [1:2000] 9 5 3 1 3 8 11 6 9 11 ...
 #>  $ institutional_sector_code : num [1:2000] NA NA NA NA NA NA 2 5 5 5 ...
 #>  $ area_raw                  : num [1:2000] 1 2 1 2 2 1 1 2 1 1 ...
+#>  $ division_lima             : int [1:2000] NA 2 NA NA NA NA NA NA 1 NA ...
 
 # Aplicar cno() directamente
 muestra_con_cno <- cno(muestra_epen_2024)

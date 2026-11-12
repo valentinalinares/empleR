@@ -123,7 +123,7 @@ comparar series.
 # Con la muestra incluida en el paquete
 cno(muestra_epen_2024)
 #> ℹ Clasificador segun la encuesta de la base: CNO_2015
-#> # A tibble: 2,000 × 38
+#> # A tibble: 2,000 × 39
 #>    source survey_variant period_label  year month region_code ubigeo domain_code
 #>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <chr>  <chr>      
 #>  1 EPEN   departamentos… Anual - (En…  2024     4          18 NA     NA         
@@ -137,7 +137,7 @@ cno(muestra_epen_2024)
 #>  9 EPEN   departamentos… Anual - (En…  2024     5          15 NA     NA         
 #> 10 EPEN   departamentos… Anual - (En…  2024     7          22 NA     NA         
 #> # ℹ 1,990 more rows
-#> # ℹ 30 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
+#> # ℹ 31 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
 #> #   dwelling_id <chr>, household_id <chr>, person_id <int>,
 #> #   relationship_code <int>, sex_code <dbl>, sex <chr>, age <dbl>,
 #> #   labor_status_code <dbl>, occupation_code_raw <dbl>,

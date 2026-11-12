@@ -28,7 +28,6 @@
     <li><a class="dropdown-item" href="../articles/manual-datos.html">Encontrar, descargar y etiquetar datos</a></li>
     <li><a class="dropdown-item" href="../articles/manual-ocupaciones-ia.html">Ocupaciones, homologación e índice de IA</a></li>
     <li><a class="dropdown-item" href="../articles/manual-indicadores-mapas.html">Indicadores ponderados y mapas</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-panel.html">Explorar hogares repetidos con panel()</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
     <li><a class="dropdown-item" href="../articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
@@ -50,6 +49,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="empler-010">empleR 0.1.0<a class="anchor" aria-label="anchor" href="#empler-010"></a></h2>
+<div class="section level3">
+<h3 id="cambios-de-alcance-0-1-0">Cambios de alcance<a class="anchor" aria-label="anchor" href="#cambios-de-alcance-0-1-0"></a></h3>
+<ul><li>Se retiro la funcion experimental <code>panel()</code>. Enlazar viviendas u hogares entre entregas de la EPEN no permite afirmar que se sigue a la misma persona: la clave omitia muestra y region, y no distinguia una entrevista repetida en trimestres moviles solapados de una visita nueva. La funcion volvera solo despues de validar la unidad de seguimiento y sus claves. Su ultima version puede consultarse en el historial del repositorio con <code>git show 31dca788fa6685663f516b6ee5a9921eaf65c809:R/panel.R</code>.</li>
+<li>
+<code><a href="../reference/mapa.html">mapa()</a></code> solo admite los 25 ambitos departamentales que publica la EPEN. Conserva los 23 departamentos ordinarios y separa el codigo <code>15</code> mediante <code>DIVISION_LIMA</code>: <code>15-1</code> es Lima Metropolitana y Callao, y <code>15-2</code> es Region Lima. No inventa un codigo <code>07</code> para Callao ni lo deja como un poligono sin dato.</li>
+<li>Para el codigo <code>15</code>, <code><a href="../reference/mapa.html">mapa()</a></code> exige <code>DIVISION_LIMA</code> o <code>division_lima</code>. Tambien acepta los nombres oficiales sin distinguir mayusculas ni tildes. Rechaza llaves contradictorias y ambitos repetidos; avisa de filas sin poligono y de ambitos sin dato. Las etiquetas interactivas muestran <code>sin dato</code> en lugar de <code>NA</code> y conservan tasas pequenas.</li>
+<li>
+<code>nivel = "provincia"</code> y <code>nivel = "distrito"</code> producen un error: las bases procesadas no tienen una llave territorial suficiente para esos niveles. <code>geoperu</code> deja de ser una dependencia de ejecucion y queda solo como dependencia sugerida para reconstruir los datos espaciales; <code>sf</code> pasa a declararse de forma explicita.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="homologacion-epe-co-y-epen-cno-0-1-0">Homologacion EPE (CO-95) y EPEN (CNO 2015)<a class="anchor" aria-label="anchor" href="#homologacion-epe-co-y-epen-cno-0-1-0"></a></h3>
 <ul><li>
@@ -75,7 +83,7 @@
 <div class="section level3">
 <h3 id="datos-0-1-0">Datos<a class="anchor" aria-label="anchor" href="#datos-0-1-0"></a></h3>
 <ul><li>
-<code>muestra_epen_2024</code> se regenera desde la base corregida de <code>ia_empleo_peru</code> (mismas 2.000 personas): codigos CNO completados a la izquierda, <code>sample_id</code>, estrato e identificadores reconstruidos.</li>
+<code>muestra_epen_2024</code> se regenera desde la base corregida de <code>ia_empleo_peru</code> (mismas 2.000 personas): codigos CNO completados a la izquierda, <code>sample_id</code>, estrato e identificadores reconstruidos. Incorpora <code>division_lima</code>, contrastada con <code>DIVISION_LIMA</code> del ZIP oficial de 2024.</li>
 <li>
 <code>cno_2015</code> incluye el grupo primario 5321 con sus tareas oficiales y restaura las tareas de 5223.</li>
 <li>Nuevos datasets <code>co_1995</code> y <code>equivalencia_co95</code>.</li>
@@ -88,8 +96,6 @@
 <li>Nuevo sitio de documentacion con guias de funciones y de la transicion EPE-EPEN, ejemplos ejecutados e imagenes reproducibles en el README.</li>
 <li>
 <code><a href="../reference/etiquetar.html">etiquetar()</a></code> reconoce los nombres originales del modulo 76 y los nombres procesados. Conserva los codigos y crea columnas <code>_label</code> por defecto; <code>reemplazar = TRUE</code> mantiene el comportamiento anterior. Se corrigieron las etiquetas de <code>C310</code>, <code>C311</code>, <code>C317</code> y <code>C338</code> contra el diccionario oficial, ademas de conservar la codificacion educativa de <code>C366</code>.</li>
-<li>
-<code><a href="../reference/panel.html">panel()</a></code> se documenta como experimental y no se interpreta como un panel de personas sin validacion adicional.</li>
 </ul></div>
 </div>
     <div class="section level2">

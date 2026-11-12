@@ -30,7 +30,6 @@
     <li><a class="dropdown-item" href="../articles/manual-datos.html">Encontrar, descargar y etiquetar datos</a></li>
     <li><a class="dropdown-item" href="../articles/manual-ocupaciones-ia.html">Ocupaciones, homologación e índice de IA</a></li>
     <li><a class="dropdown-item" href="../articles/manual-indicadores-mapas.html">Indicadores ponderados y mapas</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-panel.html">Explorar hogares repetidos con panel()</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
     <li><a class="dropdown-item" href="../articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
@@ -63,11 +62,17 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>Un <code>data.frame</code> con 2.000 filas y 34 columnas. Variables principales:</p><dl><dt>year, month</dt>
+    <p>Un <code>data.frame</code> con 2.000 filas y 35 columnas. Variables principales:</p><dl><dt>year, month</dt>
 <dd><p>Ano y mes de referencia.</p></dd>
 
 <dt>region_code</dt>
-<dd><p>Codigo de departamento (1-25).</p></dd>
+<dd><p>Codigo CCDD de la EPEN. El codigo 15 incluye los dos
+ambitos de Lima y Callao.</p></dd>
+
+<dt>division_lima</dt>
+<dd><p>Division geografica cuando <code>region_code = 15</code>:
+1 = Lima Metropolitana y Provincia Constitucional del Callao;
+2 = Region Lima. En los otros departamentos es <code>NA</code>.</p></dd>
 
 <dt>sample_id</dt>
 <dd><p>Identificador de muestra (<code>MUESTRA</code>, character).</p></dd>

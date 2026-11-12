@@ -12,8 +12,6 @@ necesitas.
 [3 **Calcular y visualizar resultados** `indicadores()`,
 `resumen_nacional()` y
 `mapa()`](https://valentinalinares.github.io/empleR/articles/manual-indicadores-mapas.md)
-[4 **Explorar hogares repetidos** `panel()`, función
-experimental](https://valentinalinares.github.io/empleR/articles/manual-panel.md)
 
 ## El recorrido general
 

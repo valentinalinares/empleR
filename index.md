@@ -97,13 +97,12 @@ al INEI.
 | [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md) | Muestra cuántas observaciones, y cuánta población ponderada, tienen código, homologación y puntaje. |
 | [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md) | Calcula ingreso y horas ponderados. Los errores estándar todavía son provisionales. |
 | [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md) | Consulta indicadores nacionales precalculados y documentados. |
-| [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md) | Muestra indicadores agregados en mapas estáticos o interactivos. Se recomienda usarlo a nivel departamental. |
+| [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md) | Muestra indicadores agregados para los 25 ámbitos departamentales oficiales de la EPEN. Distingue Lima Metropolitana y Callao de Región Lima. |
 
-[`panel()`](https://valentinalinares.github.io/empleR/reference/panel.md)
-está disponible como herramienta **experimental** para revisar viviendas
-u hogares que aparecen más de una vez. Por sí sola no identifica a la
-misma persona y no forma parte del uso recomendado en la primera versión
-estable.
+La función experimental `panel()` se retiró de esta versión: enlazar
+viviendas u hogares entre periodos no basta para seguir a las mismas
+personas, y esa validación sigue pendiente. El detalle está en
+`NEWS.md`.
 
 ## Contexto y trabajo relacionado
 

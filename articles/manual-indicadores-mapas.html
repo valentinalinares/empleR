@@ -43,7 +43,6 @@
     <li><a class="dropdown-item" href="../articles/manual-datos.html">Encontrar, descargar y etiquetar datos</a></li>
     <li><a class="dropdown-item" href="../articles/manual-ocupaciones-ia.html">Ocupaciones, homologación e índice de IA</a></li>
     <li><a class="dropdown-item" href="../articles/manual-indicadores-mapas.html">Indicadores ponderados y mapas</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-panel.html">Explorar hogares repetidos con panel()</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
     <li><a class="dropdown-item" href="../articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
@@ -81,7 +80,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://valentinalinares.github.io/empleR/">empleR</a></span><span class="op">)</span></span></code></pre></div>
 <p>Esta parte del manual muestra cómo obtener estimaciones ponderadas,
 consultar resultados nacionales ya calculados y representar indicadores
-por departamento.</p>
+en los ámbitos departamentales que publica la EPEN.</p>
 <div class="section level2">
 <h2 id="indicadores-calcular-ingresos-y-horas-ponderados">
 <code>indicadores()</code>: calcular ingresos y horas
@@ -239,16 +238,21 @@ INEI.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="mapa-representar-un-indicador-agregado">
-<code>mapa()</code>: representar un indicador agregado<a class="anchor" aria-label="anchor" href="#mapa-representar-un-indicador-agregado"></a>
+<h2 id="mapa-representar-un-indicador-por-ámbito-epen">
+<code>mapa()</code>: representar un indicador por ámbito EPEN<a class="anchor" aria-label="anchor" href="#mapa-representar-un-indicador-por-%C3%A1mbito-epen"></a>
 </h2>
 <div class="section level3">
 <h3 id="para-qué-sirve-2">Para qué sirve<a class="anchor" aria-label="anchor" href="#para-qu%C3%A9-sirve-2"></a>
 </h3>
-<p><code><a href="../reference/mapa.html">mapa()</a></code> une una tabla de resultados con los polígonos
-geográficos del Perú y produce un mapa estático o interactivo. La
-función espera datos ya agregados; no calcula el indicador dentro del
-mapa.</p>
+<p><code><a href="../reference/mapa.html">mapa()</a></code> une una tabla de resultados con los 25 ámbitos
+departamentales que publica la EPEN y produce un mapa estático o
+interactivo. Estos ámbitos no son idénticos a los 25 departamentos
+político-administrativos: la encuesta agrupa la provincia de Lima y la
+Provincia Constitucional del Callao como <strong>Lima Metropolitana y
+Callao</strong>, y separa las demás provincias del departamento de Lima
+como <strong>Región Lima</strong>.</p>
+<p>La función espera datos ya agregados, con una fila por ámbito; no
+calcula el indicador dentro del mapa.</p>
 </div>
 <div class="section level3">
 <h3 id="qué-recibe-1">Qué recibe<a class="anchor" aria-label="anchor" href="#qu%C3%A9-recibe-1"></a>
@@ -265,7 +269,7 @@ mapa.</p>
 <tbody>
 <tr class="odd">
 <td><code>data</code></td>
-<td>Tabla con una fila por unidad geográfica.</td>
+<td>Tabla con una fila por ámbito EPEN.</td>
 </tr>
 <tr class="even">
 <td><code>var</code></td>
@@ -273,7 +277,7 @@ mapa.</p>
 </tr>
 <tr class="odd">
 <td><code>nivel</code></td>
-<td>Departamento, provincia o distrito.</td>
+<td>Solo <code>"departamento"</code> en esta versión.</td>
 </tr>
 <tr class="even">
 <td><code>tipo</code></td>
@@ -291,7 +295,8 @@ para un mapa interactivo.</td>
 </tr>
 <tr class="odd">
 <td><code>shapes</code></td>
-<td>Polígonos propios si no deseas usar los incluidos.</td>
+<td>Polígonos propios, con una columna <code>geo_id</code>, si no deseas
+usar los incluidos.</td>
 </tr>
 </tbody>
 </table>
@@ -300,11 +305,17 @@ para un mapa interactivo.</td>
 <h3 id="qué-hace-por-dentro-1">Qué hace por dentro<a class="anchor" aria-label="anchor" href="#qu%C3%A9-hace-por-dentro-1"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>Obtiene los polígonos del nivel geográfico solicitado.</li>
-<li>Detecta la columna que permite unir los resultados con esos
-polígonos.</li>
-<li>Añade el indicador a cada unidad geográfica y avisa si alguna queda
-sin dato.</li>
+<li>Busca <code>CCDD</code> o <code>region_code</code>. Para los códigos
+distintos de <code>15</code>, esa llave identifica directamente el
+ámbito.</li>
+<li>Para el código <code>15</code>, exige además
+<code>DIVISION_LIMA</code> o <code>division_lima</code>: el valor
+<code>1</code> identifica Lima Metropolitana y Callao; el
+<code>2</code>, Región Lima.</li>
+<li>También admite los nombres oficiales. Si la tabla trae varias
+llaves, comprueba que todas indiquen el mismo ámbito.</li>
+<li>Rechaza ámbitos repetidos y avisa de filas que no corresponden a
+ningún polígono y de ámbitos sin dato.</li>
 <li>Construye un objeto <code>ggplot</code> o <code>leaflet</code>.</li>
 </ol>
 </div>
@@ -315,11 +326,9 @@ sin dato.</li>
 <code class="sourceCode R"><span><span class="va">ingreso_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span></span>
 <span>  <span class="va">muestra_epen_2024</span>,</span>
 <span>  indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>,</span>
-<span>  por <span class="op">=</span> <span class="st">"region_code"</span></span>
+<span>  por <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"region_code"</span>, <span class="st">"division_lima"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ingreso_dep</span><span class="op">$</span><span class="va">departamento</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">shapes_departamentos</span><span class="op">$</span><span class="va">departamento</span><span class="op">[</span><span class="va">ingreso_dep</span><span class="op">$</span><span class="va">region_code</span><span class="op">]</span></span>
+<span><span class="co">#&gt; Warning: 81 filas eliminadas por peso NA o cero.</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span></span>
 <span>  <span class="va">ingreso_dep</span>,</span>
@@ -327,15 +336,50 @@ sin dato.</li>
 <span>  tipo <span class="op">=</span> <span class="st">"ggplot"</span>,</span>
 <span>  titulo <span class="op">=</span> <span class="st">"Ingreso promedio: ejemplo con la muestra incluida"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Preparando shapes (departamento) via geoperu...</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: 23 ambitos sin dato para 'estimado': <span style="color: #0000BB;">"AMAZONAS"</span>, <span style="color: #0000BB;">"ANCASH"</span>, <span style="color: #0000BB;">"APURIMAC"</span>,</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">"AREQUIPA"</span>, <span style="color: #0000BB;">"AYACUCHO"</span>, <span style="color: #0000BB;">"CAJAMARCA"</span>, <span style="color: #0000BB;">"CUSCO"</span>, <span style="color: #0000BB;">"HUANCAVELICA"</span>, <span style="color: #0000BB;">"HUANUCO"</span>, <span style="color: #0000BB;">"ICA"</span>,</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">"JUNIN"</span>, <span style="color: #0000BB;">"LA LIBERTAD"</span>, <span style="color: #0000BB;">"LAMBAYEQUE"</span>, <span style="color: #0000BB;">"LORETO"</span>, <span style="color: #0000BB;">"MADRE DE DIOS"</span>, <span style="color: #0000BB;">"MOQUEGUA"</span>,</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">"PASCO"</span>, <span style="color: #0000BB;">"PIURA"</span>, …, <span style="color: #0000BB;">"TUMBES"</span>, and <span style="color: #0000BB;">"UCAYALI"</span>.</span></span></code></pre></div>
 <p><img src="manual-indicadores-mapas_files/figure-html/mapa-1.png" class="r-plt" alt="" width="672"></p>
-<p>El mapa demuestra el funcionamiento de la función. La muestra de
-2.000 personas no ofrece estimaciones departamentales oficiales. Para
-resultados sustantivos debes usar la base completa, comprobar el ámbito
-de estimación y revisar la cobertura de cada departamento.</p>
-<p>El nivel departamental es el recorrido validado en esta versión. Si
-trabajas a nivel provincial o distrital, revisa de manera explícita las
-llaves geográficas y los dominios que permite el diseño de la
+<p>La tabla conserva las dos partes de la llave territorial. En los 23
+ámbitos ordinarios, <code>division_lima</code> queda ausente. En el
+código <code>15</code>, sus valores <code>1</code> y <code>2</code>
+permiten representar por separado Lima Metropolitana y Callao, y Región
+Lima. <code><a href="../reference/mapa.html">mapa()</a></code> no inventa el código <code>07</code> para
+Callao ni reparte un valor de Lima entre polígonos sin respaldo en los
+microdatos.</p>
+</div>
+<div class="section level3">
+<h3 id="qué-no-hace">Qué no hace<a class="anchor" aria-label="anchor" href="#qu%C3%A9-no-hace"></a>
+</h3>
+<ul>
+<li>
+<strong>No trabaja con provincias ni distritos.</strong> Las bases
+de la EPEN identifican el ámbito departamental, pero no una llave
+provincial o distrital suficiente. Pedir esos niveles produce un error
+en lugar de un cruce que podría asignar valores al territorio
+equivocado.</li>
+<li>
+<strong>No adivina la división de Lima.</strong> Una fila con código
+<code>15</code> sin <code>division_lima</code> produce un error, porque
+podría referirse a cualquiera de los dos ámbitos oficiales.</li>
+<li>
+<strong>No resuelve grupos dentro del ámbito.</strong> Si calculaste
+un indicador por ámbito y sexo, hay dos filas por territorio. Filtra un
+grupo o calcula el indicador solo por <code>region_code</code> y
+<code>division_lima</code> antes de mapear.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="cómo-interpretar-el-mapa">Cómo interpretar el mapa<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-interpretar-el-mapa"></a>
+</h3>
+<p>Un mapa representa los valores que recibe. No demuestra que la
+encuesta sea representativa para cada departamento ni que las
+diferencias de color sean estadísticamente significativas. El ejemplo
+anterior usa la muestra de 2.000 personas incluida en el paquete y no
+ofrece estimaciones por ámbito válidas. Para resultados sustantivos usa
+la base completa, revisa el número de observaciones y la precisión de
+cada estimación, y comprueba qué dominios permite el diseño de la
 encuesta.</p>
 </div>
 </div>

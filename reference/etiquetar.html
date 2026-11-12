@@ -34,7 +34,6 @@ sus equivalentes en las bases procesadas de {empleR}."></head><body>
     <li><a class="dropdown-item" href="../articles/manual-datos.html">Encontrar, descargar y etiquetar datos</a></li>
     <li><a class="dropdown-item" href="../articles/manual-ocupaciones-ia.html">Ocupaciones, homologación e índice de IA</a></li>
     <li><a class="dropdown-item" href="../articles/manual-indicadores-mapas.html">Indicadores ponderados y mapas</a></li>
-    <li><a class="dropdown-item" href="../articles/manual-panel.html">Explorar hogares repetidos con panel()</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Guias</h6></li>
     <li><a class="dropdown-item" href="../articles/contexto-encuestas.html">De la EPE a la EPEN: qué cambió y por qué importa</a></li>
@@ -138,7 +137,7 @@ en el diccionario genera una advertencia y su etiqueta queda en <code>NA</code>.
 <span class="r-in"><span>  reemplazar <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 2 columna(s) de etiquetas reemplazada(s).</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,000 × 34</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,000 × 35</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    source survey_variant period_label  year month region_code ubigeo domain_code</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> EPEN   departamentos… Anual - (En…  <span style="text-decoration: underline;">2</span>024     4          18 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         </span>
@@ -152,7 +151,7 @@ en el diccionario genera una advertencia y su etiqueta queda en <code>NA</code>.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> EPEN   departamentos… Anual - (En…  <span style="text-decoration: underline;">2</span>024     5          15 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> EPEN   departamentos… Anual - (En…  <span style="text-decoration: underline;">2</span>024     7          22 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,990 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 26 more variables: sample_id &lt;chr&gt;, strata_code &lt;int&gt;, cluster_id &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 27 more variables: sample_id &lt;chr&gt;, strata_code &lt;int&gt;, cluster_id &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   dwelling_id &lt;chr&gt;, household_id &lt;chr&gt;, person_id &lt;int&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   relationship_code &lt;int&gt;, sex_code &lt;fct&gt;, sex &lt;chr&gt;, age &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   labor_status_code &lt;dbl&gt;, occupation_code_raw &lt;dbl&gt;,</span></span>

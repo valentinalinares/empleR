@@ -15,8 +15,6 @@
   IA](https://valentinalinares.github.io/empleR/articles/manual-ocupaciones-ia.md):
 - [Indicadores ponderados y
   mapas](https://valentinalinares.github.io/empleR/articles/manual-indicadores-mapas.md):
-- [Explorar hogares repetidos con
-  panel()](https://valentinalinares.github.io/empleR/articles/manual-panel.md):
 
 ### Contexto
 

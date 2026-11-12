@@ -81,7 +81,7 @@ etiquetar(
   reemplazar = TRUE
 )
 #> ✔ 2 columna(s) de etiquetas reemplazada(s).
-#> # A tibble: 2,000 × 34
+#> # A tibble: 2,000 × 35
 #>    source survey_variant period_label  year month region_code ubigeo domain_code
 #>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <chr>  <chr>      
 #>  1 EPEN   departamentos… Anual - (En…  2024     4          18 NA     NA         
@@ -95,7 +95,7 @@ etiquetar(
 #>  9 EPEN   departamentos… Anual - (En…  2024     5          15 NA     NA         
 #> 10 EPEN   departamentos… Anual - (En…  2024     7          22 NA     NA         
 #> # ℹ 1,990 more rows
-#> # ℹ 26 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
+#> # ℹ 27 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
 #> #   dwelling_id <chr>, household_id <chr>, person_id <int>,
 #> #   relationship_code <int>, sex_code <fct>, sex <chr>, age <dbl>,
 #> #   labor_status_code <dbl>, occupation_code_raw <dbl>,
