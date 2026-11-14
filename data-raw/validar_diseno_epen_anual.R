@@ -12,11 +12,12 @@ options(survey.lonely.psu = "adjust")
 
 raw_root <- Sys.getenv(
   "EMPLER_EPEN_RAW_ROOT",
-  unset = file.path(
-    "C:/Users/VALENTINALINARES/Downloads/ROpenSci/data/raw/inei_data_core",
-    "epen_departamentos"
-  )
+  unset = NA_character_
 )
+
+if (is.na(raw_root)) {
+  stop("Define EMPLER_EPEN_RAW_ROOT con la carpeta de ZIP departamentales.")
+}
 zip_path <- file.path(raw_root, "2024", "156", "csv", "935-Modulo76.zip")
 
 if (!file.exists(zip_path)) {

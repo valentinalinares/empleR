@@ -3,10 +3,13 @@
 #
 #   devtools::load_all()
 #   source("data-raw/validar_bases_reales.R")
-#   epe  <- readRDS("epe_lima_2019.rds")      # o readr::read_csv(...)
-#   epen <- descargar(year = 2024)
-#   res  <- validar_bases(epe, epen,
-#                         filtro_epen = function(d) d$region_code == 15)  # territorio comparable
+#   epe  <- readRDS("epe_lima_2021.rds")
+#   epen <- descargar(year = 2024, variante = "lima_movil", periodo = "45")
+#   res  <- validar_bases(
+#     epe, epen,
+#     vars_epe = list(peso = "fa_ond21"),
+#     vars_epen = list(peso = "fa_ond24")
+#   )
 #
 # Comprueba, para cada base: variables del diccionario, pesos, diseno
 # muestral, homologacion y cobertura del indice de IA (observaciones y
@@ -18,20 +21,11 @@
 # Ambas: ESTRATO, CONGLOMERADO. Con fa_def19 y fa_def21 a la vez hay que
 # indicar el factor: vars_epe = list(peso = "fa_def19").
 #
-# PENDIENTES (no se resuelven aqui con supuestos):
-# - EPEN: ocupados de Lima/Callao sin FAC300_ANUAL (2.790 en la validacion
-#   local). Se reportan como peso NA; no se imputan ni se excluyen hasta
-#   documentar residencia habitual y el factor que corresponde por ano y
-#   periodo.
-# - Diseno muestral: falta la especificacion operativa oficial de
-#   conglomerado, estrato, ponderacion, dominios y ajustes. Sin ella los
-#   totales ponderados son validos, pero no los errores estandar.
-# - Territorio: DIVISION_LIMA == 1 aproxima, pero no reproduce, los 43
-#   distritos de Lima y 6 del Callao de la EPE; falta un ubigeo distrital EPEN.
-# - Periodos: EPE dic 2018-feb 2019 frente a EPEN anual 2024 sirve como
-#   prueba tecnica, no para interpretar diferencias.
-# - Codigo de "ocupado" en ocu200 y OCUP300: verificar en cada diccionario
-#   (argumento `ocupado`, por defecto 1).
+# El script no supone que dos bases tienen el mismo territorio. Esa decision
+# debe quedar documentada por la validacion que lo invoque. Para el trimestre
+# movil octubre-diciembre, la EPE 2021 cubre 43 distritos de Lima y 6 del
+# Callao; la EPEN 2024 cubre 43 y 7, respectivamente. Sin distrito en el modulo
+# 76 no se puede excluir Mi Peru de la EPEN.
 
 validar_una <- function(d, nombre, vars = list(), ocupado = 1, edad_min = 14, filtro = NULL) {
   cat("\n==========", nombre, "==========\n")
@@ -63,7 +57,7 @@ validar_una <- function(d, nombre, vars = list(), ocupado = 1, edad_min = 14, fi
                 length(upm_por_estrato), length(unique(d[[v["upm"]]])), sum(upm_por_estrato == 1),
                 sum(is.na(d[[v["estrato"]]])), sum(is.na(d[[v["upm"]]]))))
   } else {
-    cat("AVISO: sin estrato o UPM; los errores estandar seran aproximados.\n")
+    cat("AVISO: la base no trae estrato o UPM completos para describirlos.\n")
   }
 
   es_epe <- identical(nombre, "EPE")
@@ -86,29 +80,15 @@ validar_bases <- function(epe, epen, vars_epe = list(), vars_epen = list(),
   cat(sprintf("Poblacion ocupada expandida: EPE=%.0f, EPEN=%.0f (ratio %.3f)\n",
               pob(r_epe), pob(r_epen), pob(r_epen) / pob(r_epe)))
 
-  # EPEN: contrastar con los indicadores oficiales precalculados del paquete
-  years <- unique(suppressWarnings(as.integer(r_epen$datos[[r_epen$variables[["year"]]]])))
-  ref <- indicadores_epen[indicadores_epen$year %in% years &
-                            indicadores_epen$survey_variant == "departamentos_anual", ]
-  if (nrow(ref) > 0 && is.null(filtro_epen)) {
-    cat(sprintf("EPEN ocupados oficiales (indicadores_epen, %s): %.0f\n",
-                paste(years, collapse = ","), sum(ref$occupied_population)))
-  }
-
-  gran_grupo <- function(d) {
+  gran_grupo <- function(d, variable_peso) {
     gg <- if ("cno_gran_grupo" %in% names(d)) d$cno_gran_grupo else substr(d$cno_cod, 1, 1)
     gg <- ifelse(is.na(gg), "sin_asignar", gg)
-    w <- as.numeric(d[[r_epe$variables[["peso"]]]])
+    w <- as.numeric(d[[variable_peso]])
     round(100 * tapply(w, gg, sum, na.rm = TRUE) / sum(w, na.rm = TRUE), 1)
   }
   cat("\nDistribucion por gran grupo CNO (% poblacion; EPE solo si los candidatos coinciden):\n")
-  gg_epe <- gran_grupo(r_epe$datos)
-  gg_epen <- {
-    w <- as.numeric(r_epen$datos[[r_epen$variables[["peso"]]]])
-    g <- substr(r_epen$datos$cno_cod, 1, 1)
-    g <- ifelse(is.na(g), "sin_asignar", g)
-    round(100 * tapply(w, g, sum, na.rm = TRUE) / sum(w, na.rm = TRUE), 1)
-  }
+  gg_epe <- gran_grupo(r_epe$datos, r_epe$variables[["peso"]])
+  gg_epen <- gran_grupo(r_epen$datos, r_epen$variables[["peso"]])
   todos <- sort(union(names(gg_epe), names(gg_epen)))
   print(data.frame(gran_grupo = todos, EPE = as.numeric(gg_epe[todos]), EPEN = as.numeric(gg_epen[todos])),
         row.names = FALSE)

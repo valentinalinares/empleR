@@ -1,0 +1,8 @@
+"encuesta","year","periodo","prueba","estado","detalle","n","pct_n","poblacion","pct_poblacion"
+"EPE","2021","Oct-Nov-Dic","integracion_real","con_score",,2384,33.31,1638384.12555703,33.37
+"EPE","2021","Oct-Nov-Dic","integracion_real","sin_score",,91,1.27,62255.7420825152,1.27
+"EPE","2021","Oct-Nov-Dic","integracion_real","sin_homologacion","codigo_no_encontrado",3,0.04,1571.51483931419,0.03
+"EPE","2021","Oct-Nov-Dic","integracion_real","sin_homologacion","discrepancia_fuente",88,1.23,53015.9769166356,1.08
+"EPE","2021","Oct-Nov-Dic","integracion_real","sin_homologacion","multiples_destinos",4591,64.15,3154033.94270147,64.25
+"EPEN","2024","Oct-Nov-Dic","integracion_real","con_score",,5580,97.55,5427892.69700929,97.72
+"EPEN","2024","Oct-Nov-Dic","integracion_real","sin_score",,140,2.45,126379.496157824,2.28

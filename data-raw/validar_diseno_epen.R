@@ -9,11 +9,12 @@ options(survey.lonely.psu = "adjust")
 
 raiz <- Sys.getenv(
   "EMPLER_EPEN_LIMA_RAW_ROOT",
-  unset = file.path(
-    "C:/Users/VALENTINALINARES/Downloads/ROpenSci/data/raw/inei_data_core",
-    "epen_lima"
-  )
+  unset = NA_character_
 )
+
+if (is.na(raiz)) {
+  stop("Define EMPLER_EPEN_LIMA_RAW_ROOT con la carpeta de ZIP EPEN Lima.")
+}
 
 fuentes <- data.frame(
   year = c(2024L, 2025L),
