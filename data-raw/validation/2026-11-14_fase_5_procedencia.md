@@ -11,11 +11,12 @@
 Los once datasets se reconstruyeron desde una copia limpia sin sobrescribir
 los objetos publicados. Todos coincidieron por contenido, dimensiones,
 nombres y orden de columnas. En los dos objetos `sf` se compararon además las
-geometrías serializadas. `muestra_epen_2024` también coincidió byte por byte;
-los otros diez cambiaron únicamente en la serialización `.rda` producida por
-el entorno de ejecución.
+geometrías serializadas. Después de esa comprobación, la muestra real fue
+reemplazada por una muestra sintética de igual esquema para eliminar el riesgo
+de redistribución de microdatos. La reconstrucción se repitió contra esa
+versión final.
 
-La corrida verificó diez entradas mediante SHA-256 y fijó el repositorio
+La corrida final verificó ocho entradas mediante SHA-256 y fijó el repositorio
 `ia_empleo_peru` en el commit
 `d7a179f143bb33a6fef23cd0394d8b3053eb89ec`. El coordinador no usa un
 `main` cambiante y escribe en una carpeta temporal por defecto.
@@ -45,7 +46,8 @@ La corrida verificó diez entradas mediante SHA-256 y fijó el repositorio
 - Los once objetos actuales pueden recrearse desde las entradas identificadas.
 - Las correcciones posteriores no se pierden al reconstruir desde cero.
 - `indicadores_epen` y `url_catalog_epen` ya tienen generadores identificados.
-- La muestra conserva exactamente las mismas 2.000 filas y sus 36 variables.
+- La muestra sintética conserva 2.000 filas, 36 variables, tipos, claves y
+  dominios necesarios para ejemplos y pruebas, sin conservar personas reales.
 - Los polígonos reconstruidos tienen las mismas geometrías que los
   distribuidos.
 
@@ -55,28 +57,25 @@ La corrida verificó diez entradas mediante SHA-256 y fijó el repositorio
   fijada; las respuestas originales y todos los intermedios no están
   archivados en el repositorio.
 - Igualdad de contenido no implica por sí misma permiso de redistribución.
-- No se encontró una licencia explícita del INEI que autorice empaquetar una
-  muestra de microdatos reales. El acceso público al portal no basta para
-  inferir ese permiso.
-- El índice pertenece a Walter Omar Manky Bonilla; debe registrarse su
-  autorización o una licencia aplicable antes de una distribución formal.
+- No se encontró una licencia explícita del INEI para redistribuir microdatos;
+  esa incertidumbre se resolvió retirando la muestra real del paquete.
+- Walter Omar Manky Bonilla autorizó verbalmente a Valentina a usar el índice.
+  Antes del envío formal conviene conservar una confirmación breve por escrito
+  y definir la licencia aplicable.
 
 ## Decisiones recomendadas antes del envío
 
-1. Sustituir `muestra_epen_2024` por una muestra sintética estructural para
-   ejemplos y pruebas, a menos que se documente un permiso explícito de
-   redistribución.
-2. Obtener de Omar una autorización breve y escrita o escoger una licencia
+1. Obtener de Omar una autorización breve y escrita o escoger una licencia
    explícita para redistribuir el índice en `empleR`.
-3. Archivar, si existen, las respuestas originales y los intermedios de la
+2. Archivar, si existen, las respuestas originales y los intermedios de la
    corrida Sonnet en un depósito versionado con acceso y licencia definidos.
    Si no existen, mantener la limitación tal como está documentada.
-4. Conservar la atribución y versión de `geoperu`, cuya fuente sí declara
+3. Conservar la atribución y versión de `geoperu`, cuya fuente sí declara
    licencia MIT.
 
 ## Evidencia
 
-- `2026-11-14_rebuild_inputs.csv`: diez huellas de entrada verificadas.
+- `2026-11-14_rebuild_inputs.csv`: ocho huellas de entrada verificadas.
 - `2026-11-14_rebuild_steps.csv`: siete pasos generados sin fallos.
 - `2026-11-14_rebuild_datasets.csv`: once comparaciones de contenido.
 - `2026-11-14_rebuild_environment.json`: R, plataforma, paquetes, commit y
@@ -94,7 +93,6 @@ La corrida verificó diez entradas mediante SHA-256 y fijó el repositorio
 
 ## Estado de cierre
 
-La reconstrucción técnica y el inventario quedan **cerrados con evidencia**.
-Las condiciones de redistribución de la muestra real y del índice quedan
-**abiertas como decisiones previas al envío**, no como fallos de los
-generadores.
+La reconstrucción técnica, el inventario y el retiro de microdatos reales
+quedan **cerrados con evidencia**. Solo queda formalizar por escrito el permiso
+del índice antes del envío; no es un fallo de los generadores.

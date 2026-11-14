@@ -3,7 +3,7 @@
   "R": "R version 4.5.1 (2025-06-13 ucrt)",
   "platform": "x86_64-w64-mingw32",
   "ia_empleo_peru_commit": "d7a179f143bb33a6fef23cd0394d8b3053eb89ec",
-  "seed_muestra_epen_2024": 42,
+  "seed_muestra_epen_2024": 20261114,
   "packages": {
     "dplyr": "1.2.1",
     "readr": "2.2.0",

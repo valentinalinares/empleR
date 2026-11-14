@@ -1,7 +1,8 @@
-#' Muestra de microdatos EPEN 2024 (solo ocupados)
+#' Muestra sintética con estructura EPEN 2024 (solo ocupados)
 #'
-#' Submuestra aleatoria de 2.000 filas de la EPEN 2024
-#' (variante departamentos_anual) para uso en ejemplos y pruebas.
+#' Dataset completamente sintético de 2.000 filas con la estructura de la EPEN
+#' 2024 (variante departamentos_anual) para uso en ejemplos y pruebas. Ninguna
+#' fila corresponde a una persona, vivienda u hogar real.
 #'
 #' @format Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 #'   \describe{
@@ -14,7 +15,7 @@
 #'     \item{sample_id}{Identificador de muestra (`MUESTRA`, character).}
 #'     \item{strata_code}{Estrato (`ESTRATO`, 1-8).}
 #'     \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
-#'       hogar (character, con los ceros a la izquierda del original). La UPM
+#'       hogar (character, con ceros a la izquierda). La UPM
 #'       es `sample_id` + `region_code` + `cluster_id`.}
 #'     \item{person_id, relationship_code}{Numero de orden de la persona
 #'       (`C201`) y parentesco (`C203`).}
@@ -33,28 +34,28 @@
 #'   }
 #'
 #' @details
-#' **Importante:** este dataset contiene **unicamente personas ocupadas**
+#' **Importante:** este dataset representa **unicamente personas ocupadas**
 #' (`labor_status_code = 1`). Los desocupados e inactivos fueron excluidos
-#' durante el procesamiento del pipeline porque no tienen codigo de ocupacion
-#' (CNO) y no pueden cruzarse con el indice de IA.
+#' porque el objetivo de los ejemplos es trabajar con codigos de ocupacion
+#' (CNO) y cruzarlos con el indice de IA.
 #'
 #' Esto significa que **no es posible calcular tasas de desempleo o actividad**
 #' directamente desde esta muestra. Para esos indicadores usa:
 #' - [resumen_nacional()]: tasas pre-calculadas sobre la PEA completa.
 #' - [descargar()]: microdatos crudos del INEI con todos los estados laborales.
 #'
-#' 81 filas no tienen factor de expansion (`weight`); se conservan sin
-#' imputar. `ubigeo` y `domain_code` estan vacios porque el modulo 76 no trae
-#' variables equivalentes.
+#' Algunas filas tienen `weight = NA` para probar el tratamiento explícito de
+#' pesos faltantes. `ubigeo` y `domain_code` se conservan vacíos para reproducir
+#' el esquema disponible del módulo 76.
 #'
-#' La muestra se regenera con `data-raw/07_muestra_epen_2024.R` desde la base
-#' corregida de `ia_empleo_peru` (codigos CNO completados a la izquierda e
-#' identificadores reconstruidos desde los ZIP oficiales). Son las mismas 2.000
-#' personas que la version anterior.
+#' La muestra se genera con `data-raw/07_muestra_epen_2024.R`, semilla
+#' `20261114` y reglas declaradas. No se remuestrean microdatos del INEI. Los
+#' codigos ocupacionales se limitan a codigos CNO validos presentes en el
+#' indice incluido en el paquete.
 #'
-#' @source INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76.
-#'   Pipeline de procesamiento: Linares Herrera, V. (2025),
-#'   \url{https://github.com/valentinalinares/ia_empleo_peru}.
+#' @source Datos sintéticos generados por `empleR`. El esquema y los nombres de
+#'   variables se basan en la documentación pública de la Encuesta Permanente
+#'   de Empleo Nacional 2024 del INEI.
 "muestra_epen_2024"
 
 

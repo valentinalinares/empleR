@@ -1,5 +1,11 @@
 # Fase 3 corregida: alcance longitudinal y mapas EPEN
 
+> **Actualización del 14-11-2026:** la muestra real usada en esta validación
+> fue reemplazada después por datos sintéticos con el mismo esquema y los 25
+> ámbitos. La validación territorial contra los cuatro ZIP oficiales se
+> conserva como evidencia externa y reproducible cuando esos ZIP están
+> disponibles.
+
 **Fecha:** 11 de noviembre de 2026
 **Rama:** `refactor/alcance-v1-corregido`
 

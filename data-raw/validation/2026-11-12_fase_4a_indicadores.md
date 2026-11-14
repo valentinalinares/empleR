@@ -1,5 +1,11 @@
 # Fase 4A: universo, variables y estimadores puntuales de `indicadores()`
 
+> **Actualización del 14-11-2026:** la muestra real incluida al ejecutar esta
+> validación fue reemplazada posteriormente por una muestra sintética. Los
+> contrastes oficiales de este informe se conservan porque se ejecutaron con
+> los ZIP externos identificados; ya no implican que el paquete redistribuya
+> esas 2.000 personas.
+
 Fecha de ejecución: 12 de noviembre de 2026
 
 ## Alcance

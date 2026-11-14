@@ -77,15 +77,15 @@
 
 ## Datos
 
-* `muestra_epen_2024` se regenera desde la base corregida de
-  `ia_empleo_peru` (mismas 2.000 personas): codigos CNO completados a la
-  izquierda, `sample_id`, estrato e identificadores reconstruidos. Incorpora
-  `division_lima`, contrastada con `DIVISION_LIMA` del ZIP oficial de 2024, y
-  `hours_week_total`, recuperada de `whoraT` sin reemplazar las horas de la
-  ocupacion principal.
+* `muestra_epen_2024` ahora contiene 2.000 registros completamente sinteticos:
+  conserva las 36 columnas necesarias para ejemplos y pruebas, pero ninguna
+  fila corresponde a una persona, vivienda u hogar real. Se genera con
+  semilla fija y reglas declaradas, sin remuestrear microdatos del INEI.
 * `cno_2015` incluye el grupo primario 5321 con sus tareas oficiales y
   restaura las tareas de 5223.
 * Nuevos datasets `co_1995` y `equivalencia_co95`.
+* Los once datasets distribuidos tienen generadores coordinados, manifiestos,
+  huellas y una validacion de reconstruccion por contenido.
 
 ## Otros
 

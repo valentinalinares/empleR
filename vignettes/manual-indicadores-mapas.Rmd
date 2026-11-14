@@ -117,9 +117,9 @@ decisiones internas del INEI y no permite aplicar una corrección por población
 finita. Si faltan UPM o estratos, la función se detiene en lugar de simplificar
 el diseño sin avisar.
 
-La muestra incluida contiene únicamente personas ocupadas. Es adecuada para
-practicar con ingreso y horas, pero no para calcular tasas de actividad,
-empleo o desempleo.
+La muestra sintética incluida representa únicamente personas ocupadas. Es
+adecuada para practicar con ingreso y horas, pero no para calcular tasas de
+actividad, empleo o desempleo ni para producir estimaciones oficiales.
 
 ## `resumen_nacional()`: consultar resultados precalculados
 

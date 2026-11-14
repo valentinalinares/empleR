@@ -105,7 +105,7 @@ test_that("la inferencia valida sus argumentos y el numero de UPM", {
   )
 })
 
-test_that("la muestra trae identificadores del muestreo completos", {
+test_that("la muestra sintetica conserva la estructura necesaria", {
   m <- muestra_epen_2024
   expect_equal(ncol(m), 36L)
   expect_false(anyNA(m$strata_code))
@@ -114,6 +114,9 @@ test_that("la muestra trae identificadores del muestreo completos", {
   expect_true(any(startsWith(m$cluster_id, "0")))
   expect_false(anyNA(m$hours_week_total))
   expect_true(any(m$hours_week_total != m$hours_week))
+  expect_equal(sum(is.na(m$weight)), 80L)
+  expect_false(any(m$region_code == 7))
+  expect_setequal(unique(m$division_lima[m$region_code == 15]), c(1L, 2L))
   clave <- m[c("month", "sample_id", "region_code", "cluster_id", "dwelling_id",
                "household_id", "person_id")]
   expect_false(anyDuplicated(clave) > 0)

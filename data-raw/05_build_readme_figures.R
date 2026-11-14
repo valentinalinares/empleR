@@ -74,8 +74,8 @@ fig_mapa <- mapa(
 ) +
   ggplot2::labs(
     title = "Ingreso laboral promedio por \u00e1mbito departamental EPEN",
-    subtitle = "Ejemplo con la muestra incluida; no es una estimaci\u00f3n oficial",
-    caption = "Fuente: muestra_epen_2024 incluida en empleR"
+    subtitle = "Ejemplo con datos sint\u00e9ticos; no es una estimaci\u00f3n oficial",
+    caption = "Fuente: muestra sint\u00e9tica generada por empleR"
   ) +
   ggplot2::theme(
     plot.background = ggplot2::element_rect(fill = "white", color = NA),

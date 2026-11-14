@@ -35,8 +35,9 @@ pak::pak("valentinalinares/empleR")
 
 ## Un primer ejemplo
 
-El paquete trae una muestra de 2.000 personas ocupadas de la EPEN 2024, así
-que puedes correr los ejemplos sin descargar archivos grandes.
+El paquete trae 2.000 registros completamente sintéticos con la estructura de
+personas ocupadas de la EPEN 2024. Puedes correr los ejemplos sin descargar
+archivos grandes y sin redistribuir registros de personas reales.
 
 ```r
 library(empleR)
@@ -53,7 +54,7 @@ indicadores(datos, indicador = "ingreso_promedio", por = "ia_tipo")
 
 ![Ejemplo de mapa departamental creado con empleR](man/figures/README-mapa.png)
 
-La figura se construyó con la muestra incluida en el paquete; no es una
+La figura se construyó con datos sintéticos incluidos en el paquete; no es una
 estimación oficial del INEI.
 
 ## Sobre el índice de exposición a IA

@@ -11,12 +11,8 @@ if (length(missing) > 0L) {
 }
 
 repo <- Sys.getenv("EMPLER_IA_EMPLEO_REPO", unset = NA_character_)
-raw_2024 <- Sys.getenv("EMPLER_EPEN_RAW_2024", unset = NA_character_)
 if (is.na(repo) || !dir.exists(repo)) {
   stop("Define EMPLER_IA_EMPLEO_REPO.", call. = FALSE)
-}
-if (is.na(raw_2024) || !file.exists(raw_2024)) {
-  stop("Define EMPLER_EPEN_RAW_2024.", call. = FALSE)
 }
 
 pinned_commit <- "d7a179f143bb33a6fef23cd0394d8b3053eb89ec"
@@ -42,11 +38,6 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 Sys.setenv(
   EMPLER_IA_EMPLEO_REPO = repo,
-  EMPLER_EPEN_BASE = file.path(
-    repo, "_interno", "bases", "procesadas",
-    "epen_persona_departamentos_anual_2022_2025.csv.gz"
-  ),
-  EMPLER_EPEN_RAW_2024 = raw_2024,
   EMPLER_DATA_OUTPUT_DIR = output_dir
 )
 
@@ -54,38 +45,32 @@ expected_inputs <- data.frame(
   input = c(
     "disponibilidad_fuentes.csv",
     "mercado_laboral_periodo.csv.gz",
-    "epen_persona_departamentos_anual_2022_2025.csv.gz",
     "CNO_estructurado.xlsx",
     "equivalenciasciuo_cno.xlsx",
     "anthropic-claude-sonnet-4-6_exposure_index.xlsx",
     "co_1995_correspondencia.xlsx",
     "url_catalog_epen.csv",
-    "cno_2015_tareas_5321.txt",
-    "935-Modulo76.zip"
+    "cno_2015_tareas_5321.txt"
   ),
   path = c(
     file.path(repo, "_interno", "bases", "procesadas", "disponibilidad_fuentes.csv"),
     file.path(repo, "_interno", "bases", "procesadas", "mercado_laboral_periodo.csv.gz"),
-    file.path(repo, "_interno", "bases", "procesadas", "epen_persona_departamentos_anual_2022_2025.csv.gz"),
     file.path(repo, "_interno", "referencias", "cno", "CNO_estructurado.xlsx"),
     file.path(repo, "_interno", "referencias", "equivalencias", "equivalenciasciuo_cno.xlsx"),
     file.path(repo, "_interno", "referencias", "indices", "anthropic-claude-sonnet-4-6_exposure_index.xlsx"),
     file.path("data-raw", "co_1995", "co_1995_correspondencia.xlsx"),
     file.path("data-raw", "url_catalog_epen.csv"),
-    file.path("data-raw", "cno_2015_tareas_5321.txt"),
-    raw_2024
+    file.path("data-raw", "cno_2015_tareas_5321.txt")
   ),
   sha256_expected = c(
     "8aff65e95e24c87b64e57a9c59c7ac0498d1b251a9b8161ffda1e7ffc19c464a",
     "ced9ac482ce365b8ed217993cf9158dc49292613864d2066592138dffdfa75ab",
-    "b71df3ff8fa2e2702dd11eed511aa9dd36ac5d3066c5d7b0735bd958229a7800",
     "c6f58dee47343a6c585ff119b48300f033d92ab7ebde52579a02d23fc496f8a6",
     "ea18f19564a1fe1de7c7dd1c51d52ce49b0013b9712b3835ac482774c7fbbfc2",
     "39f80eba71aa08e3af3b6dac73019d0d2d9cce69b3215d6e540b8586c6384eb5",
     "2248ff04132ead92012ccf0f5756548c7133dd6bcb3edc66a09af91df078be36",
     "d6a808fdf2d4951e872eb4f654f4e939600d88096e1ef10edf745efe55664b76",
-    "39a42ddd5501c8a62af33b11ba67721dcf1303dc93e2eb09410e18dadc75c93f",
-    "a33d062bc3f7bdfe86b91f89beadf13b32ad590f384dd79f1d24b79ae25c86e2"
+    "39a42ddd5501c8a62af33b11ba67721dcf1303dc93e2eb09410e18dadc75c93f"
   ),
   stringsAsFactors = FALSE
 )
@@ -231,7 +216,7 @@ environment <- list(
   R = R.version.string,
   platform = R.version$platform,
   ia_empleo_peru_commit = pinned_commit,
-  seed_muestra_epen_2024 = 42,
+  seed_muestra_epen_2024 = 20261114,
   packages = as.list(vapply(
     c("dplyr", "readr", "readxl", "sf", "geoperu", "digest", "jsonlite"),
     function(package) as.character(utils::packageVersion(package)),

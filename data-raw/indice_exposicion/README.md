@@ -45,6 +45,12 @@ Bonilla**, con la asistencia de investigacion de **Valentina Linares
 Herrera**. Es una actualizacion del enfoque basado en tareas del CNO-2015
 publicado en:
 
+Omar autorizó verbalmente a Valentina a usar el índice en `empleR`. Valentina
+dejó constancia de esa autorización el 14 de noviembre de 2026. Para una
+publicación formal se solicitará una confirmación breve por escrito y se
+registrará la licencia de redistribución acordada; mientras tanto no se
+atribuye al índice una licencia que su autor no haya escogido.
+
 > Manky, W. O. (2025). *Doble desafio tecnologico: analisis de la exposicion a
 > la automatizacion tradicional y a la inteligencia artificial generativa en
 > el empleo peruano, utilizando datos de la ENAHO 2024*. Instituto Nacional de

@@ -73,7 +73,7 @@
       "inputs": ["anthropic-claude-sonnet-4-6_exposure_index.xlsx"],
       "sha256_output": "218b6391e6eabd78228f7ea133f53836e4a8cd298d27adb67d9c93c8af682518",
       "validation": "content_equal",
-      "limitation": "Final table reproducible; original model responses are not archived here. Distribution permission from the index author remains to be recorded."
+      "limitation": "Final table reproducible; original model responses are not archived here. The author granted verbal permission; written confirmation and an explicit redistribution licence remain to be recorded."
     },
     {
       "object": "muestra_epen_2024",
@@ -81,11 +81,12 @@
       "rows": 2000,
       "columns": 36,
       "scripts": ["data-raw/07_muestra_epen_2024.R"],
-      "inputs": ["epen_persona_departamentos_anual_2022_2025.csv.gz", "935-Modulo76.zip"],
-      "parameters": {"year": 2024, "seed": 42, "sample_n": 2000},
-      "sha256_output": "1a7a74dfc8ff477a1b3077a886059fad4a784de0fae4905a559fed4cb5149b23",
+      "inputs": ["cno_2015", "indice_ia", "declared synthetic generation rules"],
+      "parameters": {"reference_year": 2024, "seed": 20261114, "sample_n": 2000},
+      "sha256_output": "64b2fb72148b1f1d9c941f7c7b3e010ec2e6075318571c439dcacbe892ba2bd4",
       "validation": "content_and_binary_equal",
-      "limitation": "No explicit INEI redistribution licence was located; synthetic replacement is recommended before submission unless permission is documented."
+      "synthetic": true,
+      "limitation": "No row represents a real person, dwelling or household. Values are suitable for examples and tests, not official estimation."
     },
     {
       "object": "shapes_departamentos",

@@ -191,8 +191,8 @@ mapa(ia_dep, var = "ia_score_mean",
 
 ## Datos de ejemplo
 
-El paquete incluye `muestra_epen_2024`, una submuestra de 2.000 filas para
-practicar sin necesidad de descargar datos:
+El paquete incluye `muestra_epen_2024`, un dataset completamente sintético de
+2.000 filas para practicar sin descargar ni redistribuir microdatos reales:
 
 ```{r muestra}
 # Ver estructura de la muestra

@@ -3,7 +3,7 @@
 \docType{data}
 \name{muestra_epen_2024}
 \alias{muestra_epen_2024}
-\title{Muestra de microdatos EPEN 2024 (solo ocupados)}
+\title{Muestra sintética con estructura EPEN 2024 (solo ocupados)}
 \format{
 Un \code{data.frame} con 2.000 filas y 36 columnas. Variables principales:
 \describe{
@@ -16,7 +16,7 @@ ambitos de Lima y Callao.}
 \item{sample_id}{Identificador de muestra (\code{MUESTRA}, character).}
 \item{strata_code}{Estrato (\code{ESTRATO}, 1-8).}
 \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
-hogar (character, con los ceros a la izquierda del original). La UPM
+hogar (character, con ceros a la izquierda). La UPM
 es \code{sample_id} + \code{region_code} + \code{cluster_id}.}
 \item{person_id, relationship_code}{Numero de orden de la persona
 (\code{C201}) y parentesco (\code{C203}).}
@@ -35,22 +35,23 @@ durante la semana (\code{whoraT}).}
 }
 }
 \source{
-INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76.
-Pipeline de procesamiento: Linares Herrera, V. (2025),
-\url{https://github.com/valentinalinares/ia_empleo_peru}.
+Datos sintéticos generados por \code{empleR}. El esquema y los nombres de
+variables se basan en la documentación pública de la Encuesta Permanente
+de Empleo Nacional 2024 del INEI.
 }
 \usage{
 muestra_epen_2024
 }
 \description{
-Submuestra aleatoria de 2.000 filas de la EPEN 2024
-(variante departamentos_anual) para uso en ejemplos y pruebas.
+Dataset completamente sintético de 2.000 filas con la estructura de la EPEN
+2024 (variante departamentos_anual) para uso en ejemplos y pruebas. Ninguna
+fila corresponde a una persona, vivienda u hogar real.
 }
 \details{
-\strong{Importante:} este dataset contiene \strong{unicamente personas ocupadas}
+\strong{Importante:} este dataset representa \strong{unicamente personas ocupadas}
 (\code{labor_status_code = 1}). Los desocupados e inactivos fueron excluidos
-durante el procesamiento del pipeline porque no tienen codigo de ocupacion
-(CNO) y no pueden cruzarse con el indice de IA.
+porque el objetivo de los ejemplos es trabajar con codigos de ocupacion
+(CNO) y cruzarlos con el indice de IA.
 
 Esto significa que \strong{no es posible calcular tasas de desempleo o actividad}
 directamente desde esta muestra. Para esos indicadores usa:
@@ -59,13 +60,13 @@ directamente desde esta muestra. Para esos indicadores usa:
 \item \code{\link[=descargar]{descargar()}}: microdatos crudos del INEI con todos los estados laborales.
 }
 
-81 filas no tienen factor de expansion (\code{weight}); se conservan sin
-imputar. \code{ubigeo} y \code{domain_code} estan vacios porque el modulo 76 no trae
-variables equivalentes.
+Algunas filas tienen \code{weight = NA} para probar el tratamiento explícito de
+pesos faltantes. \code{ubigeo} y \code{domain_code} se conservan vacíos para reproducir
+el esquema disponible del módulo 76.
 
-La muestra se regenera con \verb{data-raw/07_muestra_epen_2024.R} desde la base
-corregida de \code{ia_empleo_peru} (codigos CNO completados a la izquierda e
-identificadores reconstruidos desde los ZIP oficiales). Son las mismas 2.000
-personas que la version anterior.
+La muestra se genera con \verb{data-raw/07_muestra_epen_2024.R}, semilla
+\code{20261114} y reglas declaradas. No se remuestrean microdatos del INEI. Los
+codigos ocupacionales se limitan a codigos CNO validos presentes en el
+indice incluido en el paquete.
 }
 \keyword{datasets}
