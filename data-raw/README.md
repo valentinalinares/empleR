@@ -96,4 +96,3 @@ de correspondencia.
 Los objetos espaciales se derivan de `geoperu` 0.0.0.2, publicado bajo
 licencia MIT. Se conserva la atribución al proyecto de origen y la versión
 usada.
-

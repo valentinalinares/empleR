@@ -1,7 +1,9 @@
 # Fase 5: reconstrucción y procedencia de datasets
 
-**Fecha:** 14 de noviembre de 2026  
-**Rama:** `audit/procedencia-datasets`  
+**Fecha:** 14 de noviembre de 2026
+
+**Rama:** `audit/procedencia-datasets`
+
 **Alcance:** once objetos distribuidos en `data/`
 
 ## Resultado
