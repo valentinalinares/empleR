@@ -119,6 +119,12 @@ las ocupaciones con un índice peruano de exposición a IA.
   solicitan con `incluir_inferencia = TRUE`: la reconstrucción reproduce los
   CV publicados en los contrastes disponibles, pero sigue marcada como
   experimental porque no equivale a una especificación oficial completa.
+- Antes de comparar EPE y EPEN, revisa `homologacion_estado` y `cobertura()`.
+  En la validación real de octubre-diciembre, solo 34,64 % de la población
+  ocupada EPE tuvo una correspondencia única al CNO 2015. Además, la EPE 2021
+  y la EPEN 2024 difieren en un distrito del Callao y el módulo usado no
+  permite igualar exactamente el territorio. El paquete no presenta esa
+  diferencia como una tendencia temporal validada.
 - La primera versión estable no incluye análisis longitudinales de personas ni
   encuestas de otros países.
 

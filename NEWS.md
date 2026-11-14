@@ -47,6 +47,11 @@
   `ia_tipo_estado` distingue predominante, empate, sin tareas y sin indice.
 * Nueva funcion `cobertura()`: cobertura de homologacion y score por encuesta
   y ano, en observaciones y poblacion ponderada.
+* El flujo se valido con microdatos reales EPE 2021 y EPEN 2024 del mismo
+  trimestre movil. Reproduce al redondeo las 24 tasas oficiales de actividad y
+  ocupacion seleccionadas. La comparacion agregada del indice no se considera
+  validada: solo 34,64 % de la poblacion ocupada EPE tuvo una correspondencia
+  CNO unica y los ambitos difieren en un distrito del Callao.
 
 ## Diseno muestral
 

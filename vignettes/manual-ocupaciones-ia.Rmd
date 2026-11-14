@@ -2,7 +2,7 @@
 title: "Ocupaciones, homologación e índice de IA"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Ocupaciones, homologacion e indice de IA}
+  %\VignetteIndexEntry{Ocupaciones, homologación e índice de IA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -144,6 +144,14 @@ cobertura(con_ia)
 Reporta la cobertura junto con cualquier indicador de exposición y explica por
 qué faltan puntajes. En comparaciones EPE–EPEN conviene calcularla por encuesta
 y año, porque la homologación puede modificar la cobertura de forma desigual.
+
+La validación real de octubre-diciembre de 2021 encontró puntaje para 33,37 %
+de la población ocupada EPE, frente a 97,72 % en la EPEN de
+octubre-diciembre de 2024. La causa principal fue que 64,25 % de la población
+EPE tenía varios destinos CNO posibles. No compares las medias de ambas
+encuestas como si la cobertura fuera equivalente: informa estos estados,
+recalcula la cobertura para tu periodo y, si corresponde, presenta resultados
+por separado o una sensibilidad a los casos sin homologación.
 
 ## Autoría del índice
 
