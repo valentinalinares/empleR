@@ -1,0 +1,8 @@
+"script","status","detail"
+"data-raw/00_preparar_datasets.R","generado",""
+"data-raw/02_build_indice_ia.R","generado",""
+"data-raw/03_build_equivalencia_co95.R","generado",""
+"data-raw/04_corregir_cno_2015.R","generado",""
+"data-raw/06_restaurar_tareas_cno_2015.R","generado",""
+"data-raw/07_muestra_epen_2024.R","generado",""
+"data-raw/01_preparar_shapes.R","generado",""

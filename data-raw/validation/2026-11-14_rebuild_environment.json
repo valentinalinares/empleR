@@ -1,0 +1,17 @@
+{
+  "validation_date": "2026-11-14",
+  "R": "R version 4.5.1 (2025-06-13 ucrt)",
+  "platform": "x86_64-w64-mingw32",
+  "ia_empleo_peru_commit": "d7a179f143bb33a6fef23cd0394d8b3053eb89ec",
+  "seed_muestra_epen_2024": 42,
+  "packages": {
+    "dplyr": "1.2.1",
+    "readr": "2.2.0",
+    "readxl": "1.4.5",
+    "sf": "1.1.1",
+    "geoperu": "0.0.0.2",
+    "digest": "0.6.37",
+    "jsonlite": "2.0.0"
+  },
+  "output_was_temporary": true
+}

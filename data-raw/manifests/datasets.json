@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "validation_date": "2026-11-14",
+  "ia_empleo_peru_commit": "d7a179f143bb33a6fef23cd0394d8b3053eb89ec",
+  "coordinator": "data-raw/rebuild_all.R",
+  "datasets": [
+    {
+      "object": "catalogo_fuentes",
+      "output": "data/catalogo_fuentes.rda",
+      "rows": 52,
+      "columns": 6,
+      "scripts": ["data-raw/00_preparar_datasets.R"],
+      "inputs": ["disponibilidad_fuentes.csv"],
+      "sha256_output": "bc00fcc1b9fd39a76fd717b5e81cf6dca1a86e8102c5e8722b914f96a00d643d",
+      "validation": "content_equal"
+    },
+    {
+      "object": "cno_2015",
+      "output": "data/cno_2015.rda",
+      "rows": 666,
+      "columns": 6,
+      "scripts": ["data-raw/00_preparar_datasets.R", "data-raw/04_corregir_cno_2015.R", "data-raw/06_restaurar_tareas_cno_2015.R"],
+      "inputs": ["CNO_estructurado.xlsx", "cno_2015_tareas_5321.txt", "indice_ia"],
+      "sha256_output": "53f19f19835bfc2dc204c75ab1df66a48ce302c76dbe47bb9fb8807e7f4dcab0",
+      "validation": "content_equal"
+    },
+    {
+      "object": "co_1995",
+      "output": "data/co_1995.rda",
+      "rows": 370,
+      "columns": 7,
+      "scripts": ["data-raw/03_build_equivalencia_co95.R"],
+      "inputs": ["co_1995_correspondencia.xlsx"],
+      "sha256_output": "bb79bbb39a78f2674c0e6a6e74ce3083252c329f71960d426cc9d168bfbf69ff",
+      "validation": "content_equal"
+    },
+    {
+      "object": "equivalencia_cno",
+      "output": "data/equivalencia_cno.rda",
+      "rows": 539,
+      "columns": 6,
+      "scripts": ["data-raw/00_preparar_datasets.R"],
+      "inputs": ["equivalenciasciuo_cno.xlsx"],
+      "sha256_output": "385a8ab59094e829a394fa18ce1d7161e21a1d88179c89c6e4dcc2447e7f6738",
+      "validation": "content_equal"
+    },
+    {
+      "object": "equivalencia_co95",
+      "output": "data/equivalencia_co95.rda",
+      "rows": 604,
+      "columns": 7,
+      "scripts": ["data-raw/03_build_equivalencia_co95.R"],
+      "inputs": ["co_1995_correspondencia.xlsx"],
+      "sha256_output": "6de1e5dbd519c5e66a512fcbd398344863bcb42f8e3e58499f23441de36bd5ab",
+      "validation": "content_equal"
+    },
+    {
+      "object": "indicadores_epen",
+      "output": "data/indicadores_epen.rda",
+      "rows": 52,
+      "columns": 18,
+      "scripts": ["data-raw/00_preparar_datasets.R"],
+      "inputs": ["mercado_laboral_periodo.csv.gz"],
+      "sha256_output": "4ffa50c38bb9e3379ebb2e1a1c6b52ffe87b0d52d1479da7a7679ce2c93aca14",
+      "validation": "content_equal"
+    },
+    {
+      "object": "indice_ia",
+      "output": "data/indice_ia.rda",
+      "rows": 449,
+      "columns": 21,
+      "scripts": ["data-raw/02_build_indice_ia.R"],
+      "inputs": ["anthropic-claude-sonnet-4-6_exposure_index.xlsx"],
+      "sha256_output": "218b6391e6eabd78228f7ea133f53836e4a8cd298d27adb67d9c93c8af682518",
+      "validation": "content_equal",
+      "limitation": "Final table reproducible; original model responses are not archived here. Distribution permission from the index author remains to be recorded."
+    },
+    {
+      "object": "muestra_epen_2024",
+      "output": "data/muestra_epen_2024.rda",
+      "rows": 2000,
+      "columns": 36,
+      "scripts": ["data-raw/07_muestra_epen_2024.R"],
+      "inputs": ["epen_persona_departamentos_anual_2022_2025.csv.gz", "935-Modulo76.zip"],
+      "parameters": {"year": 2024, "seed": 42, "sample_n": 2000},
+      "sha256_output": "1a7a74dfc8ff477a1b3077a886059fad4a784de0fae4905a559fed4cb5149b23",
+      "validation": "content_and_binary_equal",
+      "limitation": "No explicit INEI redistribution licence was located; synthetic replacement is recommended before submission unless permission is documented."
+    },
+    {
+      "object": "shapes_departamentos",
+      "output": "data/shapes_departamentos.rda",
+      "rows": 25,
+      "columns": 2,
+      "scripts": ["data-raw/01_preparar_shapes.R"],
+      "inputs": ["geoperu::peru 0.0.0.2"],
+      "sha256_output": "e57104beda24aa9ec7323610ed2b469c253a0f270b4a4ed240819dcc441e8c7a",
+      "validation": "attributes_and_geometry_equal",
+      "source_license": "MIT"
+    },
+    {
+      "object": "shapes_provincias",
+      "output": "data/shapes_provincias.rda",
+      "rows": 196,
+      "columns": 3,
+      "scripts": ["data-raw/01_preparar_shapes.R"],
+      "inputs": ["geoperu::peru 0.0.0.2"],
+      "sha256_output": "091f929ee2b53c98d12e921383c4d6af07f80a373ba84f1839d1a14215e05dcf",
+      "validation": "attributes_and_geometry_equal",
+      "source_license": "MIT"
+    },
+    {
+      "object": "url_catalog_epen",
+      "output": "data/url_catalog_epen.rda",
+      "rows": 141,
+      "columns": 6,
+      "scripts": ["data-raw/00_preparar_datasets.R"],
+      "inputs": ["data-raw/url_catalog_epen.csv"],
+      "sha256_output": "a6d7c5b304a6ad58603effebe60c8bb5ecc04ac24cb6ff3465c582616466c61e",
+      "validation": "content_equal"
+    }
+  ]
+}
