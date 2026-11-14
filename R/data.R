@@ -3,7 +3,7 @@
 #' Submuestra aleatoria de 2.000 filas de la EPEN 2024
 #' (variante departamentos_anual) para uso en ejemplos y pruebas.
 #'
-#' @format Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
+#' @format Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 #'   \describe{
 #'     \item{year, month}{Ano y mes de referencia.}
 #'     \item{region_code}{Codigo CCDD de la EPEN. El codigo 15 incluye los dos

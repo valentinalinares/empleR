@@ -11,6 +11,9 @@
 library(sf)
 library(dplyr)
 
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
 # Usar motor GEOS (no s2) para evitar errores con geometrias invalidas
 sf::sf_use_s2(FALSE)
 
@@ -36,10 +39,11 @@ cat("shapes_departamentos:", nrow(shapes_departamentos), "departamentos\n")
 cat("Validas:", all(sf::st_is_valid(shapes_departamentos)), "\n")
 
 save(shapes_departamentos,
-     file = "data/shapes_departamentos.rda",
+     file = file.path(output_dir, "shapes_departamentos.rda"),
      compress = "bzip2")
-cat("Guardado: data/shapes_departamentos.rda (",
-    round(file.size("data/shapes_departamentos.rda") / 1024, 1), "KB)\n")
+cat("Guardado: shapes_departamentos.rda (",
+    round(file.size(file.path(output_dir, "shapes_departamentos.rda")) / 1024, 1),
+    "KB)\n")
 
 
 # ---- Nivel provincia (196) --------------------------------------------------
@@ -57,10 +61,11 @@ cat("shapes_provincias:", nrow(shapes_provincias), "provincias\n")
 cat("Validas:", all(sf::st_is_valid(shapes_provincias)), "\n")
 
 save(shapes_provincias,
-     file = "data/shapes_provincias.rda",
+     file = file.path(output_dir, "shapes_provincias.rda"),
      compress = "bzip2")
-cat("Guardado: data/shapes_provincias.rda (",
-    round(file.size("data/shapes_provincias.rda") / 1024, 1), "KB)\n")
+cat("Guardado: shapes_provincias.rda (",
+    round(file.size(file.path(output_dir, "shapes_provincias.rda")) / 1024, 1),
+    "KB)\n")
 
 # Restaurar s2 si se desea
 # sf::sf_use_s2(TRUE)

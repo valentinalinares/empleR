@@ -16,8 +16,9 @@
 # textos de otros clasificadores. Hasta entonces quedan en NA y la ocupacion
 # no tiene score en indice_ia.
 
-load(file.path("data", "cno_2015.rda"))
-load(file.path("data", "equivalencia_co95.rda"))
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+load(file.path(output_dir, "cno_2015.rda"))
+load(file.path(output_dir, "equivalencia_co95.rda"))
 
 nombre_5321 <- "Trabajadores en el cuidado de personas en instituciones"
 nombre_532 <- "Trabajadores en el cuidado de personas en servicios de salud"
@@ -51,4 +52,4 @@ stopifnot(
 )
 rownames(cno_2015) <- NULL
 
-save(cno_2015, file = file.path("data", "cno_2015.rda"), compress = "bzip2")
+save(cno_2015, file = file.path(output_dir, "cno_2015.rda"), compress = "bzip2")

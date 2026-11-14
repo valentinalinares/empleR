@@ -12,8 +12,9 @@
 # transcrita del PDF) si ese archivo existe. 5321 no esta en indice_ia: no
 # tiene score ni tipo de impacto, y no se toman de 5322 ni 5329.
 
-load(file.path("data", "cno_2015.rda"))
-load(file.path("data", "indice_ia.rda"))
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+load(file.path(output_dir, "cno_2015.rda"))
+load(file.path(output_dir, "indice_ia.rda"))
 
 .asignar_tareas <- function(cno, codigo, tareas) {
   i <- which(cno$codigo == codigo)
@@ -36,12 +37,9 @@ if (file.exists(archivo_5321)) {
   tareas_5321 <- tareas_5321[nzchar(tareas_5321) & !startsWith(tareas_5321, "#")]
   stopifnot(length(tareas_5321) == 4L)
   cno_2015 <- .asignar_tareas(cno_2015, "5321", tareas_5321)
-  # Copia en el paquete para que los tests comparen con la fuente
-  dir.create(file.path("inst", "extdata"), recursive = TRUE, showWarnings = FALSE)
-  invisible(file.copy(archivo_5321, file.path("inst", "extdata", "cno_2015_tareas_5321.txt"), overwrite = TRUE))
 } else {
   message("Sin ", archivo_5321, ": las tareas de 5321 siguen en NA.")
 }
 
 stopifnot(!"5321" %in% indice_ia$code)
-save(cno_2015, file = file.path("data", "cno_2015.rda"), compress = "bzip2")
+save(cno_2015, file = file.path(output_dir, "cno_2015.rda"), compress = "bzip2")

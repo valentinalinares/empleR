@@ -26,6 +26,8 @@ if (!requireNamespace("readxl", quietly = TRUE)) {
 }
 
 archivo <- file.path("data-raw", "co_1995", "co_1995_correspondencia.xlsx")
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 co_1995 <- as.data.frame(readxl::read_excel(archivo, sheet = "co_1995", col_types = "text"))
 co_1995$n_cno2015 <- as.integer(co_1995$n_cno2015)
@@ -62,7 +64,7 @@ stopifnot(all(mapply(
   unicos$co95, unicos$cno2015_unico
 )))
 
-load(file.path("data", "cno_2015.rda"))
+load(file.path(output_dir, "cno_2015.rda"))
 sin_catalogo <- setdiff(equivalencia_co95$cno2015, cno_2015$codigo)
 if (length(sin_catalogo) > 0) {
   message("Codigos CNO de la correspondencia ausentes en cno_2015: ",
@@ -71,5 +73,9 @@ if (length(sin_catalogo) > 0) {
 
 print(table(co_1995$estado))
 
-save(co_1995, file = file.path("data", "co_1995.rda"), compress = "bzip2")
-save(equivalencia_co95, file = file.path("data", "equivalencia_co95.rda"), compress = "bzip2")
+save(co_1995, file = file.path(output_dir, "co_1995.rda"), compress = "bzip2")
+save(
+  equivalencia_co95,
+  file = file.path(output_dir, "equivalencia_co95.rda"),
+  compress = "bzip2"
+)

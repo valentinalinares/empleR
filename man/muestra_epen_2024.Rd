@@ -5,7 +5,7 @@
 \alias{muestra_epen_2024}
 \title{Muestra de microdatos EPEN 2024 (solo ocupados)}
 \format{
-Un \code{data.frame} con 2.000 filas y 35 columnas. Variables principales:
+Un \code{data.frame} con 2.000 filas y 36 columnas. Variables principales:
 \describe{
 \item{year, month}{Ano y mes de referencia.}
 \item{region_code}{Codigo CCDD de la EPEN. El codigo 15 incluye los dos

@@ -30,6 +30,8 @@ base_path <- Sys.getenv(
     "epen_persona_departamentos_anual_2022_2025.csv.gz"
   )
 )
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 if (!file.exists(base_path)) {
   stop("No se encontro la base EPEN: ", base_path,
        "\nIndica la ruta con la variable de entorno EMPLER_EPEN_BASE.", call. = FALSE)
@@ -146,4 +148,8 @@ stopifnot(
 )
 
 muestra_epen_2024 <- muestra
-save(muestra_epen_2024, file = anterior, compress = "bzip2")
+save(
+  muestra_epen_2024,
+  file = file.path(output_dir, "muestra_epen_2024.rda"),
+  compress = "bzip2"
+)

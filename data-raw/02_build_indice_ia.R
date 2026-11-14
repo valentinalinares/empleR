@@ -2,17 +2,34 @@
 # paquete metodologico versionado el 15 de junio de 2026.
 # Ejecutar desde la raiz del paquete.
 
-# La carpeta del paquete metodologico se indica con la variable de entorno
-# EMPLER_INDICE_IA_DIR (ver data-raw/indice_exposicion/README.md), por ejemplo:
-#   Sys.setenv(EMPLER_INDICE_IA_DIR = "ruta/a/01_Indice_exposicion")
-source_dir <- Sys.getenv("EMPLER_INDICE_IA_DIR")
-if (!nzchar(source_dir) || !dir.exists(source_dir)) {
-  stop("Indica la carpeta del indice con la variable de entorno EMPLER_INDICE_IA_DIR.",
-       call. = FALSE)
+# Se acepta el archivo metodologico original o la copia final versionada en el
+# commit fijado de ia_empleo_peru. Ambos contienen la misma tabla sustantiva.
+index_file <- Sys.getenv("EMPLER_INDICE_IA_FILE", unset = NA_character_)
+source_dir <- Sys.getenv("EMPLER_INDICE_IA_DIR", unset = NA_character_)
+repo <- Sys.getenv("EMPLER_IA_EMPLEO_REPO", unset = NA_character_)
+
+if (is.na(index_file) && !is.na(source_dir)) {
+  index_file <- file.path(source_dir, "02_exposure_index_por_ocupacion.xlsx")
+}
+if (is.na(index_file) && !is.na(repo)) {
+  index_file <- file.path(
+    repo, "_interno", "referencias", "indices",
+    "anthropic-claude-sonnet-4-6_exposure_index.xlsx"
+  )
+}
+if (is.na(index_file)) {
+  stop(
+    "Define EMPLER_INDICE_IA_FILE, EMPLER_INDICE_IA_DIR o ",
+    "EMPLER_IA_EMPLEO_REPO.",
+    call. = FALSE
+  )
 }
 
-index_file <- file.path(source_dir, "02_exposure_index_por_ocupacion.xlsx")
-agreement_file <- file.path(source_dir, "04_agreement_summary.json")
+agreement_file <- if (!is.na(source_dir)) {
+  file.path(source_dir, "04_agreement_summary.json")
+} else {
+  NA_character_
+}
 
 if (!file.exists(index_file)) {
   stop("No se encontro el archivo del indice: ", index_file, call. = FALSE)
@@ -89,7 +106,8 @@ if (any(score_values < 0 | score_values > 1, na.rm = TRUE)) {
   stop("Los scores y porcentajes del indice IA deben estar en escala 0-1.", call. = FALSE)
 }
 
-if (file.exists(agreement_file) && requireNamespace("jsonlite", quietly = TRUE)) {
+if (!is.na(agreement_file) && file.exists(agreement_file) &&
+    requireNamespace("jsonlite", quietly = TRUE)) {
   agreement <- jsonlite::fromJSON(agreement_file)
   if (!is.null(agreement$total_tasks) &&
       !isTRUE(all.equal(sum(indice_ia$total_tasks), agreement$total_tasks))) {
@@ -97,5 +115,10 @@ if (file.exists(agreement_file) && requireNamespace("jsonlite", quietly = TRUE))
   }
 }
 
-dir.create("data", showWarnings = FALSE)
-save(indice_ia, file = file.path("data", "indice_ia.rda"), compress = "bzip2")
+output_dir <- Sys.getenv("EMPLER_DATA_OUTPUT_DIR", unset = "data")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+save(
+  indice_ia,
+  file = file.path(output_dir, "indice_ia.rda"),
+  compress = "bzip2"
+)
