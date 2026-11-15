@@ -37,8 +37,10 @@ pak::pak("valentinalinares/empleR")
 
 ## Un primer ejemplo
 
-El paquete trae una muestra de 2.000 personas ocupadas de la EPEN 2024,
-así que puedes correr los ejemplos sin descargar archivos grandes.
+El paquete trae 2.000 registros completamente sintéticos con la
+estructura de personas ocupadas de la EPEN 2024. Puedes correr los
+ejemplos sin descargar archivos grandes y sin redistribuir registros de
+personas reales.
 
 ``` r
 
@@ -59,8 +61,8 @@ empleR](reference/figures/README-mapa.png)
 
 Ejemplo de mapa departamental creado con empleR
 
-La figura se construyó con la muestra incluida en el paquete; no es una
-estimación oficial del INEI.
+La figura se construyó con datos sintéticos incluidos en el paquete; no
+es una estimación oficial del INEI.
 
 ## Sobre el índice de exposición a IA
 
@@ -95,7 +97,7 @@ al INEI.
 | [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md) | Describe ocupaciones del CNO 2015 y homologa el CO-95 sin forzar los casos ambiguos. Conserva los candidatos y el estado de cada correspondencia. |
 | [`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md) | Añade a cada ocupación su puntaje de exposición a IA. |
 | [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md) | Muestra cuántas observaciones, y cuánta población ponderada, tienen código, homologación y puntaje. |
-| [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md) | Calcula ingreso y horas ponderados. Los errores estándar todavía son provisionales. |
+| [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md) | Calcula ingreso y horas ponderados para la población ocupada y muestra los casos usados o excluidos. La inferencia es experimental y solo se calcula si se solicita. |
 | [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md) | Consulta indicadores nacionales precalculados y documentados. |
 | [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md) | Muestra indicadores agregados para los 25 ámbitos departamentales oficiales de la EPEN. Distingue Lima Metropolitana y Callao de Región Lima. |
 
@@ -132,9 +134,21 @@ IA.
   demás variables crudas permanecen intactas hasta contar con un
   diccionario verificado.
 - [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
-  produce estimaciones ponderadas y reconstruye el diseño muestral, así
-  que sus errores estándar son reproducibles. Aún no se ha comprobado
-  que reproduzcan los errores estándar publicados por el INEI.
+  usa el ingreso total proveniente del trabajo y las horas de todas las
+  ocupaciones. Sus estimaciones puntuales se contrastaron con los
+  microdatos y las cifras oficiales de 2022 a 2025. Los errores estándar
+  se solicitan con `incluir_inferencia = TRUE`: la reconstrucción
+  reproduce los CV publicados en los contrastes disponibles, pero sigue
+  marcada como experimental porque no equivale a una especificación
+  oficial completa.
+- Antes de comparar EPE y EPEN, revisa `homologacion_estado` y
+  [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md).
+  En la validación real de octubre-diciembre, solo 34,64 % de la
+  población ocupada EPE tuvo una correspondencia única al CNO 2015.
+  Además, la EPE 2021 y la EPEN 2024 difieren en un distrito del Callao
+  y el módulo usado no permite igualar exactamente el territorio. El
+  paquete no presenta esa diferencia como una tendencia temporal
+  validada.
 - La primera versión estable no incluye análisis longitudinales de
   personas ni encuestas de otros países.
 
@@ -177,7 +191,7 @@ El proyecto usa pruebas automatizadas, `R CMD check`, `lintr` y
 ## Datos incluidos
 
 - [`muestra_epen_2024`](https://valentinalinares.github.io/empleR/reference/muestra_epen_2024.md)
-  : Muestra de microdatos EPEN 2024 (solo ocupados)
+  : Muestra sintética con estructura EPEN 2024 (solo ocupados)
 - [`cno_2015`](https://valentinalinares.github.io/empleR/reference/cno_2015.md)
   : Clasificador Nacional de Ocupaciones 2015 (CNO 2015)
 - [`equivalencia_cno`](https://valentinalinares.github.io/empleR/reference/equivalencia_cno.md)

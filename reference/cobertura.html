@@ -113,11 +113,12 @@ del grupo (<code>NA</code> si no hay factor de expansion).</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">muestra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="ia_exposicion.html">ia_exposicion</a></span><span class="op">(</span><span class="fu"><a href="cno.html">cno</a></span><span class="op">(</span><span class="va">muestra_epen_2024</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Clasificador segun la encuesta de la base: CNO_2015</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Filas con score de IA: 2000 (100%).</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Resumen por encuesta y ano: `cobertura()`.</span>
 <span class="r-in"><span><span class="fu">cobertura</span><span class="op">(</span><span class="va">muestra</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>81 fila(s) con <span style="color: #00BB00;">weight</span> NA no suman poblacion.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   source year    estado detalle    n pct_n  poblacion pct_poblacion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   EPEN 2024 con_score    &lt;NA&gt; 1961 98.05 165010.121         97.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   EPEN 2024 sin_score    &lt;NA&gt;   39  1.95   4651.136          2.74</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>80 fila(s) con <span style="color: #00BB00;">weight</span> NA no suman poblacion.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   source year    estado detalle    n pct_n poblacion pct_poblacion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   EPEN 2024 con_score    &lt;NA&gt; 2000   100  100496.5           100</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -89,12 +89,26 @@ Antes de interpretar una tendencia se recomienda:
 5.  presentar por separado cualquier resultado sensible a casos sin
     factor o sin homologación.
 
+Una validación con los microdatos reales de octubre-diciembre encontró
+un límite concreto. La EPE 2021 cubría 43 distritos de Lima y 6 del
+Callao; la EPEN 2024 cubría 43 y 7, y su módulo 76 no ofrece distrito
+para retirar el ámbito adicional. En esa misma prueba, solo 34,64 % de
+la población ocupada EPE tuvo una correspondencia única al CNO 2015;
+64,25 % tuvo destinos múltiples. Por ello, un promedio de exposición a
+IA calculado únicamente entre las ocupaciones homologadas no representa
+la misma composición que el de la EPEN. Estos porcentajes describen esas
+entregas concretas y deben recalcularse para otros periodos.
+
 ## Fuentes oficiales
 
 - INEI. [Ficha técnica de la EPE
   2001](https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2001-31/Ficha-Tecnica-Epe-Oct.pdf).
 - INEI. [Ficha técnica de la EPEN
   2022](https://www.inei.gob.pe/media/encuestas/documentos/epen/Ficha-Tecnica.pdf).
+- INEI. [Ficha técnica de la EPE, octubre-diciembre de
+  2021](https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2021-45/Ficha_Tecnica.pdf).
+- INEI. [Ficha técnica de la EPEN, octubre-diciembre de
+  2024](https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Ficha_Tecnica.pdf).
 - INEI. [Clasificador Nacional de Ocupaciones
   2015](https://www.inei.gob.pe/media/Clasificador_Nacional_de_Ocupaciones_2015_publicado.pdf).
 - INEI. [Tablas de correspondencia

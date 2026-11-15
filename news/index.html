@@ -74,19 +74,25 @@
 <li>
 <code>ia_tipo</code> queda en <code>NA</code> cuando hay empate (<code>ia_empate = TRUE</code>); <code>ia_tipo_estado</code> distingue predominante, empate, sin tareas y sin indice.</li>
 <li>Nueva funcion <code><a href="../reference/cobertura.html">cobertura()</a></code>: cobertura de homologacion y score por encuesta y ano, en observaciones y poblacion ponderada.</li>
+<li>El flujo se valido con microdatos reales EPE 2021 y EPEN 2024 del mismo trimestre movil. Reproduce al redondeo las 24 tasas oficiales de actividad y ocupacion seleccionadas. La comparacion agregada del indice no se considera validada: solo 34,64 % de la poblacion ocupada EPE tuvo una correspondencia CNO unica y los ambitos difieren en un distrito del Callao.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="diseno-muestral-0-1-0">Diseno muestral<a class="anchor" aria-label="anchor" href="#diseno-muestral-0-1-0"></a></h3>
 <ul><li>
-<code><a href="../reference/indicadores.html">indicadores()</a></code> forma la UPM con muestra + region + conglomerado cuando la base trae <code>sample_id</code> y <code>region_code</code>. El diseno se documenta como provisional hasta contar con la especificacion oficial.</li>
+<code><a href="../reference/indicadores.html">indicadores()</a></code> explicita el universo ocupado, convierte de forma controlada los datos numericos recibidos como texto y exige elegir <code>var_peso</code> cuando existen factores para mas de un periodo. La salida informa casos usados, faltantes, valores invalidos y poblacion representada.</li>
+<li>El ingreso usa las ocupaciones principal y secundaria con ingresos extraordinarios (<code>ingtrabw</code>) y excluye valores no positivos, en concordancia con el indicador publicado por el INEI. Las horas usan el total semanal en todas las ocupaciones (<code>whoraT</code>). Los estimadores puntuales se validaron con los ZIP oficiales EPEN 2022-2025 y reproducen el ingreso oficial dentro del redondeo publicado.</li>
+<li>
+<code><a href="../reference/indicadores.html">indicadores()</a></code> devuelve por defecto estimaciones puntuales. La inferencia se solicita con <code>incluir_inferencia = TRUE</code>, agrega <code>error_std</code> y queda marcada como experimental. Ya no reemplaza silenciosamente un diseno incompleto por uno basado solo en pesos: una UPM o un estrato faltante produce un error explicativo.</li>
+<li>La UPM combina muestra + region + conglomerado cuando esos identificadores estan disponibles. La aproximacion reproduce al redondeo publicado 24 CV trimestrales de 2024-2025 y ocho CV anuales de ingreso de 2024. No usa correccion por poblacion finita porque faltan los totales del marco por etapa.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="datos-0-1-0">Datos<a class="anchor" aria-label="anchor" href="#datos-0-1-0"></a></h3>
 <ul><li>
-<code>muestra_epen_2024</code> se regenera desde la base corregida de <code>ia_empleo_peru</code> (mismas 2.000 personas): codigos CNO completados a la izquierda, <code>sample_id</code>, estrato e identificadores reconstruidos. Incorpora <code>division_lima</code>, contrastada con <code>DIVISION_LIMA</code> del ZIP oficial de 2024.</li>
+<code>muestra_epen_2024</code> ahora contiene 2.000 registros completamente sinteticos: conserva las 36 columnas necesarias para ejemplos y pruebas, pero ninguna fila corresponde a una persona, vivienda u hogar real. Se genera con semilla fija y reglas declaradas, sin remuestrear microdatos del INEI.</li>
 <li>
 <code>cno_2015</code> incluye el grupo primario 5321 con sus tareas oficiales y restaura las tareas de 5223.</li>
 <li>Nuevos datasets <code>co_1995</code> y <code>equivalencia_co95</code>.</li>
+<li>Los once datasets distribuidos tienen generadores coordinados, manifiestos, huellas y una validacion de reconstruccion por contenido.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="otros-0-1-0">Otros<a class="anchor" aria-label="anchor" href="#otros-0-1-0"></a></h3>

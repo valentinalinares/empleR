@@ -64,7 +64,7 @@ muestra_etiquetada <- etiquetar(muestra_epen_2024)
 table(muestra_etiquetada$sex_label)
 #> 
 #> Hombre  Mujer 
-#>   1043    957 
+#>   1000   1000 
 
 # Funciona tambien con nombres originales del modulo 76
 crudos <- data.frame(C207 = c("1", "2"), C366 = c("6", "11"))
@@ -81,21 +81,21 @@ etiquetar(
   reemplazar = TRUE
 )
 #> ✔ 2 columna(s) de etiquetas reemplazada(s).
-#> # A tibble: 2,000 × 35
+#> # A tibble: 2,000 × 36
 #>    source survey_variant period_label  year month region_code ubigeo domain_code
 #>    <chr>  <chr>          <chr>        <dbl> <dbl>       <dbl> <chr>  <chr>      
-#>  1 EPEN   departamentos… Anual - (En…  2024     4          18 NA     NA         
-#>  2 EPEN   departamentos… Anual - (En…  2024     4          15 NA     NA         
-#>  3 EPEN   departamentos… Anual - (En…  2024     7          14 NA     NA         
-#>  4 EPEN   departamentos… Anual - (En…  2024     5           9 NA     NA         
-#>  5 EPEN   departamentos… Anual - (En…  2024     3          16 NA     NA         
-#>  6 EPEN   departamentos… Anual - (En…  2024    11           3 NA     NA         
-#>  7 EPEN   departamentos… Anual - (En…  2024     9          11 NA     NA         
-#>  8 EPEN   departamentos… Anual - (En…  2024     4          23 NA     NA         
-#>  9 EPEN   departamentos… Anual - (En…  2024     5          15 NA     NA         
-#> 10 EPEN   departamentos… Anual - (En…  2024     7          22 NA     NA         
+#>  1 EPEN   departamentos… Anual - (En…  2024     1           1 NA     NA         
+#>  2 EPEN   departamentos… Anual - (En…  2024     1           1 NA     NA         
+#>  3 EPEN   departamentos… Anual - (En…  2024     1           1 NA     NA         
+#>  4 EPEN   departamentos… Anual - (En…  2024     1           1 NA     NA         
+#>  5 EPEN   departamentos… Anual - (En…  2024     2           2 NA     NA         
+#>  6 EPEN   departamentos… Anual - (En…  2024     2           2 NA     NA         
+#>  7 EPEN   departamentos… Anual - (En…  2024     2           2 NA     NA         
+#>  8 EPEN   departamentos… Anual - (En…  2024     2           2 NA     NA         
+#>  9 EPEN   departamentos… Anual - (En…  2024     3           3 NA     NA         
+#> 10 EPEN   departamentos… Anual - (En…  2024     3           3 NA     NA         
 #> # ℹ 1,990 more rows
-#> # ℹ 27 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
+#> # ℹ 28 more variables: sample_id <chr>, strata_code <int>, cluster_id <chr>,
 #> #   dwelling_id <chr>, household_id <chr>, person_id <int>,
 #> #   relationship_code <int>, sex_code <fct>, sex <chr>, age <dbl>,
 #> #   labor_status_code <dbl>, occupation_code_raw <dbl>,

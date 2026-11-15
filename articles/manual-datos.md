@@ -168,13 +168,13 @@ antes
 #>   sex_code education_code is_rural
 #>      <dbl>          <dbl>    <dbl>
 #> 1        2              9        0
-#> 2        1              5        1
-#> 3        2              3        0
-#> 4        2              1        1
-#> 5        1              3        1
-#> 6        1              8        0
-#> 7        2             11        0
-#> 8        1              6        1
+#> 2        1              4        0
+#> 3        2             11        0
+#> 4        1              6        0
+#> 5        2              2        1
+#> 6        1              9        1
+#> 7        2              4        1
+#> 8        1             11        1
 despues[, c(
   "sex_code", "sex_label",
   "education_code", "education_label",
@@ -184,13 +184,13 @@ despues[, c(
 #>   sex_code sex_label education_code education_label          is_rural area_label
 #>      <dbl> <fct>              <dbl> <fct>                       <dbl> <fct>     
 #> 1        2 Mujer                  9 Superior no universitar…        0 Urbano    
-#> 2        1 Hombre                 5 Secundaria incompleta           1 Rural     
-#> 3        2 Mujer                  3 Primaria incompleta             0 Urbano    
-#> 4        2 Mujer                  1 Sin nivel                       1 Rural     
-#> 5        1 Hombre                 3 Primaria incompleta             1 Rural     
-#> 6        1 Hombre                 8 Superior no universitar…        0 Urbano    
-#> 7        2 Mujer                 11 Superior universitaria …        0 Urbano    
-#> 8        1 Hombre                 6 Secundaria completa             1 Rural
+#> 2        1 Hombre                 4 Primaria completa               0 Urbano    
+#> 3        2 Mujer                 11 Superior universitaria …        0 Urbano    
+#> 4        1 Hombre                 6 Secundaria completa             0 Urbano    
+#> 5        2 Mujer                  2 Educación inicial               1 Rural     
+#> 6        1 Hombre                 9 Superior no universitar…        1 Rural     
+#> 7        2 Mujer                  4 Primaria completa               1 Rural     
+#> 8        1 Hombre                11 Superior universitaria …        1 Rural
 ```
 
 ### Cómo interpretar el resultado
@@ -208,16 +208,16 @@ etiquetar(
 )[, c("sex_code", "sex_label", "education_code", "education_label")]
 #> ✔ 2 columna(s) de etiquetas agregada(s).
 #> # A tibble: 8 × 4
-#>   sex_code sex_label education_code education_label                     
-#>      <dbl> <chr>              <dbl> <chr>                               
-#> 1        2 Mujer                  9 Superior no universitaria completa  
-#> 2        1 Hombre                 5 Secundaria incompleta               
-#> 3        2 Mujer                  3 Primaria incompleta                 
-#> 4        2 Mujer                  1 Sin nivel                           
-#> 5        1 Hombre                 3 Primaria incompleta                 
-#> 6        1 Hombre                 8 Superior no universitaria incompleta
-#> 7        2 Mujer                 11 Superior universitaria completa     
-#> 8        1 Hombre                 6 Secundaria completa
+#>   sex_code sex_label education_code education_label                   
+#>      <dbl> <chr>              <dbl> <chr>                             
+#> 1        2 Mujer                  9 Superior no universitaria completa
+#> 2        1 Hombre                 4 Primaria completa                 
+#> 3        2 Mujer                 11 Superior universitaria completa   
+#> 4        1 Hombre                 6 Secundaria completa               
+#> 5        2 Mujer                  2 Educación inicial                 
+#> 6        1 Hombre                 9 Superior no universitaria completa
+#> 7        2 Mujer                  4 Primaria completa                 
+#> 8        1 Hombre                11 Superior universitaria completa
 ```
 
 La conexión con una descarga cruda es directa:

@@ -90,9 +90,11 @@ ponderados<a class="anchor" aria-label="anchor" href="#indicadores-calcular-ingr
 <h3 id="para-qué-sirve">Para qué sirve<a class="anchor" aria-label="anchor" href="#para-qu%C3%A9-sirve"></a>
 </h3>
 <p><code><a href="../reference/indicadores.html">indicadores()</a></code> calcula el ingreso laboral promedio o
-mediano y las horas semanales promedio. Puede obtener un resultado
-nacional o separar la estimación por sexo, región u otras variables de
-la base.</p>
+mediano y las horas semanales promedio de la población ocupada. El
+ingreso incluye las ocupaciones principal y secundaria y los ingresos
+extraordinarios; las horas corresponden al total trabajado en todas las
+ocupaciones. Puede obtener un resultado nacional o separar la estimación
+por sexo, región u otras variables de la base.</p>
 </div>
 <div class="section level3">
 <h3 id="qué-recibe">Qué recibe<a class="anchor" aria-label="anchor" href="#qu%C3%A9-recibe"></a>
@@ -133,6 +135,23 @@ la base.</p>
 <td><code>var_peso</code></td>
 <td>Nombre del factor de expansión.</td>
 </tr>
+<tr class="odd">
+<td><code>var_estado</code></td>
+<td>Variable que identifica la condición de actividad.</td>
+</tr>
+<tr class="even">
+<td><code>codigo_ocupado</code></td>
+<td>Código de ocupado; en la EPEN es <code>1</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>var_indicador</code></td>
+<td>Variable alternativa, solo para medir otro concepto.</td>
+</tr>
+<tr class="even">
+<td><code>incluir_inferencia</code></td>
+<td>Agrega el error estándar experimental; por defecto es
+<code>FALSE</code>.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -140,36 +159,53 @@ la base.</p>
 <h3 id="qué-hace-por-dentro">Qué hace por dentro<a class="anchor" aria-label="anchor" href="#qu%C3%A9-hace-por-dentro"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>Detecta el peso, el estrato y el conglomerado disponibles.</li>
-<li>Elimina del cálculo las filas cuyo peso es ausente o no
-positivo.</li>
-<li>Cuando existen las variables necesarias, construye una UPM con
-muestra, región y conglomerado.</li>
-<li>Crea un diseño con el paquete <code>survey</code>.</li>
-<li>Calcula el indicador y su error estándar para el total o para cada
-grupo.</li>
+<li>Conserva a las personas ocupadas cuando la base trae su condición de
+actividad.</li>
+<li>Detecta el peso disponible. Si hay varios, pide elegir el que
+corresponde al periodo.</li>
+<li>Convierte de forma controlada los pesos y valores que llegan como
+texto.</li>
+<li>Excluye del cálculo los pesos ausentes o inválidos y registra sus
+conteos.</li>
+<li>Para ingreso, conserva remuneraciones positivas; para horas, admite
+ceros.</li>
+<li>Calcula el indicador para el total o para cada grupo.</li>
+<li>Si solicitas inferencia, detecta estrato y conglomerado y construye
+una UPM con muestra, región y conglomerado. No sustituye identificadores
+faltantes.</li>
+<li>Calcula el error estándar con el paquete <code>survey</code> y marca
+el resultado como inferencia experimental.</li>
 </ol>
 </div>
 <div class="section level3">
 <h3 id="qué-devuelve">Qué devuelve<a class="anchor" aria-label="anchor" href="#qu%C3%A9-devuelve"></a>
 </h3>
-<p>El resultado contiene el nombre del indicador, <code>estimado</code>
-y <code>error_std</code>. Si usas <code>por</code>, conserva además las
-columnas que identifican cada grupo.</p>
+<p>El resultado contiene el nombre del indicador y
+<code>estimado</code>. También informa el universo, los casos usados,
+los faltantes o valores inválidos y la población representada por las
+observaciones que entraron al cálculo. Si usas <code>por</code>,
+conserva además las columnas que identifican cada grupo.
+<code>error_std</code> aparece solo cuando usas
+<code>incluir_inferencia = TRUE</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ingreso_sexo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span></span>
 <span>  <span class="va">muestra_epen_2024</span>,</span>
 <span>  indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>,</span>
 <span>  por <span class="op">=</span> <span class="st">"sex"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: 81 filas eliminadas por peso NA o cero.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Diseno muestral provisional: estrato <span style="color: #00BB00;">strata_code</span> y UPM <span style="color: #00BB00;">.upm</span>; ver</span></span>
-<span><span class="co">#&gt;   `?indicadores`.</span></span>
-<span><span class="co">#&gt; <span style="color: #555555;">This message is displayed once per session.</span></span></span>
+<span><span class="co">#&gt; Warning: 80 filas no participan por peso ausente o invalido.</span></span>
+<span><span class="co">#&gt; Warning: 48 filas con peso valido no participan por el valor del</span></span>
+<span><span class="co">#&gt; indicador.</span></span>
 <span><span class="va">ingreso_sexo</span></span>
-<span><span class="co">#&gt;           sex        indicador estimado error_std</span></span>
-<span><span class="co">#&gt; Hombre Hombre ingreso_promedio 1606.021  71.54815</span></span>
-<span><span class="co">#&gt; Mujer   Mujer ingreso_promedio 1209.925  71.30004</span></span></code></pre></div>
+<span><span class="co">#&gt;      sex        indicador estimado n_universo n_estimacion n_sin_peso</span></span>
+<span><span class="co">#&gt; 1 Hombre ingreso_promedio 1847.812       1000          933         40</span></span>
+<span><span class="co">#&gt; 2  Mujer ingreso_promedio 1954.854       1000          939         40</span></span>
+<span><span class="co">#&gt;   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion</span></span>
+<span><span class="co">#&gt; 1               0               0                    0                 28</span></span>
+<span><span class="co">#&gt; 2               0               0                    0                 23</span></span>
+<span><span class="co">#&gt;   poblacion_representada</span></span>
+<span><span class="co">#&gt; 1               48658.90</span></span>
+<span><span class="co">#&gt; 2               49425.97</span></span></code></pre></div>
 <p>También puedes calcular más de una agrupación:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span></span>
@@ -177,25 +213,65 @@ columnas que identifican cada grupo.</p>
 <span>  indicador <span class="op">=</span> <span class="st">"horas_promedio"</span>,</span>
 <span>  por <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sex"</span>, <span class="st">"is_rural"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: 81 filas eliminadas por peso NA o cero.</span></span>
-<span><span class="co">#&gt;             sex is_rural      indicador estimado error_std</span></span>
-<span><span class="co">#&gt; Hombre.0 Hombre        0 horas_promedio 41.67798 0.9767129</span></span>
-<span><span class="co">#&gt; Mujer.0   Mujer        0 horas_promedio 38.26529 1.3356709</span></span>
-<span><span class="co">#&gt; Hombre.1 Hombre        1 horas_promedio 33.24925 1.7495960</span></span>
-<span><span class="co">#&gt; Mujer.1   Mujer        1 horas_promedio 30.51582 1.8736565</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: 80 filas no participan por peso ausente o invalido.</span></span>
+<span><span class="co">#&gt;      sex is_rural      indicador estimado n_universo n_estimacion n_sin_peso</span></span>
+<span><span class="co">#&gt; 1 Hombre        0 horas_promedio 43.98902        668          640         28</span></span>
+<span><span class="co">#&gt; 2  Mujer        0 horas_promedio 43.60049        668          641         27</span></span>
+<span><span class="co">#&gt; 3 Hombre        1 horas_promedio 44.58943        332          320         12</span></span>
+<span><span class="co">#&gt; 4  Mujer        1 horas_promedio 44.79871        332          319         13</span></span>
+<span><span class="co">#&gt;   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion</span></span>
+<span><span class="co">#&gt; 1               0               0                    0                  0</span></span>
+<span><span class="co">#&gt; 2               0               0                    0                  0</span></span>
+<span><span class="co">#&gt; 3               0               0                    0                  0</span></span>
+<span><span class="co">#&gt; 4               0               0                    0                  0</span></span>
+<span><span class="co">#&gt;   poblacion_representada</span></span>
+<span><span class="co">#&gt; 1               34136.78</span></span>
+<span><span class="co">#&gt; 2               34200.17</span></span>
+<span><span class="co">#&gt; 3               15654.51</span></span>
+<span><span class="co">#&gt; 4               16505.07</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="cómo-interpretar-el-resultado">Cómo interpretar el resultado<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-interpretar-el-resultado"></a>
 </h3>
 <p><code>estimado</code> incorpora el factor de expansión, por lo que no
-equivale al promedio simple de las filas. <code>error_std</code>
-describe la precisión bajo el diseño reconstruido por el paquete. Debe
-tratarse como provisional: todavía no se ha comprobado que esa
-reconstrucción reproduzca los errores estándar publicados por el
-INEI.</p>
-<p>La muestra incluida contiene únicamente personas ocupadas. Es
-adecuada para practicar con ingreso y horas, pero no para calcular tasas
-de actividad, empleo o desempleo.</p>
+equivale al promedio simple de las filas. La mediana usa el extremo
+inferior del intervalo donde la distribución ponderada alcanza 0,5, la
+regla matemática de <code>survey</code>.</p>
+<p>La inferencia se solicita de forma explícita:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span></span>
+<span>  <span class="va">muestra_epen_2024</span>,</span>
+<span>  indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>,</span>
+<span>  por <span class="op">=</span> <span class="st">"sex"</span>,</span>
+<span>  incluir_inferencia <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: 80 filas no participan por peso ausente o invalido.</span></span>
+<span><span class="co">#&gt; Warning: 48 filas con peso valido no participan por el valor del</span></span>
+<span><span class="co">#&gt; indicador.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Inferencia experimental: estrato <span style="color: #00BB00;">strata_code</span> y UPM <span style="color: #00BB00;">.upm</span>; ver `?indicadores`.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This message is displayed once per session.</span></span></span>
+<span><span class="co">#&gt;      sex        indicador estimado error_std n_universo n_estimacion n_sin_peso</span></span>
+<span><span class="co">#&gt; 1 Hombre ingreso_promedio 1847.812  26.57505       1000          933         40</span></span>
+<span><span class="co">#&gt; 2  Mujer ingreso_promedio 1954.854  31.31327       1000          939         40</span></span>
+<span><span class="co">#&gt;   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion</span></span>
+<span><span class="co">#&gt; 1               0               0                    0                 28</span></span>
+<span><span class="co">#&gt; 2               0               0                    0                 23</span></span>
+<span><span class="co">#&gt;   poblacion_representada</span></span>
+<span><span class="co">#&gt; 1               48658.90</span></span>
+<span><span class="co">#&gt; 2               49425.97</span></span></code></pre></div>
+<p><code>error_std</code> describe la precisión bajo el diseño
+reconstruido por el paquete. La especificación se contrastó con 24
+celdas oficiales de Lima Metropolitana de octubre-diciembre de 2024 y
+2025 y con ocho CV anuales de ingreso de 2024. Los estimados y CV
+coinciden al redondeo publicado. Aun así, el resultado se mantiene como
+experimental: la documentación pública no identifica todas las
+decisiones internas del INEI y no permite aplicar una corrección por
+población finita. Si faltan UPM o estratos, la función se detiene en
+lugar de simplificar el diseño sin avisar.</p>
+<p>La muestra sintética incluida representa únicamente personas
+ocupadas. Es adecuada para practicar con ingreso y horas, pero no para
+calcular tasas de actividad, empleo o desempleo ni para producir
+estimaciones oficiales.</p>
 </div>
 </div>
 <div class="section level2">
@@ -216,7 +292,7 @@ ocupados, desocupados e inactivos, además de ingresos y horas.</p>
 <p>Puedes filtrar por fuente, año y variante. La función devuelve las
 filas del dataset interno <code>indicadores_epen</code> que cumplen esos
 criterios.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tasas_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/resumen_nacional.html">resumen_nacional</a></span><span class="op">(</span></span>
 <span>  fuente <span class="op">=</span> <span class="st">"EPEN"</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2024</span>,</span>
@@ -322,13 +398,15 @@ ningún polígono y de ámbitos sin dato.</li>
 <div class="section level3">
 <h3 id="ejemplo-de-aplicación">Ejemplo de aplicación<a class="anchor" aria-label="anchor" href="#ejemplo-de-aplicaci%C3%B3n"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ingreso_dep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/indicadores.html">indicadores</a></span><span class="op">(</span></span>
 <span>  <span class="va">muestra_epen_2024</span>,</span>
 <span>  indicador <span class="op">=</span> <span class="st">"ingreso_promedio"</span>,</span>
 <span>  por <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"region_code"</span>, <span class="st">"division_lima"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: 81 filas eliminadas por peso NA o cero.</span></span>
+<span><span class="co">#&gt; Warning: 80 filas no participan por peso ausente o invalido.</span></span>
+<span><span class="co">#&gt; Warning: 48 filas con peso valido no participan por el valor del</span></span>
+<span><span class="co">#&gt; indicador.</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/mapa.html">mapa</a></span><span class="op">(</span></span>
 <span>  <span class="va">ingreso_dep</span>,</span>

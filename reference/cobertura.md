@@ -64,9 +64,10 @@ Un `data.frame` con una fila por grupo, estado y detalle:
 ``` r
 muestra <- suppressWarnings(ia_exposicion(cno(muestra_epen_2024)))
 #> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Filas con score de IA: 2000 (100%).
+#> ℹ Resumen por encuesta y ano: `cobertura()`.
 cobertura(muestra)
-#> Warning: 81 fila(s) con weight NA no suman poblacion.
-#>   source year    estado detalle    n pct_n  poblacion pct_poblacion
-#> 1   EPEN 2024 con_score    <NA> 1961 98.05 165010.121         97.26
-#> 2   EPEN 2024 sin_score    <NA>   39  1.95   4651.136          2.74
+#> Warning: 80 fila(s) con weight NA no suman poblacion.
+#>   source year    estado detalle    n pct_n poblacion pct_poblacion
+#> 1   EPEN 2024 con_score    <NA> 2000   100  100496.5           100
 ```

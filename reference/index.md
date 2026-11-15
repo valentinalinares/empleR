@@ -31,7 +31,7 @@
 ## Datos incluidos
 
 - [`muestra_epen_2024`](https://valentinalinares.github.io/empleR/reference/muestra_epen_2024.md)
-  : Muestra de microdatos EPEN 2024 (solo ocupados)
+  : Muestra sintética con estructura EPEN 2024 (solo ocupados)
 - [`cno_2015`](https://valentinalinares.github.io/empleR/reference/cno_2015.md)
   : Clasificador Nacional de Ocupaciones 2015 (CNO 2015)
 - [`equivalencia_cno`](https://valentinalinares.github.io/empleR/reference/equivalencia_cno.md)

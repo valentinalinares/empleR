@@ -157,14 +157,14 @@ discrepancias.</li>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 4</span></span></span>
 <span><span class="co">#&gt;   occupation_code_raw clasificador cno_cod cno_desc                             </span></span>
 <span><span class="co">#&gt;                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                <span style="text-decoration: underline;">5</span>212 CNO_2015     5212    Vendedores minoristas en tiendas y e…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                <span style="text-decoration: underline;">6</span>114 CNO_2015     6114    Agricultores y trabajadores califica…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                <span style="text-decoration: underline;">9</span>111 CNO_2015     9111    Limpiadores y asistentes domésticos  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                <span style="text-decoration: underline;">9</span>211 CNO_2015     9211    Peones de explotaciones agrícolas y …</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                <span style="text-decoration: underline;">6</span>114 CNO_2015     6114    Agricultores y trabajadores califica…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                <span style="text-decoration: underline;">7</span>231 CNO_2015     7231    Mecánicos y reparadores de vehículos…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                <span style="text-decoration: underline;">2</span>222 CNO_2015     2222    Profesionales de partería            </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                <span style="text-decoration: underline;">9</span>313 CNO_2015     9313    Peones de la construcción de edifici…</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                <span style="text-decoration: underline;">1</span>141 CNO_2015     1141    Directores generales del sector priv…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                <span style="text-decoration: underline;">1</span>167 CNO_2015     1167    Directores generales del sector priv…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                <span style="text-decoration: underline;">1</span>223 CNO_2015     1223    Directores de investigación y desarr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                <span style="text-decoration: underline;">1</span>342 CNO_2015     1342    Directores y gerentes de empresas qu…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                <span style="text-decoration: underline;">1</span>499 CNO_2015     1499    Otros gerentes de servicios          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                <span style="text-decoration: underline;">2</span>143 CNO_2015     2143    Ingenieros medioambientales          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                <span style="text-decoration: underline;">2</span>164 CNO_2015     2164    Urbanistas e ingenieros de tránsito  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                <span style="text-decoration: underline;">2</span>253 CNO_2015     2253    Profesionales de la salud y la higie…</span></span></code></pre></div>
 <p>La salida conserva las filas originales y añade
 <code>clasificador</code>, <code>cno_cod</code> y <code>cno_desc</code>.
 Si la base trae un código original y otro ya procesado, también puede
@@ -256,8 +256,7 @@ asigna puntajes a casos ambiguos.</p>
 <span>  <span class="fu"><a href="../reference/cno.html">cno</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/ia_exposicion.html">ia_exposicion</a></span><span class="op">(</span>score <span class="op">=</span> <span class="st">"ambos"</span>, incluir_tipo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Clasificador segun la encuesta de la base: CNO_2015</span></span>
-<span><span class="co">#&gt; Warning: <span style="color: #00BBBB;">ℹ</span> Filas con score de IA: 1961 (98%).</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 39 (2%) con codigo CNO sin score en el indice.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Filas con score de IA: 2000 (100%).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Resumen por encuesta y ano: `cobertura()`.</span></span>
 <span></span>
 <span><span class="va">con_ia</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -267,14 +266,14 @@ asigna puntajes a casos ambiguos.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 5</span></span></span>
 <span><span class="co">#&gt;   cno_cod cno_desc                         ia_score_mean ia_score_median ia_tipo</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 5212    Vendedores minoristas en tienda…        0.599            0.617 A      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 6114    Agricultores y trabajadores cal…        0.264            0.242 N      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 9111    Limpiadores y asistentes domést…        0.062<span style="text-decoration: underline;">5</span>           0.05  N      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 9211    Peones de explotaciones agrícol…        0.05             0.05  N      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 6114    Agricultores y trabajadores cal…        0.264            0.242 N      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 7231    Mecánicos y reparadores de vehí…        0.238            0.15  N      </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 2222    Profesionales de partería               0.325            0.333 <span style="color: #BB0000;">NA</span>     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> 9313    Peones de la construcción de ed…        0.05             0.05  N</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1141    Directores generales del sector…         0.489           0.573 A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1167    Directores generales del sector…         0.501           0.61  A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1223    Directores de investigación y d…         0.518           0.518 A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1342    Directores y gerentes de empres…         0.433           0.4   A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 1499    Otros gerentes de servicios              0.542           0.59  A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2143    Ingenieros medioambientales              0.494           0.5   A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> 2164    Urbanistas e ingenieros de trán…         0.575           0.58  A      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> 2253    Profesionales de la salud y la …         0.473           0.483 A</span></span></code></pre></div>
 <p>La media resume los puntajes de las tareas de la ocupación; la
 mediana ofrece una medida menos sensible a tareas extremas.
 <code>ia_tipo</code> describe el patrón predominante cuando puede
@@ -304,10 +303,9 @@ distinguir un problema pequeño en la muestra de uno importante en
 términos poblacionales.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cobertura.html">cobertura</a></span><span class="op">(</span><span class="va">con_ia</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: 81 fila(s) con <span style="color: #00BB00;">weight</span> NA no suman poblacion.</span></span>
-<span><span class="co">#&gt;   source year    estado detalle    n pct_n  poblacion pct_poblacion</span></span>
-<span><span class="co">#&gt; 1   EPEN 2024 con_score    &lt;NA&gt; 1961 98.05 165010.121         97.26</span></span>
-<span><span class="co">#&gt; 2   EPEN 2024 sin_score    &lt;NA&gt;   39  1.95   4651.136          2.74</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: 80 fila(s) con <span style="color: #00BB00;">weight</span> NA no suman poblacion.</span></span>
+<span><span class="co">#&gt;   source year    estado detalle    n pct_n poblacion pct_poblacion</span></span>
+<span><span class="co">#&gt; 1   EPEN 2024 con_score    &lt;NA&gt; 2000   100  100496.5           100</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="cómo-aplicar-el-resultado">Cómo aplicar el resultado<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-aplicar-el-resultado"></a>
@@ -316,6 +314,14 @@ términos poblacionales.</p>
 explica por qué faltan puntajes. En comparaciones EPE–EPEN conviene
 calcularla por encuesta y año, porque la homologación puede modificar la
 cobertura de forma desigual.</p>
+<p>La validación real de octubre-diciembre de 2021 encontró puntaje para
+33,37 % de la población ocupada EPE, frente a 97,72 % en la EPEN de
+octubre-diciembre de 2024. La causa principal fue que 64,25 % de la
+población EPE tenía varios destinos CNO posibles. No compares las medias
+de ambas encuestas como si la cobertura fuera equivalente: informa estos
+estados, recalcula la cobertura para tu periodo y, si corresponde,
+presenta resultados por separado o una sensibilidad a los casos sin
+homologación.</p>
 </div>
 </div>
 <div class="section level2">

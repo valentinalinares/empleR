@@ -60,24 +60,50 @@
   [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md):
   cobertura de homologacion y score por encuesta y ano, en observaciones
   y poblacion ponderada.
+- El flujo se valido con microdatos reales EPE 2021 y EPEN 2024 del
+  mismo trimestre movil. Reproduce al redondeo las 24 tasas oficiales de
+  actividad y ocupacion seleccionadas. La comparacion agregada del
+  indice no se considera validada: solo 34,64 % de la poblacion ocupada
+  EPE tuvo una correspondencia CNO unica y los ambitos difieren en un
+  distrito del Callao.
 
 ### Diseno muestral
 
 - [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
-  forma la UPM con muestra + region + conglomerado cuando la base trae
-  `sample_id` y `region_code`. El diseno se documenta como provisional
-  hasta contar con la especificacion oficial.
+  explicita el universo ocupado, convierte de forma controlada los datos
+  numericos recibidos como texto y exige elegir `var_peso` cuando
+  existen factores para mas de un periodo. La salida informa casos
+  usados, faltantes, valores invalidos y poblacion representada.
+- El ingreso usa las ocupaciones principal y secundaria con ingresos
+  extraordinarios (`ingtrabw`) y excluye valores no positivos, en
+  concordancia con el indicador publicado por el INEI. Las horas usan el
+  total semanal en todas las ocupaciones (`whoraT`). Los estimadores
+  puntuales se validaron con los ZIP oficiales EPEN 2022-2025 y
+  reproducen el ingreso oficial dentro del redondeo publicado.
+- [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
+  devuelve por defecto estimaciones puntuales. La inferencia se solicita
+  con `incluir_inferencia = TRUE`, agrega `error_std` y queda marcada
+  como experimental. Ya no reemplaza silenciosamente un diseno
+  incompleto por uno basado solo en pesos: una UPM o un estrato faltante
+  produce un error explicativo.
+- La UPM combina muestra + region + conglomerado cuando esos
+  identificadores estan disponibles. La aproximacion reproduce al
+  redondeo publicado 24 CV trimestrales de 2024-2025 y ocho CV anuales
+  de ingreso de 2024. No usa correccion por poblacion finita porque
+  faltan los totales del marco por etapa.
 
 ### Datos
 
-- `muestra_epen_2024` se regenera desde la base corregida de
-  `ia_empleo_peru` (mismas 2.000 personas): codigos CNO completados a la
-  izquierda, `sample_id`, estrato e identificadores reconstruidos.
-  Incorpora `division_lima`, contrastada con `DIVISION_LIMA` del ZIP
-  oficial de 2024.
+- `muestra_epen_2024` ahora contiene 2.000 registros completamente
+  sinteticos: conserva las 36 columnas necesarias para ejemplos y
+  pruebas, pero ninguna fila corresponde a una persona, vivienda u hogar
+  real. Se genera con semilla fija y reglas declaradas, sin remuestrear
+  microdatos del INEI.
 - `cno_2015` incluye el grupo primario 5321 con sus tareas oficiales y
   restaura las tareas de 5223.
 - Nuevos datasets `co_1995` y `equivalencia_co95`.
+- Los once datasets distribuidos tienen generadores coordinados,
+  manifiestos, huellas y una validacion de reconstruccion por contenido.
 
 ### Otros
 

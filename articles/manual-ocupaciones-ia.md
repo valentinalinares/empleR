@@ -52,14 +52,14 @@ ocupaciones[, c(
 #> # A tibble: 8 × 4
 #>   occupation_code_raw clasificador cno_cod cno_desc                             
 #>                 <dbl> <chr>        <chr>   <chr>                                
-#> 1                5212 CNO_2015     5212    Vendedores minoristas en tiendas y e…
-#> 2                6114 CNO_2015     6114    Agricultores y trabajadores califica…
-#> 3                9111 CNO_2015     9111    Limpiadores y asistentes domésticos  
-#> 4                9211 CNO_2015     9211    Peones de explotaciones agrícolas y …
-#> 5                6114 CNO_2015     6114    Agricultores y trabajadores califica…
-#> 6                7231 CNO_2015     7231    Mecánicos y reparadores de vehículos…
-#> 7                2222 CNO_2015     2222    Profesionales de partería            
-#> 8                9313 CNO_2015     9313    Peones de la construcción de edifici…
+#> 1                1141 CNO_2015     1141    Directores generales del sector priv…
+#> 2                1167 CNO_2015     1167    Directores generales del sector priv…
+#> 3                1223 CNO_2015     1223    Directores de investigación y desarr…
+#> 4                1342 CNO_2015     1342    Directores y gerentes de empresas qu…
+#> 5                1499 CNO_2015     1499    Otros gerentes de servicios          
+#> 6                2143 CNO_2015     2143    Ingenieros medioambientales          
+#> 7                2164 CNO_2015     2164    Urbanistas e ingenieros de tránsito  
+#> 8                2253 CNO_2015     2253    Profesionales de la salud y la higie…
 ```
 
 La salida conserva las filas originales y añade `clasificador`,
@@ -134,8 +134,7 @@ con_ia <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 #> ℹ Clasificador segun la encuesta de la base: CNO_2015
-#> Warning: ℹ Filas con score de IA: 1961 (98%).
-#> ! 39 (2%) con codigo CNO sin score en el indice.
+#> ℹ Filas con score de IA: 2000 (100%).
 #> ℹ Resumen por encuesta y ano: `cobertura()`.
 
 con_ia[1:8, c(
@@ -145,14 +144,14 @@ con_ia[1:8, c(
 #> # A tibble: 8 × 5
 #>   cno_cod cno_desc                         ia_score_mean ia_score_median ia_tipo
 #>   <chr>   <chr>                                    <dbl>           <dbl> <chr>  
-#> 1 5212    Vendedores minoristas en tienda…        0.599            0.617 A      
-#> 2 6114    Agricultores y trabajadores cal…        0.264            0.242 N      
-#> 3 9111    Limpiadores y asistentes domést…        0.0625           0.05  N      
-#> 4 9211    Peones de explotaciones agrícol…        0.05             0.05  N      
-#> 5 6114    Agricultores y trabajadores cal…        0.264            0.242 N      
-#> 6 7231    Mecánicos y reparadores de vehí…        0.238            0.15  N      
-#> 7 2222    Profesionales de partería               0.325            0.333 NA     
-#> 8 9313    Peones de la construcción de ed…        0.05             0.05  N
+#> 1 1141    Directores generales del sector…         0.489           0.573 A      
+#> 2 1167    Directores generales del sector…         0.501           0.61  A      
+#> 3 1223    Directores de investigación y d…         0.518           0.518 A      
+#> 4 1342    Directores y gerentes de empres…         0.433           0.4   A      
+#> 5 1499    Otros gerentes de servicios              0.542           0.59  A      
+#> 6 2143    Ingenieros medioambientales              0.494           0.5   A      
+#> 7 2164    Urbanistas e ingenieros de trán…         0.575           0.58  A      
+#> 8 2253    Profesionales de la salud y la …         0.473           0.483 A
 ```
 
 La media resume los puntajes de las tareas de la ocupación; la mediana
@@ -179,10 +178,9 @@ términos poblacionales.
 ``` r
 
 cobertura(con_ia)
-#> Warning: 81 fila(s) con weight NA no suman poblacion.
-#>   source year    estado detalle    n pct_n  poblacion pct_poblacion
-#> 1   EPEN 2024 con_score    <NA> 1961 98.05 165010.121         97.26
-#> 2   EPEN 2024 sin_score    <NA>   39  1.95   4651.136          2.74
+#> Warning: 80 fila(s) con weight NA no suman poblacion.
+#>   source year    estado detalle    n pct_n poblacion pct_poblacion
+#> 1   EPEN 2024 con_score    <NA> 2000   100  100496.5           100
 ```
 
 ### Cómo aplicar el resultado
@@ -191,6 +189,15 @@ Reporta la cobertura junto con cualquier indicador de exposición y
 explica por qué faltan puntajes. En comparaciones EPE–EPEN conviene
 calcularla por encuesta y año, porque la homologación puede modificar la
 cobertura de forma desigual.
+
+La validación real de octubre-diciembre de 2021 encontró puntaje para
+33,37 % de la población ocupada EPE, frente a 97,72 % en la EPEN de
+octubre-diciembre de 2024. La causa principal fue que 64,25 % de la
+población EPE tenía varios destinos CNO posibles. No compares las medias
+de ambas encuestas como si la cobertura fuera equivalente: informa estos
+estados, recalcula la cobertura para tu periodo y, si corresponde,
+presenta resultados por separado o una sensibilidad a los casos sin
+homologación.
 
 ## Autoría del índice
 

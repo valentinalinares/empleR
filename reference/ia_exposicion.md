@@ -127,8 +127,7 @@ para resumir la cobertura por encuesta y ano.
 muestra <- cno(muestra_epen_2024)
 #> ℹ Clasificador segun la encuesta de la base: CNO_2015
 muestra <- ia_exposicion(muestra)
-#> Warning: ℹ Filas con score de IA: 1961 (98%).
-#> ! 39 (2%) con codigo CNO sin score en el indice.
+#> ℹ Filas con score de IA: 2000 (100%).
 #> ℹ Resumen por encuesta y ano: `cobertura()`.
 
 # Ver distribucion de exposicion

@@ -104,7 +104,8 @@ ingreso_dep <- indicadores(
   "ingreso_promedio",
   por = c("region_code", "division_lima")
 )
-#> Warning: 81 filas eliminadas por peso NA o cero.
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del indicador.
 mapa(ingreso_dep, "estimado", tipo = "ggplot")
 #> Warning: 23 ambitos sin dato para 'estimado': "AMAZONAS", "ANCASH", "APURIMAC",
 #> "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CUSCO", "HUANCAVELICA", "HUANUCO", "ICA",

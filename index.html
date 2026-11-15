@@ -86,7 +86,7 @@
 <div class="section level2">
 <h2 id="un-primer-ejemplo">Un primer ejemplo<a class="anchor" aria-label="anchor" href="#un-primer-ejemplo"></a>
 </h2>
-<p>El paquete trae una muestra de 2.000 personas ocupadas de la EPEN 2024, así que puedes correr los ejemplos sin descargar archivos grandes.</p>
+<p>El paquete trae 2.000 registros completamente sintéticos con la estructura de personas ocupadas de la EPEN 2024. Puedes correr los ejemplos sin descargar archivos grandes y sin redistribuir registros de personas reales.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://valentinalinares.github.io/empleR/">empleR</a></span><span class="op">)</span></span>
 <span></span>
@@ -102,7 +102,7 @@
 <div class="float">
 <img src="reference/figures/README-mapa.png" alt="Ejemplo de mapa departamental creado con empleR"><div class="figcaption">Ejemplo de mapa departamental creado con empleR</div>
 </div>
-<p>La figura se construyó con la muestra incluida en el paquete; no es una estimación oficial del INEI.</p>
+<p>La figura se construyó con datos sintéticos incluidos en el paquete; no es una estimación oficial del INEI.</p>
 </div>
 </div>
 <div class="section level2">
@@ -153,7 +153,7 @@
 </tr>
 <tr>
 <td><code><a href="reference/indicadores.html">indicadores()</a></code></td>
-<td>Calcula ingreso y horas ponderados. Los errores estándar todavía son provisionales.</td>
+<td>Calcula ingreso y horas ponderados para la población ocupada y muestra los casos usados o excluidos. La inferencia es experimental y solo se calcula si se solicita.</td>
 </tr>
 <tr>
 <td><code><a href="reference/resumen_nacional.html">resumen_nacional()</a></code></td>
@@ -182,7 +182,8 @@
 <li>
 <code><a href="reference/etiquetar.html">etiquetar()</a></code> cubre ocho conceptos documentados del módulo 76, entre ellos sexo, educación, condición de actividad, categoría ocupacional y área. Las demás variables crudas permanecen intactas hasta contar con un diccionario verificado.</li>
 <li>
-<code><a href="reference/indicadores.html">indicadores()</a></code> produce estimaciones ponderadas y reconstruye el diseño muestral, así que sus errores estándar son reproducibles. Aún no se ha comprobado que reproduzcan los errores estándar publicados por el INEI.</li>
+<code><a href="reference/indicadores.html">indicadores()</a></code> usa el ingreso total proveniente del trabajo y las horas de todas las ocupaciones. Sus estimaciones puntuales se contrastaron con los microdatos y las cifras oficiales de 2022 a 2025. Los errores estándar se solicitan con <code>incluir_inferencia = TRUE</code>: la reconstrucción reproduce los CV publicados en los contrastes disponibles, pero sigue marcada como experimental porque no equivale a una especificación oficial completa.</li>
+<li>Antes de comparar EPE y EPEN, revisa <code>homologacion_estado</code> y <code><a href="reference/cobertura.html">cobertura()</a></code>. En la validación real de octubre-diciembre, solo 34,64 % de la población ocupada EPE tuvo una correspondencia única al CNO 2015. Además, la EPE 2021 y la EPEN 2024 difieren en un distrito del Callao y el módulo usado no permite igualar exactamente el territorio. El paquete no presenta esa diferencia como una tendencia temporal validada.</li>
 <li>La primera versión estable no incluye análisis longitudinales de personas ni encuestas de otros países.</li>
 </ul>
 </div>

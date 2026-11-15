@@ -15,34 +15,54 @@ en los ámbitos departamentales que publica la EPEN.
 
 [`indicadores()`](https://valentinalinares.github.io/empleR/reference/indicadores.md)
 calcula el ingreso laboral promedio o mediano y las horas semanales
-promedio. Puede obtener un resultado nacional o separar la estimación
-por sexo, región u otras variables de la base.
+promedio de la población ocupada. El ingreso incluye las ocupaciones
+principal y secundaria y los ingresos extraordinarios; las horas
+corresponden al total trabajado en todas las ocupaciones. Puede obtener
+un resultado nacional o separar la estimación por sexo, región u otras
+variables de la base.
 
 ### Qué recibe
 
-| Argumento    | Uso                                                          |
-|--------------|--------------------------------------------------------------|
-| `data`       | Base con la variable del indicador y un factor de expansión. |
-| `indicador`  | `ingreso_promedio`, `ingreso_mediano` u `horas_promedio`.    |
-| `por`        | Una o varias variables para formar grupos.                   |
-| `var_strata` | Nombre del estrato si no se detecta automáticamente.         |
-| `var_psu`    | Nombre de la unidad primaria de muestreo.                    |
-| `var_peso`   | Nombre del factor de expansión.                              |
+| Argumento | Uso |
+|----|----|
+| `data` | Base con la variable del indicador y un factor de expansión. |
+| `indicador` | `ingreso_promedio`, `ingreso_mediano` u `horas_promedio`. |
+| `por` | Una o varias variables para formar grupos. |
+| `var_strata` | Nombre del estrato si no se detecta automáticamente. |
+| `var_psu` | Nombre de la unidad primaria de muestreo. |
+| `var_peso` | Nombre del factor de expansión. |
+| `var_estado` | Variable que identifica la condición de actividad. |
+| `codigo_ocupado` | Código de ocupado; en la EPEN es `1`. |
+| `var_indicador` | Variable alternativa, solo para medir otro concepto. |
+| `incluir_inferencia` | Agrega el error estándar experimental; por defecto es `FALSE`. |
 
 ### Qué hace por dentro
 
-1.  Detecta el peso, el estrato y el conglomerado disponibles.
-2.  Elimina del cálculo las filas cuyo peso es ausente o no positivo.
-3.  Cuando existen las variables necesarias, construye una UPM con
-    muestra, región y conglomerado.
-4.  Crea un diseño con el paquete `survey`.
-5.  Calcula el indicador y su error estándar para el total o para cada
-    grupo.
+1.  Conserva a las personas ocupadas cuando la base trae su condición de
+    actividad.
+2.  Detecta el peso disponible. Si hay varios, pide elegir el que
+    corresponde al periodo.
+3.  Convierte de forma controlada los pesos y valores que llegan como
+    texto.
+4.  Excluye del cálculo los pesos ausentes o inválidos y registra sus
+    conteos.
+5.  Para ingreso, conserva remuneraciones positivas; para horas, admite
+    ceros.
+6.  Calcula el indicador para el total o para cada grupo.
+7.  Si solicitas inferencia, detecta estrato y conglomerado y construye
+    una UPM con muestra, región y conglomerado. No sustituye
+    identificadores faltantes.
+8.  Calcula el error estándar con el paquete `survey` y marca el
+    resultado como inferencia experimental.
 
 ### Qué devuelve
 
-El resultado contiene el nombre del indicador, `estimado` y `error_std`.
-Si usas `por`, conserva además las columnas que identifican cada grupo.
+El resultado contiene el nombre del indicador y `estimado`. También
+informa el universo, los casos usados, los faltantes o valores inválidos
+y la población representada por las observaciones que entraron al
+cálculo. Si usas `por`, conserva además las columnas que identifican
+cada grupo. `error_std` aparece solo cuando usas
+`incluir_inferencia = TRUE`.
 
 ``` r
 
@@ -51,14 +71,19 @@ ingreso_sexo <- indicadores(
   indicador = "ingreso_promedio",
   por = "sex"
 )
-#> Warning: 81 filas eliminadas por peso NA o cero.
-#> ℹ Diseno muestral provisional: estrato strata_code y UPM .upm; ver
-#>   `?indicadores`.
-#> This message is displayed once per session.
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del
+#> indicador.
 ingreso_sexo
-#>           sex        indicador estimado error_std
-#> Hombre Hombre ingreso_promedio 1606.021  71.54815
-#> Mujer   Mujer ingreso_promedio 1209.925  71.30004
+#>      sex        indicador estimado n_universo n_estimacion n_sin_peso
+#> 1 Hombre ingreso_promedio 1847.812       1000          933         40
+#> 2  Mujer ingreso_promedio 1954.854       1000          939         40
+#>   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion
+#> 1               0               0                    0                 28
+#> 2               0               0                    0                 23
+#>   poblacion_representada
+#> 1               48658.90
+#> 2               49425.97
 ```
 
 También puedes calcular más de una agrupación:
@@ -70,25 +95,71 @@ indicadores(
   indicador = "horas_promedio",
   por = c("sex", "is_rural")
 )
-#> Warning: 81 filas eliminadas por peso NA o cero.
-#>             sex is_rural      indicador estimado error_std
-#> Hombre.0 Hombre        0 horas_promedio 41.67798 0.9767129
-#> Mujer.0   Mujer        0 horas_promedio 38.26529 1.3356709
-#> Hombre.1 Hombre        1 horas_promedio 33.24925 1.7495960
-#> Mujer.1   Mujer        1 horas_promedio 30.51582 1.8736565
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#>      sex is_rural      indicador estimado n_universo n_estimacion n_sin_peso
+#> 1 Hombre        0 horas_promedio 43.98902        668          640         28
+#> 2  Mujer        0 horas_promedio 43.60049        668          641         27
+#> 3 Hombre        1 horas_promedio 44.58943        332          320         12
+#> 4  Mujer        1 horas_promedio 44.79871        332          319         13
+#>   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion
+#> 1               0               0                    0                  0
+#> 2               0               0                    0                  0
+#> 3               0               0                    0                  0
+#> 4               0               0                    0                  0
+#>   poblacion_representada
+#> 1               34136.78
+#> 2               34200.17
+#> 3               15654.51
+#> 4               16505.07
 ```
 
 ### Cómo interpretar el resultado
 
 `estimado` incorpora el factor de expansión, por lo que no equivale al
-promedio simple de las filas. `error_std` describe la precisión bajo el
-diseño reconstruido por el paquete. Debe tratarse como provisional:
-todavía no se ha comprobado que esa reconstrucción reproduzca los
-errores estándar publicados por el INEI.
+promedio simple de las filas. La mediana usa el extremo inferior del
+intervalo donde la distribución ponderada alcanza 0,5, la regla
+matemática de `survey`.
 
-La muestra incluida contiene únicamente personas ocupadas. Es adecuada
-para practicar con ingreso y horas, pero no para calcular tasas de
-actividad, empleo o desempleo.
+La inferencia se solicita de forma explícita:
+
+``` r
+
+indicadores(
+  muestra_epen_2024,
+  indicador = "ingreso_promedio",
+  por = "sex",
+  incluir_inferencia = TRUE
+)
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del
+#> indicador.
+#> ℹ Inferencia experimental: estrato strata_code y UPM .upm; ver `?indicadores`.
+#> This message is displayed once per session.
+#>      sex        indicador estimado error_std n_universo n_estimacion n_sin_peso
+#> 1 Hombre ingreso_promedio 1847.812  26.57505       1000          933         40
+#> 2  Mujer ingreso_promedio 1954.854  31.31327       1000          939         40
+#>   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion
+#> 1               0               0                    0                 28
+#> 2               0               0                    0                 23
+#>   poblacion_representada
+#> 1               48658.90
+#> 2               49425.97
+```
+
+`error_std` describe la precisión bajo el diseño reconstruido por el
+paquete. La especificación se contrastó con 24 celdas oficiales de Lima
+Metropolitana de octubre-diciembre de 2024 y 2025 y con ocho CV anuales
+de ingreso de 2024. Los estimados y CV coinciden al redondeo publicado.
+Aun así, el resultado se mantiene como experimental: la documentación
+pública no identifica todas las decisiones internas del INEI y no
+permite aplicar una corrección por población finita. Si faltan UPM o
+estratos, la función se detiene en lugar de simplificar el diseño sin
+avisar.
+
+La muestra sintética incluida representa únicamente personas ocupadas.
+Es adecuada para practicar con ingreso y horas, pero no para calcular
+tasas de actividad, empleo o desempleo ni para producir estimaciones
+oficiales.
 
 ## `resumen_nacional()`: consultar resultados precalculados
 
@@ -175,7 +246,9 @@ ingreso_dep <- indicadores(
   indicador = "ingreso_promedio",
   por = c("region_code", "division_lima")
 )
-#> Warning: 81 filas eliminadas por peso NA o cero.
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del
+#> indicador.
 
 mapa(
   ingreso_dep,

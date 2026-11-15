@@ -1,7 +1,8 @@
-# Muestra de microdatos EPEN 2024 (solo ocupados)
+# Muestra sintética con estructura EPEN 2024 (solo ocupados)
 
-Submuestra aleatoria de 2.000 filas de la EPEN 2024 (variante
-departamentos_anual) para uso en ejemplos y pruebas.
+Dataset completamente sintético de 2.000 filas con la estructura de la
+EPEN 2024 (variante departamentos_anual) para uso en ejemplos y pruebas.
+Ninguna fila corresponde a una persona, vivienda u hogar real.
 
 ## Usage
 
@@ -11,7 +12,7 @@ muestra_epen_2024
 
 ## Format
 
-Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
+Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
 - year, month:
 
@@ -38,9 +39,8 @@ Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
 
 - cluster_id, dwelling_id, household_id:
 
-  Conglomerado, vivienda y hogar (character, con los ceros a la
-  izquierda del original). La UPM es `sample_id` + `region_code` +
-  `cluster_id`.
+  Conglomerado, vivienda y hogar (character, con ceros a la izquierda).
+  La UPM es `sample_id` + `region_code` + `cluster_id`.
 
 - person_id, relationship_code:
 
@@ -65,7 +65,12 @@ Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
 
 - hours_week:
 
-  Horas trabajadas por semana.
+  Horas trabajadas en la ocupacion principal (`C318_T`).
+
+- hours_week_total:
+
+  Horas trabajadas en todas las ocupaciones durante la semana
+  (`whoraT`).
 
 - weight:
 
@@ -77,16 +82,16 @@ Un `data.frame` con 2.000 filas y 35 columnas. Variables principales:
 
 ## Source
 
-INEI - Encuesta Permanente de Empleo Nacional 2024, modulo 76. Pipeline
-de procesamiento: Linares Herrera, V. (2025),
-<https://github.com/valentinalinares/ia_empleo_peru>.
+Datos sintéticos generados por `empleR`. El esquema y los nombres de
+variables se basan en la documentación pública de la Encuesta Permanente
+de Empleo Nacional 2024 del INEI.
 
 ## Details
 
-**Importante:** este dataset contiene **unicamente personas ocupadas**
+**Importante:** este dataset representa **unicamente personas ocupadas**
 (`labor_status_code = 1`). Los desocupados e inactivos fueron excluidos
-durante el procesamiento del pipeline porque no tienen codigo de
-ocupacion (CNO) y no pueden cruzarse con el indice de IA.
+porque el objetivo de los ejemplos es trabajar con codigos de ocupacion
+(CNO) y cruzarlos con el indice de IA.
 
 Esto significa que **no es posible calcular tasas de desempleo o
 actividad** directamente desde esta muestra. Para esos indicadores usa:
@@ -97,11 +102,11 @@ actividad** directamente desde esta muestra. Para esos indicadores usa:
 - [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md):
   microdatos crudos del INEI con todos los estados laborales.
 
-81 filas no tienen factor de expansion (`weight`); se conservan sin
-imputar. `ubigeo` y `domain_code` estan vacios porque el modulo 76 no
-trae variables equivalentes.
+Algunas filas tienen `weight = NA` para probar el tratamiento explícito
+de pesos faltantes. `ubigeo` y `domain_code` se conservan vacíos para
+reproducir el esquema disponible del módulo 76.
 
-La muestra se regenera con `data-raw/07_muestra_epen_2024.R` desde la
-base corregida de `ia_empleo_peru` (codigos CNO completados a la
-izquierda e identificadores reconstruidos desde los ZIP oficiales). Son
-las mismas 2.000 personas que la version anterior.
+La muestra se genera con `data-raw/07_muestra_epen_2024.R`, semilla
+`20261114` y reglas declaradas. No se remuestrean microdatos del INEI.
+Los codigos ocupacionales se limitan a codigos CNO validos presentes en
+el indice incluido en el paquete.
