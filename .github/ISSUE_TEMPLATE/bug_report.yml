@@ -1,0 +1,48 @@
+name: Reportar un error
+description: Ayuda a reproducir y corregir un comportamiento inesperado.
+title: "[Error]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar el problema. No adjuntes microdatos reales,
+        credenciales ni información identificable.
+  - type: textarea
+    id: description
+    attributes:
+      label: ¿Qué ocurrió?
+      description: Explica el comportamiento observado y qué esperabas obtener.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Ejemplo reproducible
+      description: Usa datos sintéticos mínimos y código que podamos ejecutar.
+      render: r
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Fuente y periodo
+      description: Si aplica, indica encuesta, variante, año, periodo y módulo, sin subir la base.
+  - type: textarea
+    id: session
+    attributes:
+      label: Entorno
+      description: Pega la salida de sessionInfo() o indica versiones de R y empleR y sistema operativo.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: Busqué issues existentes y no encontré el mismo problema.
+          required: true
+        - label: El ejemplo no contiene microdatos reales ni información sensible.
+          required: true
+        - label: Leí el código de conducta del proyecto.
+          required: true
