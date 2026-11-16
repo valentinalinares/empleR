@@ -1,46 +1,30 @@
 # Código de conducta
 
-## Nuestro compromiso
+Puedes participar en `empleR` para hacer una pregunta, señalar un error
+o proponer una mejora. No hace falta tener experiencia desarrollando
+paquetes. Todas las personas deben recibir un trato respetuoso,
+independientemente de su identidad, origen, género, orientación sexual,
+edad, discapacidad, religión o experiencia.
 
-Queremos que participar en `empleR` sea una experiencia respetuosa,
-segura y acogedora, independientemente de la identidad, procedencia,
-experiencia, formación, edad, discapacidad, apariencia, religión u
-orientación de cada persona.
+Al conversar, explica tus desacuerdos y céntrate en el código, los datos
+o el argumento que se está discutiendo. Evita descalificar a quien
+participa. No se permiten el acoso, los insultos, las amenazas, los
+comentarios discriminatorios ni publicar información privada sin
+consentimiento.
 
-## Conductas esperadas
+Estas reglas se aplican a las conversaciones del repositorio, las
+propuestas de cambios, las revisiones y los espacios donde se actúe en
+nombre de `empleR`.
 
-Quienes participan en el proyecto se comprometen a:
+Si ocurre un problema, escribe a Durga Valentina Linares Herrera en
+<durgavalentinalinaresherrera@gmail.com>. Evita incluir información
+sensible en un issue público. Los reportes se tratarán con reserva y se
+compartirá solo lo necesario para atender la situación.
 
-- comunicarse con respeto y considerar perspectivas distintas;
-- ofrecer y recibir críticas de manera constructiva;
-- reconocer errores, corregirlos y aprender de ellos;
-- cuidar la privacidad de quienes usan o producen los datos;
-- concentrarse en mejorar el proyecto y su comunidad.
+Según lo ocurrido, se podrá pedir que se corrija o retire un comentario,
+advertir a la persona responsable o restringir su participación de forma
+temporal o permanente.
 
-No se aceptan el acoso, los ataques personales, el lenguaje
-discriminatorio, la intimidación, la publicación de información privada
-sin permiso ni otras conductas incompatibles con un espacio profesional
-y abierto.
-
-## Alcance
-
-Este código se aplica en el repositorio, los *issues*, los *pull
-requests*, las revisiones y cualquier espacio público en el que una
-persona represente al proyecto.
-
-## Aplicación
-
-Las situaciones de acoso o conducta inaceptable pueden reportarse de
-forma confidencial a <durgavalentinalinaresherrera@gmail.com>. Los
-reportes se revisarán con atención a la privacidad y seguridad de las
-personas afectadas. Según la gravedad y persistencia de la conducta, las
-medidas pueden incluir una aclaración privada, una advertencia, la
-moderación de contenido o la restricción temporal o permanente de
-participación.
-
-## Atribución
-
-Este documento adopta los principios del [Contributor
-Covenant](https://www.contributor-covenant.org/version/2/1/), versión
-2.1, y del [código de conducta de
-rOpenSci](https://ropensci.org/code-of-conduct/).
+Este texto se inspira en los principios de [Contributor Covenant
+2.1](https://www.contributor-covenant.org/version/2/1/) y del [código de
+conducta de rOpenSci](https://ropensci.org/code-of-conduct/).
