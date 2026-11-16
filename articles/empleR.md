@@ -261,3 +261,20 @@ head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
 #> 5 1499    Otros gerentes de servicios                               CNO_2015    
 #> 6 2143    Ingenieros medioambientales                               CNO_2015
 ```
+
+## Citacion y contribuciones
+
+Para citar el paquete y, si corresponde, el indice de exposicion a IA,
+consulta:
+
+``` r
+
+citation("empleR")
+```
+
+Los microdatos y las cifras oficiales deben citarse por separado como
+productos del INEI. Si encuentras un error o quieres proponer una
+mejora, revisa la [guia de
+contribucion](https://valentinalinares.github.io/empleR/CONTRIBUTING.md)
+y el [codigo de
+conducta](https://valentinalinares.github.io/empleR/CODE_OF_CONDUCT.md).

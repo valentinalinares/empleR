@@ -17,13 +17,11 @@ necesitas.
 
 Un análisis típico combina las funciones en este orden:
 
-``` text
-catalogo() → descargar() → etiquetar() → cno()
-                                      ↓
-                           ia_exposicion() → cobertura()
-                                      ↓
-                              indicadores() → mapa()
-```
+    catalogo() → descargar() → etiquetar() → cno()
+                                          ↓
+                               ia_exposicion() → cobertura()
+                                          ↓
+                                  indicadores() → mapa()
 
 No todos los análisis necesitan cada paso. Por ejemplo, puedes consultar
 los indicadores nacionales incluidos en el paquete con

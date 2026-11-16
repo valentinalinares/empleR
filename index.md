@@ -89,6 +89,22 @@ en abril de 2026 con Claude Sonnet 4.6, y su paquete metodológico se
 versionó el 15 de junio de 2026. Los nuevos puntajes no deben atribuirse
 al INEI.
 
+## Cómo citar
+
+Si usas las funciones o los datos preparados por `empleR`, cita el
+paquete con la referencia que devuelve:
+
+``` r
+
+citation("empleR")
+```
+
+Si además utilizas el índice de exposición a IA, cita también el estudio
+de Walter Omar Manky Bonilla que aparece en esa salida e indica que
+trabajaste con la actualización de abril de 2026 incluida en `empleR`.
+Los microdatos y las cifras oficiales deben citarse por separado como
+productos del INEI.
+
 ## Funciones principales
 
 | Función | Para qué sirve |
@@ -159,3 +175,14 @@ IA.
 El proyecto usa pruebas automatizadas, `R CMD check`, `lintr` y
 `pkgdown`. Si quieres contribuir o reportar un problema, puedes abrir un
 [issue en GitHub](https://github.com/valentinalinares/empleR/issues).
+Antes de enviar código, consulta la [guía de
+contribución](https://valentinalinares.github.io/empleR/CONTRIBUTING.md)
+y el [código de
+conducta](https://valentinalinares.github.io/empleR/CODE_OF_CONDUCT.md).
+
+Durante el desarrollo se usaron asistentes de código para apoyar
+revisiones, pruebas y redacción. Valentina revisó las propuestas, tomó
+las decisiones y es responsable del contenido integrado. Estos
+asistentes no son autores del paquete. Su uso es distinto de Claude
+Sonnet 4.6 como instrumento metodológico en la corrida de 2026 del
+índice de exposición a IA.
