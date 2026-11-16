@@ -52,6 +52,21 @@ jobs:
             summary,
             value = TRUE
           )
+
+          # En un push a main, pkgcheck consulta el estado agregado de CI
+          # mientras esta misma matriz todavía está ejecutándose. Ese
+          # diagnóstico es circular; los trabajos R-CMD-check son la fuente
+          # autoritativa para el estado de CI y se mantienen bloqueantes.
+          if (identical(Sys.getenv("GITHUB_EVENT_NAME"), "push")) {
+            failures <- failures[
+              !grepl(
+                "Package fails continuous integration checks",
+                failures,
+                fixed = TRUE
+              )
+            ]
+          }
+
           if (length(failures)) {
             stop(
               "pkgcheck encontró requisitos incumplidos:\n",
