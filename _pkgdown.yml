@@ -24,7 +24,7 @@ navbar:
       href: articles/funciones.html
     contribute:
       text: Contribuir
-      href: https://github.com/valentinalinares/empleR/blob/main/.github/CONTRIBUTING.md
+      href: CONTRIBUTING.html
 
 reference:
   - title: Descarga y catalogo

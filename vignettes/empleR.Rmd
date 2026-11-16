@@ -215,6 +215,6 @@ citation("empleR")
 Los microdatos y las cifras oficiales deben citarse por separado como
 productos del INEI. Si encuentras un error o quieres proponer una mejora,
 revisa la
-[guia de contribucion](https://github.com/valentinalinares/empleR/blob/main/.github/CONTRIBUTING.md)
+[guia de contribucion](../.github/CONTRIBUTING.md)
 y el
-[codigo de conducta](https://github.com/valentinalinares/empleR/blob/main/CODE_OF_CONDUCT.md).
+[codigo de conducta](../CODE_OF_CONDUCT.md).

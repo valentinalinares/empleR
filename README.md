@@ -149,8 +149,8 @@ las ocupaciones con un índice peruano de exposición a IA.
 El proyecto usa pruebas automatizadas, `R CMD check`, `lintr` y `pkgdown`. Si
 quieres contribuir o reportar un problema, puedes abrir un
 [issue en GitHub](https://github.com/valentinalinares/empleR/issues). Antes de
-enviar código, consulta la [guía de contribución](https://github.com/valentinalinares/empleR/blob/main/.github/CONTRIBUTING.md)
-y el [código de conducta](https://github.com/valentinalinares/empleR/blob/main/CODE_OF_CONDUCT.md).
+enviar código, consulta la [guía de contribución](.github/CONTRIBUTING.md)
+y el [código de conducta](CODE_OF_CONDUCT.md).
 
 Durante el desarrollo se usaron asistentes de código para apoyar revisiones,
 pruebas y redacción. Valentina revisó las propuestas, tomó las decisiones y es
