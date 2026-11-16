@@ -89,6 +89,11 @@
 
 ## Otros
 
+* Se agregaron instrucciones de citación, una guía de contribución, un código
+  de conducta y plantillas para reportar errores, proponer cambios y revisar
+  pull requests.
+* `DESCRIPTION` identifica al INEI y su Sistema de Microdatos como origen de
+  las encuestas, y deja de declarar un ORCID vacío.
 * `descargar()` detecta si el CSV usa `;` o `,` y lee todas las columnas
   crudas como texto para conservar codigos, ceros iniciales y valores mixtos.
   Los caches nuevos registran ano, variante, periodo y URL; los caches antiguos

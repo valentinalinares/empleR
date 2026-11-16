@@ -1,0 +1,35 @@
+name: Proponer una mejora
+description: Sugiere una función, una fuente o una mejora de documentación.
+title: "[Propuesta]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Necesidad
+      description: ¿Qué problema de una persona usuaria resolvería esta propuesta?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe el resultado esperado y, si aplica, una interfaz posible.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Fuentes y antecedentes
+      description: Incluye documentación oficial, paquetes relacionados o ejemplos relevantes.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmaciones
+      options:
+        - label: Revisé el alcance actual descrito en el README y la guía de contribución.
+          required: true
+        - label: La propuesta no requiere publicar microdatos ni información sensible.
+          required: true
+        - label: Leí el código de conducta del proyecto.
+          required: true

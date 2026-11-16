@@ -17,11 +17,14 @@ home:
 navbar:
   structure:
     left: [intro, manual, reference, articles]
-    right: [search, github]
+    right: [contribute, search, github]
   components:
     manual:
       text: Manual
       href: articles/funciones.html
+    contribute:
+      text: Contribuir
+      href: https://github.com/valentinalinares/empleR/blob/main/.github/CONTRIBUTING.md
 
 reference:
   - title: Descarga y catalogo

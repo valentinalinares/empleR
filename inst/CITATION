@@ -1,0 +1,40 @@
+citHeader(paste(
+  "Para citar empleR use la primera referencia. Si utiliza el indice de",
+  "exposicion a IA, agregue tambien la segunda:"
+))
+
+bibentry(
+  bibtype = "Manual",
+  title = "empleR: Tools for Analyzing Peru's National Employment Surveys (EPEN/EPE)",
+  author = person("Valentina", "Linares Herrera"),
+  year = "2026",
+  note = "R package version 0.1.0",
+  url = "https://github.com/valentinalinares/empleR"
+)
+
+bibentry(
+  bibtype = "TechReport",
+  title = paste(
+    "Doble desafio tecnologico: Analisis de la exposicion a la automatizacion",
+    "tradicional y a la inteligencia artificial generativa en el empleo peruano,",
+    "utilizando datos de la ENAHO 2024"
+  ),
+  author = person("Walter Omar", "Manky Bonilla"),
+  institution = "Instituto Nacional de Estadistica e Informatica",
+  year = "2025",
+  address = "Lima, Peru",
+  url = paste0(
+    "https://www.gob.pe/institucion/inei/informes-publicaciones/7453406-",
+    "doble-desafio-tecnologico-analisis-de-la-exposicion-a-la-automatizacion-",
+    "tradicional-y-a-la-inteligencia-artificial-generativa-en-el-empleo-",
+    "peruano-utilizando-datos-de-la-enaho-2024"
+  )
+)
+
+citFooter(paste(
+  "empleR incluye una actualizacion del indice realizada en abril de 2026 por",
+  "Walter Omar Manky Bonilla, con asistencia de investigacion de Valentina",
+  "Linares Herrera. Esta corrida no es una publicacion del INEI. Cite tambien",
+  "la encuesta y la documentacion oficial del INEI que correspondan a los",
+  "microdatos utilizados."
+))

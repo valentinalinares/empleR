@@ -202,3 +202,19 @@ str(muestra_epen_2024)
 muestra_con_cno <- cno(muestra_epen_2024)
 head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
 ```
+
+## Citacion y contribuciones
+
+Para citar el paquete y, si corresponde, el indice de exposicion a IA,
+consulta:
+
+```{r citation, eval=FALSE}
+citation("empleR")
+```
+
+Los microdatos y las cifras oficiales deben citarse por separado como
+productos del INEI. Si encuentras un error o quieres proponer una mejora,
+revisa la
+[guia de contribucion](https://github.com/valentinalinares/empleR/blob/main/.github/CONTRIBUTING.md)
+y el
+[codigo de conducta](https://github.com/valentinalinares/empleR/blob/main/CODE_OF_CONDUCT.md).
