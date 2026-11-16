@@ -1,0 +1,21 @@
+name: pkgcheck
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  pkgcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ropensci-review-tools/pkgcheck-action@main
+        # La fase 7 agregara CONTRIBUTING y convertira este control en
+        # bloqueante. Por ahora se conserva el informe sin confundir ese
+        # requisito editorial conocido con una regresion funcional.
+        continue-on-error: true
+        with:
+          post-to-issue: false

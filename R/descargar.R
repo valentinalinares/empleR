@@ -330,7 +330,7 @@ descargar <- function(year,
   leer_cabecera <- function() {
     conexion <- abrir_csv()
     on.exit(close(conexion), add = TRUE)
-    readLines(conexion, n = 1, warn = FALSE, encoding = "latin1")
+    .leer_primera_linea_binaria(conexion, encoding = "latin1")
   }
   cabecera <- leer_cabecera()
   n_pyc  <- lengths(regmatches(cabecera, gregexpr(";", cabecera, fixed = TRUE)))
@@ -373,4 +373,42 @@ descargar <- function(year,
   }
 
   datos
+}
+
+#' Lee la primera linea de una conexion binaria no reposicionable
+#'
+#' Las conexiones creadas por `unz()` no admiten `seek()` en todas las
+#' versiones de R. `readLines()` intentaba reposicionarlas al convertir la
+#' codificacion y fallaba en R 4.1. Esta lectura avanza una sola vez sobre los
+#' bytes y, por tanto, funciona tambien con conexiones no reposicionables.
+#'
+#' @param conexion Conexion binaria abierta.
+#' @param encoding Codificacion de origen.
+#' @param max_bytes Limite defensivo para una cabecera sin salto de linea.
+#' @return Cadena con la primera linea, convertida a UTF-8.
+#' @noRd
+.leer_primera_linea_binaria <- function(conexion, encoding, max_bytes = 1024^2) {
+  partes <- list()
+  total <- 0L
+
+  repeat {
+    bloque <- readBin(conexion, what = "raw", n = 8192L)
+    if (length(bloque) == 0L) break
+
+    salto <- match(as.raw(0x0a), bloque, nomatch = 0L)
+    if (salto > 0L) bloque <- bloque[seq_len(salto - 1L)]
+
+    partes[[length(partes) + 1L]] <- bloque
+    total <- total + length(bloque)
+    if (total > max_bytes) {
+      cli::cli_abort("La cabecera del CSV supera el limite de lectura seguro.")
+    }
+    if (salto > 0L) break
+  }
+
+  bytes <- if (length(partes)) do.call(c, partes) else raw()
+  if (length(bytes) && identical(bytes[[length(bytes)]], as.raw(0x0d))) {
+    bytes <- bytes[-length(bytes)]
+  }
+  iconv(rawToChar(bytes), from = encoding, to = "UTF-8")
 }

@@ -2,6 +2,7 @@
 
 [![R-CMD-check](https://github.com/valentinalinares/empleR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/valentinalinares/empleR/actions/workflows/R-CMD-check.yaml)
 [![lint](https://github.com/valentinalinares/empleR/actions/workflows/lint.yaml/badge.svg)](https://github.com/valentinalinares/empleR/actions/workflows/lint.yaml)
+[![test coverage](https://codecov.io/gh/valentinalinares/empleR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/valentinalinares/empleR)
 [![sitio web](https://img.shields.io/badge/documentacion-pkgdown-2c7fb8)](https://valentinalinares.github.io/empleR/)
 
 `empleR` reúne herramientas para trabajar en R con las encuestas de empleo del
