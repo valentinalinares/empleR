@@ -12,7 +12,7 @@ home:
   title: empleR
   description: >
     Herramientas para descargar, armonizar y analizar encuestas laborales
-    peruanas, con indicadores de empleo, ocupaciones y exposicion a IA.
+    peruanas, con indicadores de empleo, ocupaciones y exposición a IA.
 
 navbar:
   structure:
@@ -27,7 +27,7 @@ navbar:
       href: CONTRIBUTING.html
 
 reference:
-  - title: Descarga y catalogo
+  - title: Descarga y catálogo
     contents:
       - catalogo
       - descargar
@@ -39,7 +39,7 @@ reference:
       - resumen_nacional
       - ia_exposicion
       - cobertura
-  - title: Visualizacion
+  - title: Visualización
     contents:
       - mapa
   - title: Datos incluidos
@@ -69,7 +69,7 @@ articles:
       - manual-ocupaciones-ia
       - manual-indicadores-mapas
   - title: Contexto
-    navbar: Guias
+    navbar: Guías
     contents:
       - contexto-encuestas
 

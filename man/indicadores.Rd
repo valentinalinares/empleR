@@ -2,7 +2,7 @@
 % Please edit documentation in R/indicadores.R
 \name{indicadores}
 \alias{indicadores}
-\title{Calcular indicadores del mercado laboral con diseno muestral}
+\title{Calcular ingresos y horas de trabajo ponderados}
 \usage{
 indicadores(
   data,
@@ -18,7 +18,7 @@ indicadores(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} con microdatos de EPEN (output de \code{\link[=descargar]{descargar()}}).}
+\item{data}{\code{data.frame} con microdatos de EPEN (resultado de \code{\link[=descargar]{descargar()}}).}
 
 \item{indicador}{Nombre del indicador a calcular:
 \itemize{
@@ -29,42 +29,42 @@ todas las ocupaciones.
 \item \code{"ingreso_mediano"}: mediana del mismo ingreso mensual.
 }}
 
-\item{por}{Variable(s) de agrupacion: \code{"sex"}, \code{"region_code"},
+\item{por}{Variable(s) de agrupación: \code{"sex"}, \code{"region_code"},
 \code{"education_code"}, \code{"institutional_sector_code"}, etc. \code{NULL} = nacional.}
 
-\item{var_strata}{Nombre de la variable de estrato. Detecta automaticamente
+\item{var_strata}{Nombre de la variable de estrato. Detecta automáticamente
 \code{strata_code} (datos procesados) o \code{ESTRATO} (datos crudos INEI).}
 
-\item{var_psu}{Nombre de la variable PSU. Detecta automaticamente
+\item{var_psu}{Nombre de la unidad primaria de muestreo (UPM). Detecta automáticamente
 \code{cluster_id} (datos procesados) o \code{CONGLOMERADO}/\code{CONGLOME} (datos crudos
-INEI). Si se detecta y la base trae tambien la muestra (\code{sample_id} o
-\code{MUESTRA}) y la region (\code{region_code} o \code{CCDD}), la UPM se forma con las
-tres: los numeros de conglomerado se repiten entre departamentos y
-muestras, asi que el conglomerado solo no identifica una UPM.}
+INEI). Si se detecta y la base trae también la muestra (\code{sample_id} o
+\code{MUESTRA}) y la región (\code{region_code} o \code{CCDD}), la UPM se forma con las
+tres: los números de conglomerado se repiten entre departamentos y
+muestras, así que el conglomerado solo no identifica una UPM.}
 
-\item{var_peso}{Nombre del factor de expansion. Si existe un solo candidato,
-lo detecta automaticamente. Si encuentra mas de uno (por ejemplo,
-\code{FAC_T300} y \code{FAC300_ANUAL}), exige elegirlo de forma explicita.}
+\item{var_peso}{Nombre del factor de expansión. Si existe un solo candidato,
+lo detecta automáticamente. Si encuentra más de uno (por ejemplo,
+\code{FAC_T300} y \code{FAC300_ANUAL}), exige elegirlo de forma explícita.}
 
-\item{var_estado}{Nombre de la variable de condicion de actividad. Detecta
-\code{labor_status_code} o \code{OCUP300}. \code{NULL} permite la deteccion automatica.}
+\item{var_estado}{Nombre de la variable de condición de actividad. Detecta
+\code{labor_status_code} o \code{OCUP300}. \code{NULL} permite la detección automática.}
 
-\item{codigo_ocupado}{Codigo que identifica a las personas ocupadas en
+\item{codigo_ocupado}{Código que identifica a las personas ocupadas en
 \code{var_estado}. En la EPEN es \code{"1"}.}
 
-\item{var_indicador}{Nombre de la variable numerica que se desea resumir.
+\item{var_indicador}{Nombre de la variable numérica que se desea resumir.
 Normalmente no hace falta indicarla: para ingreso se usan
 \code{labor_income_work_weighted} o \code{ingtrabw}, y para horas
 \code{hours_week_total} o \code{whoraT}. Sirve para solicitar expresamente otro
-concepto, como el ingreso o las horas de la ocupacion principal.}
+concepto, como el ingreso o las horas de la ocupación principal.}
 
-\item{incluir_inferencia}{Logico. Si es \code{FALSE} (por defecto), devuelve solo
-la estimacion puntual y la auditoria. Si es \code{TRUE}, agrega \code{error_std}
-usando la aproximacion de diseno documentada abajo. La inferencia requiere
+\item{incluir_inferencia}{Lógico. Si es \code{FALSE} (por defecto), devuelve solo
+la estimación puntual y la auditoría. Si es \code{TRUE}, agrega \code{error_std}
+usando la aproximación de diseño documentada abajo. La inferencia requiere
 identificadores completos de UPM y, cuando se usa, de estrato.}
 }
 \value{
-Un \code{data.frame} con el indicador calculado y columnas de auditoria:
+Un \code{data.frame} con el indicador calculado y columnas de auditoría:
 \code{n_universo}, \code{n_estimacion},
 \code{n_sin_peso}, \code{n_peso_invalido}, \code{n_sin_indicador},
 \code{n_indicador_invalido}, \code{n_fuera_definicion} y
@@ -72,52 +72,55 @@ Un \code{data.frame} con el indicador calculado y columnas de auditoria:
 \code{error_std}. Los conteos de problemas no son mutuamente excluyentes.
 }
 \description{
-Calcula indicadores laborales de la poblacion ocupada incorporando el
-diseno muestral complejo de la EPEN mediante el paquete \pkg{survey}. Si la
-base contiene \code{OCUP300} o \code{labor_status_code}, conserva de forma explicita
-el codigo de ocupado. Si no contiene una variable de condicion de actividad,
+Calcula el ingreso promedio o mediano y las horas semanales promedio de
+la población ocupada usando factores de expansión. El error estándar se
+solicita con \code{incluir_inferencia = TRUE} y sigue siendo experimental. Si la
+base contiene \code{OCUP300} o \code{labor_status_code}, conserva de forma explícita
+el código de ocupado. Si no contiene una variable de condición de actividad,
 supone que las filas recibidas ya corresponden a personas ocupadas.
 }
 \details{
-Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
-regional, usa \code{\link[=resumen_nacional]{resumen_nacional()}}, que devuelve los indicadores
-pre-calculados del pipeline INEI con la muestra completa de la PEA.
+Para consultar tasas de desempleo, actividad y empleo, usa
+\code{\link[=resumen_nacional]{resumen_nacional()}}, que devuelve resultados ya calculados en el proyecto
+con las bases completas del INEI.
 }
 \section{Definiciones y tratamiento de faltantes}{
 
 Los indicadores de ingreso excluyen valores iguales o menores que cero.
 Esta regla reproduce el ingreso medio oficial de la EPEN, que resume las
 remuneraciones positivas de trabajadores dependientes e independientes. Las
-horas incluyen ceros validos. En todos los indicadores se excluyen del
-calculo los pesos ausentes, no numericos, no finitos o no positivos, y los
-valores del indicador ausentes, no numericos o no finitos. La salida informa
-cuantos casos se excluyeron por cada motivo.
+horas incluyen ceros válidos. En todos los indicadores se excluyen del
+cálculo los pesos ausentes, no numéricos, no finitos o no positivos, y los
+valores del indicador ausentes, no numéricos o no finitos. La salida informa
+cuántos casos se excluyeron por cada motivo.
 
-La mediana usa la regla matematica de \code{\link[survey:svyquantile]{survey::svyquantile()}}: el extremo
-inferior del intervalo donde la funcion de distribucion ponderada alcanza
+La mediana usa la regla matemática de \code{\link[survey:svyquantile]{survey::svyquantile()}}: el extremo
+inferior del intervalo donde la función de distribución ponderada alcanza
 0.5 (\code{qrule = "math"}).
 }
 
 \section{Inferencia experimental}{
 
-Las fichas EPEN describen un diseno probabilistico, estratificado, de areas
-y bietapico, independiente en cada departamento. La UPM implementada combina
-muestra, region y conglomerado porque los numeros de conglomerado se
+Las fichas EPEN describen un diseño probabilístico, estratificado, de áreas
+y bietápico, independiente en cada departamento. La UPM implementada combina
+muestra, región y conglomerado porque los números de conglomerado se
 reutilizan entre departamentos. En la base anual departamental validada se
-usa \code{ESTRATO} (\code{strata_code}). En la variante trimestral movil de Lima
-validada no se usa un estrato explicito: se debe indicar \code{var_strata = NA}.
+usa \code{ESTRATO} (\code{strata_code}). En la variante trimestral móvil de Lima
+validada no se usa un estrato explícito: se debe indicar \code{var_strata = NA}.
 
-Esta reconstruccion se contrasto con 24 estimaciones, errores estandar, CV y
-DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
+El coeficiente de variación (CV) relaciona el error estándar con la
+estimación; el efecto de diseño (DEFF) compara la varianza con la de un
+muestreo aleatorio simple. Esta reconstrucción se contrastó con 24
+estimaciones, errores estándar, CV y DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
 y con ocho estimaciones y CV de ingreso anual nacional de 2024. Los estimados
-y CV se reproducen al redondeo publicado. El contraste respalda el calculo
-como aproximacion, pero no demuestra que sea el algoritmo interno del INEI.
+y CV se reproducen al redondeo publicado. El contraste respalda el cálculo
+como aproximación, pero no demuestra que sea el algoritmo interno del INEI.
 
-No se aplica correccion por poblacion finita porque los microdatos publicos
-no incluyen los totales del marco necesarios para cada etapa. Tampoco se
-inventan estratos ni UPM faltantes: si se solicita inferencia y esos
-identificadores estan incompletos, la funcion se detiene. Para una variante
-documentada sin estrato explicito se puede usar \code{var_strata = NA}.
+No se aplica corrección por población finita porque los microdatos públicos
+no incluyen los totales del marco necesarios para cada etapa. Si solicitas
+inferencia y faltan identificadores requeridos de estrato o UPM, la función
+se detiene e indica qué información necesitas completar. Para una variante
+documentada sin estrato explícito se puede usar \code{var_strata = NA}.
 }
 
 \examples{
@@ -130,19 +133,19 @@ indicadores(muestra_epen_2024, "ingreso_promedio", por = "sex")
 \dontrun{
 epen_2024 <- descargar(year = 2024)
 
-# Ingreso por ambito departamental EPEN; Lima requiere su division
+# Ingreso por ámbito departamental EPEN; Lima requiere su división
 indicadores(
   epen_2024,
   "ingreso_promedio",
-  por = c("region_code", "division_lima")
+  por = c("CCDD", "DIVISION_LIMA")
 )
 
 # Horas trabajadas por sector institucional
-indicadores(epen_2024, "horas_promedio", por = "institutional_sector_code")
+indicadores(epen_2024, "horas_promedio", por = "C311")
 }
 }
 \references{
-INEI. Ficha tecnica EPEN 2024.
+INEI. Ficha técnica EPEN 2024.
 \url{https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Ficha_Tecnica.pdf}
 
 INEI. Diccionario EPEN 2024.
@@ -151,11 +154,11 @@ INEI. Diccionario EPEN 2024.
 INEI. Errores muestrales EPEN, octubre-diciembre 2024.
 \url{https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Error_Muestral_por_Trimestre.pdf}
 
-INEI. Peru: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
+INEI. Perú: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
 \url{https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf}
 }
 \seealso{
-\code{\link[=resumen_nacional]{resumen_nacional()}} para indicadores pre-calculados (incluyendo
-tasas de desempleo y actividad). \link{indicadores_epen} para el dataset
+\code{\link[=resumen_nacional]{resumen_nacional()}} para indicadores precalculados (incluyendo
+tasas de desempleo y actividad). \link{indicadores_epen} para el conjunto de datos
 interno con indicadores nacionales precalculados.
 }

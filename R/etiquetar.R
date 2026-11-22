@@ -1,22 +1,22 @@
 #' Aplicar etiquetas de valor a variables de la EPEN
 #'
 #' Interpreta variables codificadas de la EPEN siguiendo los diccionarios
-#' oficiales del INEI. Reconoce tanto los nombres originales del modulo 76
+#' oficiales del INEI. Reconoce tanto los nombres originales del módulo 76
 #' (`C207`, `OCUP300`, `C366`, `C310`, `C311`, `C317`, `C338` y `AREA`) como
 #' sus equivalentes en las bases procesadas de `{empleR}`.
 #'
-#' Por defecto conserva intacta cada columna de codigos y agrega una columna
+#' Por defecto conserva intacta cada columna de códigos y agrega una columna
 #' terminada en `_label`. Esta separacion permite usar las etiquetas para
-#' tablas y graficos sin perder los codigos necesarios para validar o procesar
-#' los microdatos. Los valores ausentes siguen ausentes; un codigo no incluido
+#' tablas y graficos sin perder los códigos necesarios para validar o procesar
+#' los microdatos. Los valores ausentes siguen ausentes; un código no incluido
 #' en el diccionario genera una advertencia y su etiqueta queda en `NA`.
 #'
 #' @param data `data.frame` con microdatos de la EPEN.
 #' @param vars Vector de nombres de variables a etiquetar. Si es `NULL`
 #'   (por defecto), usa todas las variables reconocidas presentes en `data`.
-#' @param as_factor Logico. Si `TRUE` (por defecto), devuelve las etiquetas
+#' @param as_factor Lógico. Si `TRUE` (por defecto), devuelve las etiquetas
 #'   como factores. Si `FALSE`, las devuelve como texto.
-#' @param reemplazar Logico. Si es `FALSE` (por defecto), conserva los codigos
+#' @param reemplazar Lógico. Si es `FALSE` (por defecto), conserva los códigos
 #'   y agrega columnas de etiquetas. Usa `TRUE` solo para reproducir el
 #'   comportamiento anterior, que reemplaza las columnas seleccionadas.
 #'
@@ -36,7 +36,7 @@
 #' muestra_etiquetada <- etiquetar(muestra_epen_2024)
 #' table(muestra_etiquetada$sex_label)
 #'
-#' # Funciona tambien con nombres originales del modulo 76
+#' # Funciona también con nombres originales del módulo 76
 #' crudos <- data.frame(C207 = c("1", "2"), C366 = c("6", "11"))
 #' etiquetar(crudos, as_factor = FALSE)
 #'

@@ -12,8 +12,8 @@ pensado para estudiantes de pregrado y posgrado, docentes, investigadores y
 analistas que usan microdatos del INEI.
 
 La primera versión cubre la **EPE** de Lima Metropolitana y la **EPEN**
-nacional. Complementa la documentación del INEI, no la reemplaza, y por ahora
-no busca abarcar encuestas de otros países.
+nacional. Los ejemplos y las guías acompañan la documentación del INEI para
+ayudarte a interpretar las variables y decidir cómo usarlas en tu análisis.
 
 ## ¿Qué problema resuelve?
 
@@ -37,8 +37,8 @@ pak::pak("valentinalinares/empleR")
 ## Un primer ejemplo
 
 El paquete trae 2.000 registros completamente sintéticos con la estructura de
-personas ocupadas de la EPEN 2024. Puedes correr los ejemplos sin descargar
-archivos grandes y sin redistribuir registros de personas reales.
+personas ocupadas de la EPEN 2024. Puedes ejecutar los ejemplos sin descargar
+los microdatos. Ningún registro corresponde a una persona real.
 
 ```r
 library(empleR)
@@ -102,10 +102,6 @@ cifras oficiales deben citarse por separado como productos del INEI.
 | `resumen_nacional()` | Consulta indicadores nacionales precalculados y documentados. |
 | `mapa()` | Muestra indicadores agregados para los 25 ámbitos departamentales oficiales de la EPEN. Distingue Lima Metropolitana y Callao de Región Lima. |
 
-La función experimental `panel()` se retiró de esta versión: enlazar viviendas
-u hogares entre periodos no basta para seguir a las mismas personas, y esa
-validación sigue pendiente. El detalle está en `NEWS.md`.
-
 ## Contexto y trabajo relacionado
 
 `empleR` no es el primer paquete para microdatos del Perú.
@@ -132,9 +128,10 @@ las ocupaciones con un índice peruano de exposición a IA.
 - `indicadores()` usa el ingreso total proveniente del trabajo y las horas de
   todas las ocupaciones. Sus estimaciones puntuales se contrastaron con los
   microdatos y las cifras oficiales de 2022 a 2025. Los errores estándar se
-  solicitan con `incluir_inferencia = TRUE`: la reconstrucción reproduce los
-  CV publicados en los contrastes disponibles, pero sigue marcada como
-  experimental porque no equivale a una especificación oficial completa.
+  solicitan con `incluir_inferencia = TRUE` y siguen siendo experimentales.
+  El [manual de indicadores](https://valentinalinares.github.io/empleR/articles/manual-indicadores-mapas.html)
+  explica cómo se contrastaron con resultados publicados por el INEI y qué
+  aspectos del diseño muestral quedan por confirmar.
 - Antes de comparar EPE y EPEN, revisa `homologacion_estado` y `cobertura()`.
   En la validación real de octubre-diciembre, solo 34,64 % de la población
   ocupada EPE tuvo una correspondencia única al CNO 2015. Además, la EPE 2021
@@ -154,6 +151,6 @@ y el [código de conducta](CODE_OF_CONDUCT.md).
 
 Durante el desarrollo se usaron asistentes de código para apoyar revisiones,
 pruebas y redacción. Valentina revisó las propuestas, tomó las decisiones y es
-responsable del contenido integrado. Estos asistentes no son autores del
-paquete. Su uso es distinto de Claude Sonnet 4.6 como instrumento metodológico
-en la corrida de 2026 del índice de exposición a IA.
+responsable del contenido integrado. El uso de Claude Sonnet 4.6 para calcular
+el índice de exposición a IA se describe por separado en la documentación
+de su metodología.

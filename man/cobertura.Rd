@@ -2,17 +2,17 @@
 % Please edit documentation in R/cobertura.R
 \name{cobertura}
 \alias{cobertura}
-\title{Cobertura de la homologacion ocupacional y del indice de IA}
+\title{Cobertura de la homologación ocupacional y del índice de IA}
 \usage{
 cobertura(data, por = NULL, var_peso = NULL)
 }
 \arguments{
 \item{data}{\code{data.frame} procesado con \code{\link[=cno]{cno()}} e \code{\link[=ia_exposicion]{ia_exposicion()}}.}
 
-\item{por}{Variables de agrupacion. Por defecto, la encuesta (\code{source}, o
-la derivada de \code{clasificador}: CO-95 = EPE, CNO 2015 = EPEN) y el ano.}
+\item{por}{Variables de agrupación. Por defecto, la encuesta (\code{source}, o
+la derivada de \code{clasificador}: CO-95 = EPE, CNO 2015 = EPEN) y el año.}
 
-\item{var_peso}{Factor de expansion. Si es \code{NULL} se detecta (\code{weight},
+\item{var_peso}{Factor de expansión. Si es \code{NULL} se detecta (\code{weight},
 \code{FAC300_ANUAL}, \code{FACTOR07}, \code{FACTOR}, \code{fexp}); si no existe, solo se
 reportan observaciones. En la EPE (\code{fa_def19}, \code{fa_def21}) el factor
 depende del periodo y hay que indicarlo.}
@@ -22,21 +22,21 @@ Un \code{data.frame} con una fila por grupo, estado y detalle:
 \describe{
 \item{estado}{\code{"con_score"}, \code{"sin_score"}, \code{"codigo_no_encontrado"},
 \code{"sin_homologacion"} o \code{"sin_codigo"} (ver \code{\link[=ia_exposicion]{ia_exposicion()}}).}
-\item{detalle}{En bases EPE, el motivo segun \code{homologacion_estado}:
+\item{detalle}{En bases EPE, el motivo según \code{homologacion_estado}:
 para \code{"sin_homologacion"}, \code{multiples_destinos},
 \code{discrepancia_fuente}, \code{ocupacion_no_especificada} o
 \code{codigo_no_encontrado}; para \code{"sin_codigo"}, \code{sin_codigo} o
-\code{formato_invalido}. En los demas casos, \code{NA}.}
+\code{formato_invalido}. En los demás casos, \code{NA}.}
 \item{n, pct_n}{Observaciones y porcentaje dentro del grupo.}
-\item{poblacion, pct_poblacion}{Poblacion expandida y porcentaje dentro
-del grupo (\code{NA} si no hay factor de expansion).}
+\item{poblacion, pct_poblacion}{Población expandida y porcentaje dentro
+del grupo (\code{NA} si no hay factor de expansión).}
 }
 }
 \description{
-Resume, por encuesta y ano, cuantas observaciones y cuanta poblacion
-ponderada tienen score de IA, y por que falta en el resto. Distingue la
-falta de homologacion CO-95 -> CNO 2015 (EPE) de la falta de score en el
-indice. Revisar este resumen es un paso previo a comparar EPE y EPEN.
+Resume, por encuesta y año, cuántas observaciones y cuánta población
+ponderada tienen puntaje de IA, y por qué falta en el resto. Distingue la
+falta de homologación CO-95 -> CNO 2015 (EPE) de la falta de puntaje en el
+índice. Revisar este resumen es un paso previo a comparar EPE y EPEN.
 }
 \examples{
 muestra <- suppressWarnings(ia_exposicion(cno(muestra_epen_2024)))

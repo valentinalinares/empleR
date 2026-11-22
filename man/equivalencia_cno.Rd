@@ -7,10 +7,10 @@
 \format{
 Un \code{data.frame} con columnas:
 \describe{
-\item{cod_ciuo_2008}{Codigo CIUO-2008 (4 digitos).}
-\item{desc_ciuo_2008}{Descripcion del grupo primario CIUO-2008.}
-\item{cod_cno_2015}{Codigo CNO 2015 equivalente (4 digitos).}
-\item{desc_cno_2015}{Descripcion del grupo primario CNO 2015.}
+\item{cod_ciuo_2008}{Código CIUO-2008 (4 dígitos).}
+\item{desc_ciuo_2008}{Descripción del grupo primario CIUO-2008.}
+\item{cod_cno_2015}{Código CNO 2015 equivalente (4 dígitos).}
+\item{desc_cno_2015}{Descripción del grupo primario CNO 2015.}
 \item{enlace_ciuo_cno}{Tipo de enlace de CIUO hacia CNO.}
 \item{enlace_cno_ciuo}{Tipo de enlace de CNO hacia CIUO.}
 }
@@ -22,8 +22,8 @@ INEI - Tabla de equivalencias CIUO-2008 / CNO 2015.
 equivalencia_cno
 }
 \description{
-Tabla de correspondencias entre los codigos CIUO-2008 y el Clasificador
-Nacional de Ocupaciones 2015 (CNO 2015, 4 digitos). Publicada por el INEI
-para facilitar la homologacion de series temporales entre clasificadores.
+Tabla de correspondencias entre los códigos CIUO-2008 y el Clasificador
+Nacional de Ocupaciones 2015 (CNO 2015, 4 dígitos). Publicada por el INEI
+para facilitar la homologación de series temporales entre clasificadores.
 }
 \keyword{datasets}

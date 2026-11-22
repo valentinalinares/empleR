@@ -2,14 +2,14 @@
 % Please edit documentation in R/indicadores.R
 \name{resumen_nacional}
 \alias{resumen_nacional}
-\title{Consultar indicadores nacionales pre-calculados (EPEN/ENAHO)}
+\title{Consultar indicadores nacionales precalculados (EPEN/ENAHO)}
 \usage{
 resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 }
 \arguments{
 \item{fuente}{\code{"EPEN"}, \code{"ENAHO"} o \code{"todas"} (por defecto).}
 
-\item{year}{Filtrar por ano. \code{NULL} devuelve todos los anos.}
+\item{year}{Filtrar por año. \code{NULL} devuelve todos los años.}
 
 \item{variante}{Filtrar por variante. \code{NULL} devuelve todas las variantes.}
 }
@@ -17,18 +17,20 @@ resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 Un \code{data.frame} con columnas:
 \code{source}, \code{survey_variant}, \code{year}, \code{period_label},
 \code{activity_rate_pet}, \code{employment_rate_pet}, \code{unemployment_rate_pea},
-\code{income_monthly_weighted_mean}, \code{hours_week_weighted_mean}, y mas.
+\code{income_monthly_weighted_mean}, \code{hours_week_weighted_mean}, y más.
 }
 \description{
 Devuelve indicadores del mercado laboral a nivel nacional ya calculados
 para todos los periodos disponibles. Incluye tasas de desempleo, actividad
-y empleo que requieren la PEA completa (no solo ocupados).
+y empleo. Las tasas de actividad y empleo usan como denominador la población
+en edad de trabajar (PET); la de desempleo usa la población económicamente
+activa (PEA), formada por ocupados y desocupados.
 }
 \examples{
 # Ver indicadores EPEN
 resumen_nacional(fuente = "EPEN")
 
-# Tasa de desempleo EPEN departamentos por ano
+# Tasa de desempleo EPEN departamentos por año
 resumen_nacional("EPEN", variante = "departamentos_anual") |>
   subset(select = c(year, unemployment_rate_pea, activity_rate_pet))
 }

@@ -3,27 +3,27 @@
 \docType{data}
 \name{url_catalog_epen}
 \alias{url_catalog_epen}
-\title{Catalogo de URLs de descarga EPEN (INEI)}
+\title{Catálogo de URLs de descarga EPEN (INEI)}
 \format{
 Un \code{data.frame} con columnas:
 \describe{
 \item{source}{Nombre de la encuesta: EPEN.}
 \item{survey_variant}{Variante: \code{departamentos_anual}, \code{lima_movil}.}
-\item{year}{Ano de referencia (integer).}
-\item{period_label}{Etiqueta del periodo (e.g. "Anual", "Trimestre Movil...").}
-\item{survey_code}{Codigo de encuesta INEI (entero).}
-\item{url}{URL de descarga del ZIP con los modulos CSV.}
+\item{year}{Año de referencia (integer).}
+\item{period_label}{Etiqueta del periodo (e.g. "Anual", "Trimestre Móvil...").}
+\item{survey_code}{Código de encuesta INEI (entero).}
+\item{url}{URL de descarga del ZIP con los módulos CSV.}
 }
 }
 \source{
-INEI - Sistema de Recuperacion de Informacion de Encuestas (SRIIE).
+INEI - Sistema de Recuperación de Información de Encuestas (SRIIE).
 }
 \usage{
 url_catalog_epen
 }
 \description{
 URLs reales para descargar los microdatos de la EPEN desde el servidor del
-INEI. Extraidas del paquete Python \code{inei_microdatos}. Usadas internamente
+INEI. Extraídas del paquete Python \code{inei_microdatos}. Usadas internamente
 por \code{\link[=descargar]{descargar()}}.
 }
 \keyword{datasets}

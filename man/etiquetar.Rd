@@ -12,10 +12,10 @@ etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
 \item{vars}{Vector de nombres de variables a etiquetar. Si es \code{NULL}
 (por defecto), usa todas las variables reconocidas presentes en \code{data}.}
 
-\item{as_factor}{Logico. Si \code{TRUE} (por defecto), devuelve las etiquetas
+\item{as_factor}{Lógico. Si \code{TRUE} (por defecto), devuelve las etiquetas
 como factores. Si \code{FALSE}, las devuelve como texto.}
 
-\item{reemplazar}{Logico. Si es \code{FALSE} (por defecto), conserva los codigos
+\item{reemplazar}{Lógico. Si es \code{FALSE} (por defecto), conserva los códigos
 y agrega columnas de etiquetas. Usa \code{TRUE} solo para reproducir el
 comportamiento anterior, que reemplaza las columnas seleccionadas.}
 }
@@ -28,15 +28,15 @@ posibles son \code{sex_label}, \code{labor_status_label}, \code{education_label}
 }
 \description{
 Interpreta variables codificadas de la EPEN siguiendo los diccionarios
-oficiales del INEI. Reconoce tanto los nombres originales del modulo 76
+oficiales del INEI. Reconoce tanto los nombres originales del módulo 76
 (\code{C207}, \code{OCUP300}, \code{C366}, \code{C310}, \code{C311}, \code{C317}, \code{C338} y \code{AREA}) como
 sus equivalentes en las bases procesadas de \code{{empleR}}.
 }
 \details{
-Por defecto conserva intacta cada columna de codigos y agrega una columna
+Por defecto conserva intacta cada columna de códigos y agrega una columna
 terminada en \verb{_label}. Esta separacion permite usar las etiquetas para
-tablas y graficos sin perder los codigos necesarios para validar o procesar
-los microdatos. Los valores ausentes siguen ausentes; un codigo no incluido
+tablas y graficos sin perder los códigos necesarios para validar o procesar
+los microdatos. Los valores ausentes siguen ausentes; un código no incluido
 en el diccionario genera una advertencia y su etiqueta queda en \code{NA}.
 }
 \examples{
@@ -44,7 +44,7 @@ en el diccionario genera una advertencia y su etiqueta queda en \code{NA}.
 muestra_etiquetada <- etiquetar(muestra_epen_2024)
 table(muestra_etiquetada$sex_label)
 
-# Funciona tambien con nombres originales del modulo 76
+# Funciona también con nombres originales del módulo 76
 crudos <- data.frame(C207 = c("1", "2"), C366 = c("6", "11"))
 etiquetar(crudos, as_factor = FALSE)
 
