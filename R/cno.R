@@ -1,14 +1,14 @@
-#' Armonizar codigos ocupacionales entre CNO 2015 y CO-95
+#' Armonizar códigos ocupacionales entre CNO 2015 y CO-95
 #'
-#' Esta funcion resuelve la **ruptura de clasificadores** entre la EPE (hasta
-#' 2021, usa CO-95 de 3 digitos, basado en CIUO-88) y la EPEN (desde 2022,
-#' usa CNO 2015 de 4 digitos, basado en CIUO-08) y, opcionalmente, aplica la
-#' tabla de equivalencias para construir series comparables.
+#' Añade descripciones a los códigos ocupacionales de la EPE (CO-95) y la
+#' EPEN (CNO 2015). Para la EPE, puede consultar la tabla oficial de
+#' correspondencias y distinguir equivalencias únicas, múltiples y discrepantes.
+#' Antes de comparar encuestas, revisa también su cobertura, territorio y periodo.
 #'
 #' El clasificador se determina, en este orden: (1) el argumento
 #' `clasificador`; (2) la encuesta declarada en `source`/`fuente`/`encuesta`
-#' (EPE o EPEN); (3) los anos de **todas** las filas (`year`, `anio`, `ANIO`,
-#' `ANO` o su version con enie): 2021 o antes es CO-95; 2022 o despues, CNO 2015. Una base que mezcla
+#' (EPE o EPEN); (3) los años de **todas** las filas (`year`, `anio`, `ANIO`,
+#' `ANO` o su versión con ñ): 2021 o antes es CO-95; 2022 o después, CNO 2015. Una base que mezcla
 #' ambos periodos o ambas encuestas produce un error: hay que procesar cada
 #' parte por separado. Si una base de 2022 usa CO-95, indicalo con
 #' `clasificador = "CO_95"`.
@@ -16,44 +16,44 @@
 #' La variable ocupacional en EPEN es `C308_COD`; en EPE es `P204A`
 #' (`p204a`); en ENAHO es `P505R4`.
 #'
-#' La homologacion CO-95 -> CNO 2015 usa la tabla de correspondencia oficial
-#' del INEI (ver [co_1995]). Solo se asigna un codigo CNO 2015 cuando la
-#' equivalencia es **unica**: 125 codigos CO-95 tienen varios destinos (por
+#' La homologación CO-95 -> CNO 2015 usa la tabla de correspondencia oficial
+#' del INEI (ver [co_1995]). Solo se asigna un código CNO 2015 cuando la
+#' equivalencia es **única**: 125 códigos CO-95 tienen varios destinos (por
 #' ejemplo, 262 "Economistas y planificadores" corresponde a CNO 2412 y 2631)
 #' y en esos casos `cno_homologado` queda en `NA`. Elegir un candidato o
-#' repartir los pesos requiere una decision metodologica explicita del
+#' repartir los pesos requiere una decisión metodológica explícita del
 #' analista. Revisa siempre la cobertura con
 #' `table(datos$homologacion_estado)` antes de comparar series.
 #'
 #' @param data `data.frame` con microdatos de EPEN/EPE.
-#' @param var_ocup Nombre de la variable de codigo ocupacional. Por defecto
-#'   se usa el codigo original: `C308_COD` u `occupation_code_raw` (EPEN),
+#' @param var_ocup Nombre de la variable de código ocupacional. Por defecto
+#'   se usa el código original: `C308_COD` u `occupation_code_raw` (EPEN),
 #'   `P204A`/`p204a` (EPE); `occupation_code_4d` solo si no hay original.
-#' @param homologar Logico. Si `TRUE`, aplica la tabla de equivalencias
-#'   CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve la columna
+#' @param homologar Lógico. Si `TRUE`, aplica la tabla de equivalencias
+#'   CO-95 <-> CNO 2015 para bases EPE pre-2022 y devuelve las columnas
 #'   adicionales `cno_homologado`, `cno_candidatos`, `cno_gran_grupo` y
 #'   `homologacion_estado`. Por defecto `FALSE`.
-#' @param agregar Nivel de agregacion del CNO al que reducir los codigos.
-#'   Opciones: `"4d"` (4 digitos, por defecto), `"3d"`, `"2d"`, `"1d"`.
-#'   Para bases EPE (CO-95), el maximo disponible y el valor por defecto es
-#'   `"3d"`. La homologacion siempre usa el codigo CO-95 completo.
+#' @param agregar Nivel de agregacion del CNO al que reducir los códigos.
+#'   Opciones: `"4d"` (4 dígitos, por defecto), `"3d"`, `"2d"`, `"1d"`.
+#'   Para bases EPE (CO-95), el máximo disponible y el valor por defecto es
+#'   `"3d"`. La homologación siempre usa el código CO-95 completo.
 #' @param clasificador `"CNO_2015"`, `"CO_95"` o `NULL` (por defecto) para
-#'   detectarlo automaticamente.
+#'   detectarlo automáticamente.
 #'
 #' @return El mismo `data.frame` con columnas adicionales:
 #'   \describe{
 #'     \item{clasificador}{El clasificador detectado: `"CNO_2015"` o `"CO_95"`.}
-#'     \item{cno_cod}{Codigo ocupacional estandarizado al nivel solicitado.
-#'       Sale del codigo original (`C308_COD`, `P204A` u
+#'     \item{cno_cod}{Código ocupacional estandarizado al nivel solicitado.
+#'       Sale del código original (`C308_COD`, `P204A` u
 #'       `occupation_code_raw`) completado con ceros a la izquierda; solo si
 #'       no existe se usa `occupation_code_4d`.}
-#'     \item{cno_discrepancia_4d}{(Solo CNO 2015, si la base trae el codigo
+#'     \item{cno_discrepancia_4d}{(Solo CNO 2015, si la base trae el código
 #'       original y `occupation_code_4d`) `TRUE` cuando ambos no coinciden,
 #'       por ejemplo 212 -> `"0212"` frente a `"2120"`.}
-#'     \item{cno_desc}{Descripcion de la ocupacion (del diccionario interno).}
-#'     \item{cno_homologado}{(Solo si `homologar = TRUE`, bases CO-95) Codigo
-#'       CNO 2015 de 4 digitos cuando la equivalencia es unica; `NA` si no.}
-#'     \item{cno_candidatos}{Todos los codigos CNO 2015 posibles, separados
+#'     \item{cno_desc}{Descripción de la ocupación (del diccionario interno).}
+#'     \item{cno_homologado}{(Solo si `homologar = TRUE`, bases CO-95) Código
+#'       CNO 2015 de 4 dígitos cuando la equivalencia es única; `NA` si no.}
+#'     \item{cno_candidatos}{Todos los códigos CNO 2015 posibles, separados
 #'       por `"; "`.}
 #'     \item{cno_gran_grupo}{Gran grupo CNO 2015 (1 digito) cuando todos los
 #'       candidatos lo comparten; permite comparar a nivel agregado.}
@@ -71,10 +71,10 @@
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024)
 #'
-#' # Agregar descripcion CNO al nivel de 4 digitos
+#' # Agregar descripción CNO al nivel de 4 dígitos
 #' epen_2024 <- cno(epen_2024)
 #'
-#' # Agregar descripcion CNO al nivel de 2 digitos (subgrupos principales)
+#' # Agregar descripción CNO al nivel de 2 dígitos (subgrupos principales)
 #' epen_2024 <- cno(epen_2024, agregar = "2d")
 #'
 #' # Homologar base EPE 2019 a CNO 2015 para comparar con EPEN 2024
@@ -83,9 +83,10 @@
 #' epe_2019 <- cno(epe_2019, homologar = TRUE)
 #' table(epe_2019$homologacion_estado)
 #'
-#' # Comparacion a nivel de gran grupo (mayor cobertura que 4 digitos)
+#' # Comparacion a nivel de gran grupo (mayor cobertura que 4 dígitos)
 #' epen_2024 <- cno(epen_2024, agregar = "1d")
-#' # epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod
+#' # Ambas columnas expresan el gran grupo ocupacional.
+#' # Revisa también cobertura, territorio y periodo antes de compararlas.
 #' }
 cno <- function(data,
                 var_ocup = NULL,

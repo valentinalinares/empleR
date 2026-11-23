@@ -15,9 +15,9 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 library(empleR)
 ```
 
-Esta parte del manual cubre el inicio del flujo: saber qué información existe,
-descargar los microdatos de la EPEN y convertir códigos numéricos en categorías
-legibles.
+Antes de empezar, puedes consultar qué años y periodos contiene el catálogo.
+En esta sección aprenderás a descargar una base de la EPEN y añadir etiquetas
+para interpretar sus códigos.
 
 ## `catalogo()`: saber qué está disponible
 
@@ -83,7 +83,8 @@ repetir la descarga.
 
 ### Qué hace por dentro
 
-1. Si `destfile` ya existe, lee esa copia.
+1. Si `destfile` ya existe, comprueba que la copia corresponda a la solicitud
+   antes de reutilizarla. Las copias antiguas sin metadatos deben regenerarse.
 2. Busca la URL que corresponde al año, variante y periodo.
 3. Descarga el ZIP del INEI a una ubicación temporal.
 4. Detecta el CSV y su separador.
@@ -160,7 +161,7 @@ etiquetar(
 )[, c("sex_code", "sex_label", "education_code", "education_label")]
 ```
 
-La conexión con una descarga cruda es directa:
+También puedes etiquetar una base recién descargada:
 
 ```{r etiquetar-crudos, eval=FALSE}
 epen_2024 <- descargar(year = 2024)
@@ -169,7 +170,7 @@ epen_2024 <- etiquetar(epen_2024)
 # C207 permanece intacta; sex_label contiene Hombre/Mujer
 table(epen_2024$C207, epen_2024$sex_label, useNA = "ifany")
 
-# El codigo ocupacional sigue disponible para el paso siguiente
+# El código ocupacional sigue disponible para el paso siguiente
 epen_2024 <- cno(epen_2024)
 ```
 
@@ -178,17 +179,17 @@ Los nombres originales y procesados reconocidos son:
 | Concepto | Variable original | Variable procesada | Etiqueta creada |
 |---|---|---|---|
 | Sexo | `C207` | `sex_code` | `sex_label` |
-| Condicion de actividad | `OCUP300` | `labor_status_code` | `labor_status_label` |
+| Condición de actividad | `OCUP300` | `labor_status_code` | `labor_status_label` |
 | Nivel educativo | `C366` | `education_code` | `education_label` |
-| Categoria ocupacional | `C310` | `occupational_category_code` | `occupational_category_label` |
+| Categoría ocupacional | `C310` | `occupational_category_code` | `occupational_category_label` |
 | Sector institucional | `C311` | `institutional_sector_code` | `institutional_sector_label` |
-| Tamano de empresa | `C317` | `firm_size_code` | `firm_size_label` |
+| Tamaño de empresa | `C317` | `firm_size_code` | `firm_size_label` |
 | Periodicidad del ingreso | `C338` | `income_periodicity_code` | `income_periodicity_label` |
-| Area | `AREA` | `is_rural` | `area_label` |
+| Área | `AREA` | `is_rural` | `area_label` |
 
-La codificacion de `AREA` no es la misma en ambas versiones: el dato original
+La codificación de `AREA` no es la misma en ambas versiones: el dato original
 usa 1/2 y `is_rural` usa 0/1. `etiquetar()` aplica el diccionario que corresponde
-a cada nombre. No interpreta automaticamente las demas columnas del modulo 76.
+a cada nombre. No interpreta automáticamente las demás columnas del módulo 76.
 
 ## Siguiente paso
 

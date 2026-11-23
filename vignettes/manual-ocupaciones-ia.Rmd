@@ -151,7 +151,8 @@ octubre-diciembre de 2024. La causa principal fue que 64,25 % de la población
 EPE tenía varios destinos CNO posibles. No compares las medias de ambas
 encuestas como si la cobertura fuera equivalente: informa estos estados,
 recalcula la cobertura para tu periodo y, si corresponde, presenta resultados
-por separado o una sensibilidad a los casos sin homologación.
+por separado o examina cuánto cambian según el tratamiento de los casos sin
+homologación.
 
 ## Autoría del índice
 

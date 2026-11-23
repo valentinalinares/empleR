@@ -38,7 +38,7 @@ El orden de ejecución es importante:
 3. `03_build_equivalencia_co95.R` crea CO-95 y su correspondencia.
 4. `04_corregir_cno_2015.R` incorpora el código 5321 faltante.
 5. `06_restaurar_tareas_cno_2015.R` restaura las tareas verificadas de 5223 y
-   5321 sin inventar scores.
+   5321 sin inventar puntajes.
 6. `07_muestra_epen_2024.R` crea una muestra completamente sintética con
    semilla `20261114`, sin leer ni remuestrear microdatos reales.
 7. `01_preparar_shapes.R` agrega los límites de `geoperu` a departamento y
@@ -73,7 +73,7 @@ El índice fue desarrollado por Walter Omar Manky Bonilla, con asistencia de
 investigación de Valentina Linares Herrera. El archivo final fijado permite
 reconstruir exactamente `indice_ia`, pero el repositorio no contiene las
 respuestas originales del modelo ni todo el paquete intermedio. Por tanto,
-esta verificación reproduce el dataset final, no una nueva ejecución del
+esta verificación reproduce el conjunto de datos final, no una nueva ejecución del
 modelo. Omar autorizó verbalmente su uso en `empleR`; antes de una versión
 enviada a CRAN o a rOpenSci conviene conservar esa autorización por escrito y
 registrar la licencia de redistribución acordada.

@@ -3,52 +3,52 @@
 \docType{data}
 \name{indice_ia}
 \alias{indice_ia}
-\title{Indice de exposicion a inteligencia artificial por ocupacion}
+\title{Índice de exposición a inteligencia artificial por ocupación}
 \format{
 Un \code{data.frame} con columnas:
 \describe{
-\item{code}{Codigo CNO 2015 de 4 digitos (character).}
-\item{occupation_group}{Nombre de la ocupacion.}
-\item{mean_exposure_score}{Score medio de exposicion en escala 0-1 (p.ej. 0.37 equivale al 37 por ciento).}
-\item{median_exposure_score}{Score mediano de exposicion (0 a 1).}
-\item{std_score}{Desviacion estandar del score entre tareas.}
-\item{total_tasks}{Numero total de tareas evaluadas.}
-\item{tipo_A_aumento}{Numero de tareas tipo A (aumento/augmentation).}
-\item{tipo_S_sustitucion}{Numero de tareas tipo S (sustitucion).}
-\item{tipo_N_nulo}{Numero de tareas tipo N (impacto nulo).}
+\item{code}{Código CNO 2015 de 4 dígitos (character).}
+\item{occupation_group}{Nombre de la ocupación.}
+\item{mean_exposure_score}{Puntaje medio de exposición en una escala de 0 a 1.}
+\item{median_exposure_score}{Puntaje mediano de exposición (0 a 1).}
+\item{std_score}{Desviación estándar del puntaje entre tareas.}
+\item{total_tasks}{Número total de tareas evaluadas.}
+\item{tipo_A_aumento}{Número de tareas tipo A (aumento/augmentation).}
+\item{tipo_S_sustitucion}{Número de tareas tipo S (sustitución).}
+\item{tipo_N_nulo}{Número de tareas tipo N (impacto nulo).}
 }
 }
 \source{
-Manky Bonilla, W. O. (2026). Indice de exposicion a inteligencia
+Manky Bonilla, W. O. (2026). Índice de exposición a inteligencia
 artificial generativa para ocupaciones peruanas: corrida Claude Sonnet
-4.6. Con asistencia de investigacion de V. Linares Herrera. Material de
+4.6. Con asistencia de investigación de V. Linares Herrera. Material de
 trabajo no publicado.
 
-Antecedente metodologico: Manky, W. O. (2025). Doble desafio tecnologico:
-analisis de la exposicion a la automatizacion tradicional y a la
+Antecedente metodológico: Manky, W. O. (2025). Doble desafío tecnológico:
+análisis de la exposición a la automatización tradicional y a la
 inteligencia artificial generativa en el empleo peruano, utilizando datos
-de la ENAHO 2024. Instituto Nacional de Estadistica e Informatica.
+de la ENAHO 2024. Instituto Nacional de Estadística e Informática.
 }
 \usage{
 indice_ia
 }
 \description{
-Score de exposicion a IA generativa para cada ocupacion del CNO 2015,
+Puntaje de exposición a IA generativa para cada ocupación del CNO 2015,
 desarrollado por Walter Omar Manky Bonilla, con la asistencia de
-investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6
-(Anthropic) mediante tres corridas independientes y consolidacion por
+investigación de Valentina Linares Herrera, usando Claude Sonnet 4.6
+(Anthropic) mediante tres corridas independientes y consolidación por
 consenso.
 }
 \details{
 El archivo fuente final recomendado es
-\verb{02_exposure_index_por_ocupacion.xlsx}. El score sintetico principal es
+\verb{02_exposure_index_por_ocupacion.xlsx}. El puntaje principal por ocupación es
 \code{mean_exposure_score}; \code{median_exposure_score} y \code{std_score} se conservan
-para analisis de sensibilidad y heterogeneidad. Segun el memo metodologico
-de la corrida Sonnet de abril de 2026, cuyo paquete metodologico fue
+para análisis de sensibilidad y heterogeneidad. Según el memo metodológico
+de la corrida Sonnet de abril de 2026, cuyo paquete metodológico fue
 versionado el 15 de junio de 2026:
 \itemize{
-\item Correlacion con indice OIT: r = 0.85.
-\item Correlacion con indice anterior: r = 0.45.
+\item Correlación con índice OIT: r = 0.85.
+\item Correlación con índice anterior: r = 0.45.
 }
 }
 \keyword{datasets}

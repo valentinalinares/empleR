@@ -1,50 +1,51 @@
-#' Calcular indicadores del mercado laboral con diseno muestral
+#' Calcular ingresos y horas de trabajo ponderados
 #'
-#' Calcula indicadores laborales de la poblacion ocupada incorporando el
-#' diseno muestral complejo de la EPEN mediante el paquete \pkg{survey}. Si la
-#' base contiene `OCUP300` o `labor_status_code`, conserva de forma explicita
-#' el codigo de ocupado. Si no contiene una variable de condicion de actividad,
+#' Calcula el ingreso promedio o mediano y las horas semanales promedio de
+#' la población ocupada usando factores de expansión. El error estándar se
+#' solicita con `incluir_inferencia = TRUE` y sigue siendo experimental. Si la
+#' base contiene `OCUP300` o `labor_status_code`, conserva de forma explícita
+#' el código de ocupado. Si no contiene una variable de condición de actividad,
 #' supone que las filas recibidas ya corresponden a personas ocupadas.
 #'
-#' Para obtener tasas de desempleo, actividad y empleo a nivel nacional o
-#' regional, usa [resumen_nacional()], que devuelve los indicadores
-#' pre-calculados del pipeline INEI con la muestra completa de la PEA.
+#' Para consultar tasas de desempleo, actividad y empleo, usa
+#' [resumen_nacional()], que devuelve resultados ya calculados en el proyecto
+#' con las bases completas del INEI.
 #'
-#' @param data `data.frame` con microdatos de EPEN (output de [descargar()]).
+#' @param data `data.frame` con microdatos de EPEN (resultado de [descargar()]).
 #' @param indicador Nombre del indicador a calcular:
 #'   - `"ingreso_promedio"`: ingreso mensual medio proveniente del trabajo,
 #'     sumando ocupaciones principal y secundaria e ingresos extraordinarios.
 #'   - `"horas_promedio"`: total medio de horas trabajadas en la semana en
 #'     todas las ocupaciones.
 #'   - `"ingreso_mediano"`: mediana del mismo ingreso mensual.
-#' @param por Variable(s) de agrupacion: `"sex"`, `"region_code"`,
+#' @param por Variable(s) de agrupación: `"sex"`, `"region_code"`,
 #'   `"education_code"`, `"institutional_sector_code"`, etc. `NULL` = nacional.
-#' @param var_strata Nombre de la variable de estrato. Detecta automaticamente
+#' @param var_strata Nombre de la variable de estrato. Detecta automáticamente
 #'   `strata_code` (datos procesados) o `ESTRATO` (datos crudos INEI).
-#' @param var_psu Nombre de la variable PSU. Detecta automaticamente
+#' @param var_psu Nombre de la unidad primaria de muestreo (UPM). Detecta automáticamente
 #'   `cluster_id` (datos procesados) o `CONGLOMERADO`/`CONGLOME` (datos crudos
-#'   INEI). Si se detecta y la base trae tambien la muestra (`sample_id` o
-#'   `MUESTRA`) y la region (`region_code` o `CCDD`), la UPM se forma con las
-#'   tres: los numeros de conglomerado se repiten entre departamentos y
-#'   muestras, asi que el conglomerado solo no identifica una UPM.
-#' @param var_peso Nombre del factor de expansion. Si existe un solo candidato,
-#'   lo detecta automaticamente. Si encuentra mas de uno (por ejemplo,
-#'   `FAC_T300` y `FAC300_ANUAL`), exige elegirlo de forma explicita.
-#' @param var_estado Nombre de la variable de condicion de actividad. Detecta
-#'   `labor_status_code` o `OCUP300`. `NULL` permite la deteccion automatica.
-#' @param codigo_ocupado Codigo que identifica a las personas ocupadas en
+#'   INEI). Si se detecta y la base trae también la muestra (`sample_id` o
+#'   `MUESTRA`) y la región (`region_code` o `CCDD`), la UPM se forma con las
+#'   tres: los números de conglomerado se repiten entre departamentos y
+#'   muestras, así que el conglomerado solo no identifica una UPM.
+#' @param var_peso Nombre del factor de expansión. Si existe un solo candidato,
+#'   lo detecta automáticamente. Si encuentra más de uno (por ejemplo,
+#'   `FAC_T300` y `FAC300_ANUAL`), exige elegirlo de forma explícita.
+#' @param var_estado Nombre de la variable de condición de actividad. Detecta
+#'   `labor_status_code` o `OCUP300`. `NULL` permite la detección automática.
+#' @param codigo_ocupado Código que identifica a las personas ocupadas en
 #'   `var_estado`. En la EPEN es `"1"`.
-#' @param var_indicador Nombre de la variable numerica que se desea resumir.
+#' @param var_indicador Nombre de la variable numérica que se desea resumir.
 #'   Normalmente no hace falta indicarla: para ingreso se usan
 #'   `labor_income_work_weighted` o `ingtrabw`, y para horas
 #'   `hours_week_total` o `whoraT`. Sirve para solicitar expresamente otro
-#'   concepto, como el ingreso o las horas de la ocupacion principal.
-#' @param incluir_inferencia Logico. Si es `FALSE` (por defecto), devuelve solo
-#'   la estimacion puntual y la auditoria. Si es `TRUE`, agrega `error_std`
-#'   usando la aproximacion de diseno documentada abajo. La inferencia requiere
+#'   concepto, como el ingreso o las horas de la ocupación principal.
+#' @param incluir_inferencia Lógico. Si es `FALSE` (por defecto), devuelve solo
+#'   la estimación puntual y la auditoría. Si es `TRUE`, agrega `error_std`
+#'   usando la aproximación de diseño documentada abajo. La inferencia requiere
 #'   identificadores completos de UPM y, cuando se usa, de estrato.
 #'
-#' @return Un `data.frame` con el indicador calculado y columnas de auditoria:
+#' @return Un `data.frame` con el indicador calculado y columnas de auditoría:
 #'   `n_universo`, `n_estimacion`,
 #'   `n_sin_peso`, `n_peso_invalido`, `n_sin_indicador`,
 #'   `n_indicador_invalido`, `n_fuera_definicion` y
@@ -55,38 +56,40 @@
 #' Los indicadores de ingreso excluyen valores iguales o menores que cero.
 #' Esta regla reproduce el ingreso medio oficial de la EPEN, que resume las
 #' remuneraciones positivas de trabajadores dependientes e independientes. Las
-#' horas incluyen ceros validos. En todos los indicadores se excluyen del
-#' calculo los pesos ausentes, no numericos, no finitos o no positivos, y los
-#' valores del indicador ausentes, no numericos o no finitos. La salida informa
-#' cuantos casos se excluyeron por cada motivo.
+#' horas incluyen ceros válidos. En todos los indicadores se excluyen del
+#' cálculo los pesos ausentes, no numéricos, no finitos o no positivos, y los
+#' valores del indicador ausentes, no numéricos o no finitos. La salida informa
+#' cuántos casos se excluyeron por cada motivo.
 #'
-#' La mediana usa la regla matematica de [survey::svyquantile()]: el extremo
-#' inferior del intervalo donde la funcion de distribucion ponderada alcanza
+#' La mediana usa la regla matemática de [survey::svyquantile()]: el extremo
+#' inferior del intervalo donde la función de distribución ponderada alcanza
 #' 0.5 (`qrule = "math"`).
 #'
 #' @section Inferencia experimental:
-#' Las fichas EPEN describen un diseno probabilistico, estratificado, de areas
-#' y bietapico, independiente en cada departamento. La UPM implementada combina
-#' muestra, region y conglomerado porque los numeros de conglomerado se
+#' Las fichas EPEN describen un diseño probabilístico, estratificado, de áreas
+#' y bietápico, independiente en cada departamento. La UPM implementada combina
+#' muestra, región y conglomerado porque los números de conglomerado se
 #' reutilizan entre departamentos. En la base anual departamental validada se
-#' usa `ESTRATO` (`strata_code`). En la variante trimestral movil de Lima
-#' validada no se usa un estrato explicito: se debe indicar `var_strata = NA`.
+#' usa `ESTRATO` (`strata_code`). En la variante trimestral móvil de Lima
+#' validada no se usa un estrato explícito: se debe indicar `var_strata = NA`.
 #'
-#' Esta reconstruccion se contrasto con 24 estimaciones, errores estandar, CV y
-#' DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
+#' El coeficiente de variación (CV) relaciona el error estándar con la
+#' estimación; el efecto de diseño (DEFF) compara la varianza con la de un
+#' muestreo aleatorio simple. Esta reconstrucción se contrastó con 24
+#' estimaciones, errores estándar, CV y DEFF oficiales de Lima Metropolitana para octubre-diciembre de 2024 y 2025,
 #' y con ocho estimaciones y CV de ingreso anual nacional de 2024. Los estimados
-#' y CV se reproducen al redondeo publicado. El contraste respalda el calculo
-#' como aproximacion, pero no demuestra que sea el algoritmo interno del INEI.
+#' y CV se reproducen al redondeo publicado. El contraste respalda el cálculo
+#' como aproximación, pero no demuestra que sea el algoritmo interno del INEI.
 #'
-#' No se aplica correccion por poblacion finita porque los microdatos publicos
-#' no incluyen los totales del marco necesarios para cada etapa. Tampoco se
-#' inventan estratos ni UPM faltantes: si se solicita inferencia y esos
-#' identificadores estan incompletos, la funcion se detiene. Para una variante
-#' documentada sin estrato explicito se puede usar `var_strata = NA`.
+#' No se aplica corrección por población finita porque los microdatos públicos
+#' no incluyen los totales del marco necesarios para cada etapa. Si solicitas
+#' inferencia y faltan identificadores requeridos de estrato o UPM, la función
+#' se detiene e indica qué información necesitas completar. Para una variante
+#' documentada sin estrato explícito se puede usar `var_strata = NA`.
 #'
 # nolint start: line_length_linter.
 #' @references
-#' INEI. Ficha tecnica EPEN 2024.
+#' INEI. Ficha técnica EPEN 2024.
 #' <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Ficha_Tecnica.pdf>
 #'
 #' INEI. Diccionario EPEN 2024.
@@ -95,12 +98,12 @@
 #' INEI. Errores muestrales EPEN, octubre-diciembre 2024.
 #' <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-45/Error_Muestral_por_Trimestre.pdf>
 #'
-#' INEI. Peru: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
+#' INEI. Perú: Indicadores del Mercado Laboral a nivel departamental, 2022-2024.
 #' <https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf>
 # nolint end
 #'
-#' @seealso [resumen_nacional()] para indicadores pre-calculados (incluyendo
-#'   tasas de desempleo y actividad). [indicadores_epen] para el dataset
+#' @seealso [resumen_nacional()] para indicadores precalculados (incluyendo
+#'   tasas de desempleo y actividad). [indicadores_epen] para el conjunto de datos
 #'   interno con indicadores nacionales precalculados.
 #'
 #' @export
@@ -115,15 +118,15 @@
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024)
 #'
-#' # Ingreso por ambito departamental EPEN; Lima requiere su division
+#' # Ingreso por ámbito departamental EPEN; Lima requiere su división
 #' indicadores(
 #'   epen_2024,
 #'   "ingreso_promedio",
-#'   por = c("region_code", "division_lima")
+#'   por = c("CCDD", "DIVISION_LIMA")
 #' )
 #'
 #' # Horas trabajadas por sector institucional
-#' indicadores(epen_2024, "horas_promedio", por = "institutional_sector_code")
+#' indicadores(epen_2024, "horas_promedio", por = "C311")
 #' }
 indicadores <- function(data,
                         indicador,
@@ -439,20 +442,22 @@ indicadores <- function(data,
 }
 
 
-#' Consultar indicadores nacionales pre-calculados (EPEN/ENAHO)
+#' Consultar indicadores nacionales precalculados (EPEN/ENAHO)
 #'
 #' Devuelve indicadores del mercado laboral a nivel nacional ya calculados
 #' para todos los periodos disponibles. Incluye tasas de desempleo, actividad
-#' y empleo que requieren la PEA completa (no solo ocupados).
+#' y empleo. Las tasas de actividad y empleo usan como denominador la población
+#' en edad de trabajar (PET); la de desempleo usa la población económicamente
+#' activa (PEA), formada por ocupados y desocupados.
 #'
 #' @param fuente `"EPEN"`, `"ENAHO"` o `"todas"` (por defecto).
-#' @param year Filtrar por ano. `NULL` devuelve todos los anos.
+#' @param year Filtrar por año. `NULL` devuelve todos los años.
 #' @param variante Filtrar por variante. `NULL` devuelve todas las variantes.
 #'
 #' @return Un `data.frame` con columnas:
 #'   `source`, `survey_variant`, `year`, `period_label`,
 #'   `activity_rate_pet`, `employment_rate_pet`, `unemployment_rate_pea`,
-#'   `income_monthly_weighted_mean`, `hours_week_weighted_mean`, y mas.
+#'   `income_monthly_weighted_mean`, `hours_week_weighted_mean`, y más.
 #'
 #' @export
 #'
@@ -460,7 +465,7 @@ indicadores <- function(data,
 #' # Ver indicadores EPEN
 #' resumen_nacional(fuente = "EPEN")
 #'
-#' # Tasa de desempleo EPEN departamentos por ano
+#' # Tasa de desempleo EPEN departamentos por año
 #' resumen_nacional("EPEN", variante = "departamentos_anual") |>
 #'   subset(select = c(year, unemployment_rate_pea, activity_rate_pet))
 resumen_nacional <- function(fuente = "todas", year = NULL, variante = NULL) {

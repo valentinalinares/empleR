@@ -2,7 +2,7 @@
 % Please edit documentation in R/mapa.R
 \name{mapa}
 \alias{mapa}
-\title{Visualizar un indicador por ambito departamental de la EPEN}
+\title{Visualizar un indicador por ámbito departamental de la EPEN}
 \usage{
 mapa(
   data,
@@ -15,64 +15,64 @@ mapa(
 )
 }
 \arguments{
-\item{data}{\code{data.frame} con una fila por ambito departamental EPEN. Para
+\item{data}{\code{data.frame} con una fila por ámbito departamental EPEN. Para
 resultados de \code{\link[=indicadores]{indicadores()}}, usa
 \code{por = c("region_code", "division_lima")}.}
 
-\item{var}{Nombre de la columna numerica que se representara con colores.}
+\item{var}{Nombre de la columna numérica que se representara con colores.}
 
-\item{nivel}{Nivel geografico. Solo se admite \code{"departamento"}; los niveles
+\item{nivel}{Nivel geográfico. Solo se admite \code{"departamento"}; los niveles
 \code{"provincia"} y \code{"distrito"} producen un error informativo.}
 
 \item{tipo}{Tipo de visualizacion: \code{"leaflet"} (por defecto, interactivo)
-o \code{"ggplot"} (estatico).}
+o \code{"ggplot"} (estático).}
 
-\item{titulo}{Titulo del mapa y de la leyenda. Si es \code{NULL}, usa \code{var}.}
+\item{titulo}{Título del mapa y de la leyenda. Si es \code{NULL}, usa \code{var}.}
 
 \item{paleta}{Paleta de colores de \code{leaflet} o \code{ggplot2}.}
 
 \item{shapes}{Objeto \code{sf} opcional con \code{geo_id}, \code{departamento} y una
-geometria por ambito EPEN. Si es \code{NULL}, se construyen los poligonos
+geometría por ámbito EPEN. Si es \code{NULL}, se construyen los polígonos
 oficiales a partir de \link{shapes_departamentos} y \link{shapes_provincias}.}
 }
 \value{
 Un objeto \code{leaflet} o \code{ggplot}.
 }
 \description{
-Une una tabla con una fila por ambito departamental de la Encuesta
-Permanente de Empleo Nacional (EPEN) a los poligonos incluidos en el paquete
-y devuelve un mapa interactivo (\code{leaflet}) o estatico (\code{ggplot2}). La funcion
+Une una tabla con una fila por ámbito departamental de la Encuesta
+Permanente de Empleo Nacional (EPEN) a los polígonos incluidos en el paquete
+y devuelve un mapa interactivo (\code{leaflet}) o estático (\code{ggplot2}). La función
 recibe resultados ya agregados; no calcula indicadores.
 }
 \details{
-\strong{Ambitos de la EPEN.} El INEI no publica los resultados de Lima como un
-unico departamento. Distingue \code{DIVISION_LIMA = 1}, Lima Metropolitana y la
-Provincia Constitucional del Callao, de \code{DIVISION_LIMA = 2}, Region Lima
+\strong{Ámbitos de la EPEN.} El INEI no publica los resultados de Lima como un
+único departamento. Distingue \code{DIVISION_LIMA = 1}, Lima Metropolitana y la
+Provincia Constitucional del Callao, de \code{DIVISION_LIMA = 2}, Región Lima
 (las otras nueve provincias del departamento). Por ello, cuando \code{CCDD} o
-\code{region_code} vale 15, \code{\link[=mapa]{mapa()}} exige tambien \code{DIVISION_LIMA} o
-\code{division_lima}. Nunca asigna ese valor solo al poligono de Lima.
+\code{region_code} vale 15, \code{\link[=mapa]{mapa()}} exige también \code{DIVISION_LIMA} o
+\code{division_lima} para identificar el ámbito al que corresponde el resultado.
 
-Los otros 23 departamentos conservan su ambito habitual. En total, el mapa
-contiene 25 ambitos departamentales EPEN. Los poligonos de los dos ambitos
-de Lima se construyen a partir de los poligonos provinciales incluidos en el
+Los otros 23 departamentos conservan su ámbito habitual. En total, el mapa
+contiene 25 ámbitos departamentales EPEN. Los polígonos de los dos ámbitos
+de Lima se construyen a partir de los polígonos provinciales incluidos en el
 paquete.
 
-\strong{Llave de union.} La funcion admite:
+\strong{Clave de unión.} La función admite:
 \enumerate{
-\item \code{CCDD} o \code{region_code}, mas \code{DIVISION_LIMA} o \code{division_lima} para el
-codigo 15; o
+\item \code{CCDD} o \code{region_code}, más \code{DIVISION_LIMA} o \code{division_lima} para el
+código 15; o
 \item un nombre oficial en \code{ambito_epen}, \code{departamento}, \code{DEPARTAMENTO}, \code{dep}
 o \code{region}.
 }
 
-Si hay varias columnas geograficas, todas las que tengan un valor deben
-coincidir. Los codigos invalidos y las contradicciones producen un error.
+Si hay varias columnas geográficas, todas las que tengan un valor deben
+coincidir. Los códigos inválidos y las contradicciones producen un error.
 Los nombres no reconocidos se informan y no se dibujan.
 
-\strong{Nivel geografico.} Esta version no admite provincias ni distritos. Un
+\strong{Nivel geográfico.} Esta versión no admite provincias ni distritos. Un
 mapa representa los valores que recibe, pero no demuestra representatividad
-ni significancia estadistica. Revisa el diseno muestral, el numero de
-observaciones y la precision antes de comparar territorios.
+ni significancia estadística. Revisa el diseño muestral, el número de
+observaciones y la precisión antes de comparar territorios.
 }
 \examples{
 ingreso_dep <- indicadores(

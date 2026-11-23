@@ -1,70 +1,71 @@
-#' Cruzar ocupaciones con el indice de exposicion a inteligencia artificial
+#' Cruzar ocupaciones con el índice de exposición a inteligencia artificial
 #'
-#' Agrega a los microdatos el indice de exposicion a IA generativa por
-#' ocupacion, desarrollado por Walter Omar Manky Bonilla, con la asistencia de
-#' investigacion de Valentina Linares Herrera, usando Claude Sonnet 4.6
-#' (Anthropic). El indice mide el grado en que las tareas de cada ocupacion
-#' pueden ser asistidas o sustituidas por IA generativa, usando un score
+#' Agrega a los microdatos el índice de exposición a IA generativa por
+#' ocupación, desarrollado por Walter Omar Manky Bonilla, con la asistencia de
+#' investigación de Valentina Linares Herrera, usando Claude Sonnet 4.6
+#' (Anthropic). El índice mide el grado en que las tareas de cada ocupación
+#' pueden ser asistidas o sustituidas por IA generativa, usando un puntaje
 #' continuo de 0 a 1.
 #'
 #' @details
-#' El indice fue construido evaluando las tareas de cada ocupacion del
+#' El índice fue construido evaluando las tareas de cada ocupación del
 #' Clasificador Nacional de Ocupaciones (CNO 2015) con tres corridas
 #' independientes del modelo Claude Sonnet 4.6, consolidando el resultado
 #' por consenso. Cada tarea recibe:
 #' \itemize{
-#'   \item Un **score continuo** (0-1) de exposicion.
+#'   \item Un **puntaje continuo** (0-1) de exposición.
 #'   \item Un **tipo de impacto**: `A` (aumento/augmentation),
-#'     `S` (sustitucion), `N` (impacto nulo).
+#'     `S` (sustitución), `N` (impacto nulo).
 #' }
-#' El indice final por ocupacion es la media de los scores de sus tareas.
-#' Correlacion con el indice de la OIT: r = 0.85.
+#' El índice final por ocupación es la media de los puntajes de sus tareas.
+#' Correlación con el índice de la OIT: r = 0.85.
 #'
 #' Esta corrida actualiza el enfoque publicado por Manky (2025), pero sus
-#' puntajes no son los publicados originalmente por el INEI: conserva scores
-#' continuos y aplica reglas revisadas para empates, ambiguedades y tipo de
-#' exposicion.
+#' puntajes no son los publicados originalmente por el INEI: conserva puntajes
+#' continuos y aplica reglas revisadas para empates, ambigüedades y tipo de
+#' exposición.
 #'
 #' @section Bases EPE (CO-95):
-#' El indice esta definido en CNO 2015 a 4 digitos. En bases EPE se usa
+#' El índice está definido en CNO 2015 a 4 dígitos. En bases EPE se usa
 #' `cno_homologado` (de `cno(homologar = TRUE)`): solo las ocupaciones con
-#' equivalencia unica reciben score. Las ambiguas quedan en `NA` con
-#' `ia_cobertura = "sin_homologacion"`; nunca se cruza un codigo CO-95 ni un
-#' codigo agregado (1-3 digitos) con el indice. En una base que une EPE y
-#' EPEN (con la columna `clasificador` de [cno()]) cada fila usa su codigo.
+#' equivalencia única reciben puntaje. Las ambiguas quedan en `NA` con
+#' `ia_cobertura = "sin_homologacion"`; nunca se cruza un código CO-95 ni un
+#' código agregado (1-3 dígitos) con el índice. En una base que une EPE y
+#' EPEN (con la columna `clasificador` de [cno()]) cada fila usa su código.
 #'
 #' @param data `data.frame` con microdatos de EPEN/EPE procesados con [cno()].
-#' @param var_cno Variable con el codigo CNO 2015 de 4 digitos. Si es `NULL`
-#'   (por defecto) se elige por fila segun la columna `clasificador`:
+#' @param var_cno Variable con el código CNO 2015 de 4 dígitos. Si es `NULL`
+#'   (por defecto) se elige por fila según la columna `clasificador`:
 #'   `cno_cod` para CNO 2015 y `cno_homologado` para CO-95.
-#' @param score Que score agregar. Opciones:
-#'   - `"mean"` (por defecto): score medio de exposicion por ocupacion.
-#'   - `"median"`: score mediano.
+#' @param score Qué puntaje agregar. Opciones:
+#'   - `"mean"` (por defecto): puntaje medio de exposición por ocupación.
+#'   - `"median"`: puntaje mediano.
 #'   - `"ambos"`: agrega tanto media como mediana.
-#' @param incluir_tipo Logico. Si `TRUE`, agrega el tipo de impacto
+#' @param incluir_tipo Lógico. Si `TRUE`, agrega el tipo de impacto
 #'   predominante y los conteos de tareas por tipo. Por defecto `FALSE`.
 #'
 #' @return El mismo `data.frame` (mismas filas y orden) con columnas adicionales:
 #'   \describe{
-#'     \item{ia_cno}{Codigo CNO 2015 usado para el cruce.}
-#'     \item{ia_score_mean}{Score medio de exposicion a IA (0-1).}
-#'     \item{ia_score_median}{Score mediano (si `score` es `"median"` o `"ambos"`).}
-#'     \item{ia_cobertura}{`"con_score"`, `"sin_score"` (codigo CNO valido
-#'       sin score en el indice), `"codigo_no_encontrado"` (4 digitos que no
+#'     \item{ia_cno}{Código CNO 2015 usado para el cruce.}
+#'     \item{ia_score_mean}{Puntaje medio de exposición a IA (0-1).}
+#'     \item{ia_score_median}{Puntaje mediano (si `score` es `"median"` o `"ambos"`).}
+#'     \item{ia_cobertura}{`"con_score"`, `"sin_score"` (código CNO válido
+#'       sin puntaje en el índice), `"codigo_no_encontrado"` (4 dígitos que no
 #'       existen en el CNO 2015), `"sin_homologacion"` (CO-95 sin
-#'       equivalencia unica) o `"sin_codigo"`.}
-#'     \item{ia_tipo}{Tipo de impacto con mas tareas (`A`, `S` o `N`); `NA`
-#'       si hay empate, si la ocupacion no tiene tareas o no esta en el indice.}
-#'     \item{ia_empate}{`TRUE` si dos o mas tipos empatan en el maximo;
-#'       `NA` si no hay tareas o indice.}
+#'       equivalencia única) o `"sin_codigo"`.}
+#'     \item{ia_tipo}{Tipo de impacto con más tareas (`A`, `S` o `N`); `NA`
+#'       si hay empate, si la ocupación no tiene tareas o no está en el índice.}
+#'     \item{ia_empate}{`TRUE` si dos o más tipos empatan en el máximo;
+#'       `NA` si no hay tareas o índice.}
 #'     \item{ia_tipo_estado}{`"predominante"`, `"empate"`, `"sin_tareas"` o
 #'       `"sin_indice"`.}
 #'     \item{ia_total_tareas, tipo_A_aumento, tipo_S_sustitucion, tipo_N_nulo}{
-#'       Conteos de tareas del indice.}
+#'       Conteos de tareas del índice.}
 #'   }
-#'   Las ultimas cuatro filas solo se agregan con `incluir_tipo = TRUE`.
+#'   Las columnas de tipo de impacto, empate y conteos de tareas se agregan
+#'   solo con `incluir_tipo = TRUE`.
 #'
-#' @seealso [cobertura()] para resumir la cobertura por encuesta y ano.
+#' @seealso [cobertura()] para resumir la cobertura por encuesta y año.
 #'
 #' @export
 #'
@@ -73,18 +74,18 @@
 #' muestra <- cno(muestra_epen_2024)
 #' muestra <- ia_exposicion(muestra)
 #'
-#' # Ver distribucion de exposicion
-#' hist(muestra$ia_score_mean, main = "Exposicion a IA", xlab = "Score (0-1)")
+#' # Ver distribución de exposición
+#' hist(muestra$ia_score_mean, main = "Exposición a IA", xlab = "Puntaje (0-1)")
 #'
 #' \dontrun{
 #' epen_2024 <- descargar(year = 2024) |>
 #'   cno() |>
 #'   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
 #'
-#' # Ingreso promedio segun tipo de impacto predominante (con diseno muestral)
+#' # Ingreso promedio ponderado según tipo de impacto predominante
 #' indicadores(epen_2024, "ingreso_promedio", por = "ia_tipo")
 #'
-#' # Base EPE: el cruce usa cno_homologado automaticamente
+#' # Base EPE: el cruce usa cno_homologado automáticamente
 #' epe_2019 <- cno(readRDS("epe_2019.rds"), homologar = TRUE) |>
 #'   ia_exposicion()
 #' cobertura(epe_2019)

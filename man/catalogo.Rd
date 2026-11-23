@@ -2,14 +2,14 @@
 % Please edit documentation in R/catalogo.R
 \name{catalogo}
 \alias{catalogo}
-\title{Ver el catalogo de fuentes disponibles}
+\title{Ver el catálogo de fuentes disponibles}
 \usage{
 catalogo(fuente = "todas", year = NULL, variante = "todas")
 }
 \arguments{
 \item{fuente}{Filtrar por fuente: \code{"EPEN"}, \code{"ENAHO"} o \code{"todas"} (por defecto).}
 
-\item{year}{Filtrar por ano. Si es \code{NULL} (por defecto), devuelve todos los anos.}
+\item{year}{Filtrar por año. Si es \code{NULL} (por defecto), devuelve todos los años.}
 
 \item{variante}{Filtrar por variante: \code{"departamentos_anual"}, \code{"lima_movil"},
 \code{"anual"} o \code{"todas"} (por defecto).}
@@ -19,21 +19,21 @@ Un \code{data.frame} con columnas:
 \describe{
 \item{fuente}{Nombre de la encuesta (EPEN, ENAHO).}
 \item{variante}{Variante de la encuesta.}
-\item{year}{Ano de referencia.}
-\item{periodo}{Descripcion del periodo (trimestre o anual).}
-\item{filas}{Numero de filas en la base procesada.}
-\item{codigos_ocup}{Numero de codigos ocupacionales distintos.}
+\item{year}{Año de referencia.}
+\item{periodo}{Descripción del periodo (trimestre o anual).}
+\item{filas}{Número de filas en la base procesada.}
+\item{codigos_ocup}{Número de códigos ocupacionales distintos.}
 }
 }
 \description{
-Muestra un inventario de las encuestas, anos y variantes procesadas por el
-proyecto. Incluye EPEN (departamentos y Lima movil) y ENAHO anual, con el
-numero de filas y codigos ocupacionales por periodo. En esta version,
-\code{\link[=descargar]{descargar()}} solo descarga EPEN; una entrada en el catalogo no implica que
-todas las fuentes tengan descarga automatica desde R.
+Muestra un inventario de las encuestas, años y variantes procesadas por el
+proyecto. Incluye EPEN (departamentos y Lima móvil) y ENAHO anual, con el
+número de filas y códigos ocupacionales por periodo. En esta versión,
+\code{\link[=descargar]{descargar()}} solo descarga EPEN; una entrada en el catálogo no implica que
+todas las fuentes tengan descarga automática desde R.
 }
 \examples{
-# Ver todo el catalogo
+# Ver todo el catálogo
 catalogo()
 
 # Solo EPEN
@@ -42,6 +42,6 @@ catalogo(fuente = "EPEN")
 # EPEN departamentos anuales
 catalogo(fuente = "EPEN", variante = "departamentos_anual")
 
-# Un ano especifico
+# Un año específico
 catalogo(year = 2024)
 }

@@ -7,31 +7,31 @@
 \format{
 Un \code{data.frame} con 2.000 filas y 36 columnas. Variables principales:
 \describe{
-\item{year, month}{Ano y mes de referencia.}
-\item{region_code}{Codigo CCDD de la EPEN. El codigo 15 incluye los dos
-ambitos de Lima y Callao.}
-\item{division_lima}{Division geografica cuando \code{region_code = 15}:
+\item{year, month}{Año y mes de referencia.}
+\item{region_code}{Código CCDD de la EPEN. El código 15 incluye los dos
+ámbitos de Lima y Callao.}
+\item{division_lima}{División geográfica cuando \code{region_code = 15}:
 1 = Lima Metropolitana y Provincia Constitucional del Callao;
-2 = Region Lima. En los otros departamentos es \code{NA}.}
+2 = Región Lima. En los otros departamentos es \code{NA}.}
 \item{sample_id}{Identificador de muestra (\code{MUESTRA}, character).}
 \item{strata_code}{Estrato (\code{ESTRATO}, 1-8).}
 \item{cluster_id, dwelling_id, household_id}{Conglomerado, vivienda y
 hogar (character, con ceros a la izquierda). La UPM
 es \code{sample_id} + \code{region_code} + \code{cluster_id}.}
-\item{person_id, relationship_code}{Numero de orden de la persona
+\item{person_id, relationship_code}{Número de orden de la persona
 (\code{C201}) y parentesco (\code{C203}).}
 \item{occupational_category_code, firm_size_code,
-income_periodicity_code}{Categoria ocupacional (\code{C310}), tamano de
+income_periodicity_code}{Categoría ocupacional (\code{C310}), tamaño de
 empresa (\code{C317}) y periodicidad del pago (\code{C338}, solo dependientes).}
-\item{labor_status_code}{Estado laboral: \strong{siempre 1 (Ocupado)} en este dataset.}
-\item{occupation_code_4d}{Codigo CNO 2015 de 4 digitos (character).}
+\item{labor_status_code}{Estado laboral: \strong{siempre 1 (Ocupado)} en este conjunto de datos.}
+\item{occupation_code_4d}{Código CNO 2015 de 4 dígitos (character).}
 \item{labor_income_monthly}{Ingreso laboral mensual en soles.}
-\item{hours_week}{Horas trabajadas en la ocupacion principal
+\item{hours_week}{Horas trabajadas en la ocupación principal
 (\code{C318_T}).}
 \item{hours_week_total}{Horas trabajadas en todas las ocupaciones
 durante la semana (\code{whoraT}).}
-\item{weight}{Factor de expansion (peso muestral).}
-\item{sex_code, age, education_code}{Variables sociodemograficas.}
+\item{weight}{Factor de expansión (peso muestral).}
+\item{sex_code, age, education_code}{Variables sociodemográficas.}
 }
 }
 \source{
@@ -48,15 +48,14 @@ Dataset completamente sintético de 2.000 filas con la estructura de la EPEN
 fila corresponde a una persona, vivienda u hogar real.
 }
 \details{
-\strong{Importante:} este dataset representa \strong{unicamente personas ocupadas}
-(\code{labor_status_code = 1}). Los desocupados e inactivos fueron excluidos
-porque el objetivo de los ejemplos es trabajar con codigos de ocupacion
-(CNO) y cruzarlos con el indice de IA.
+Los registros se generaron para representar únicamente personas ocupadas
+(\code{labor_status_code = 1}) y practicar con códigos ocupacionales e índices
+de exposición a IA.
 
 Esto significa que \strong{no es posible calcular tasas de desempleo o actividad}
 directamente desde esta muestra. Para esos indicadores usa:
 \itemize{
-\item \code{\link[=resumen_nacional]{resumen_nacional()}}: tasas pre-calculadas sobre la PEA completa.
+\item \code{\link[=resumen_nacional]{resumen_nacional()}}: tasas ya calculadas con las bases completas.
 \item \code{\link[=descargar]{descargar()}}: microdatos crudos del INEI con todos los estados laborales.
 }
 
@@ -66,7 +65,7 @@ el esquema disponible del módulo 76.
 
 La muestra se genera con \verb{data-raw/07_muestra_epen_2024.R}, semilla
 \code{20261114} y reglas declaradas. No se remuestrean microdatos del INEI. Los
-codigos ocupacionales se limitan a codigos CNO validos presentes en el
-indice incluido en el paquete.
+códigos ocupacionales se limitan a códigos CNO válidos presentes en el
+índice incluido en el paquete.
 }
 \keyword{datasets}

@@ -3,12 +3,12 @@
 \docType{data}
 \name{shapes_departamentos}
 \alias{shapes_departamentos}
-\title{Poligonos departamentales del Peru (sf)}
+\title{Polígonos departamentales del Perú (sf)}
 \format{
 Un objeto \code{sf} con 25 filas y columnas:
 \describe{
-\item{departamento}{Nombre del departamento en mayusculas (e.g. \code{"LIMA"}).}
-\item{geometry}{Poligono en CRS EPSG:4326.}
+\item{departamento}{Nombre del departamento en mayúsculas (e.g. \code{"LIMA"}).}
+\item{geometry}{Polígono en CRS EPSG:4326.}
 }
 }
 \source{
@@ -18,9 +18,10 @@ Un objeto \code{sf} con 25 filas y columnas:
 shapes_departamentos
 }
 \description{
-Shapes a nivel departamento (25 unidades) pre-computados desde el dataset
+Polígonos a nivel departamento (25 unidades) precalculados desde el conjunto de datos
 \code{geoperu::peru} usando el motor GEOS (sin s2). \code{\link[=mapa]{mapa()}} los combina con
-\link{shapes_provincias} para representar los ambitos departamentales de la EPEN.
-Incluyen Callao como departamento politico propio (codigo UBIGEO \code{07}).
+\link{shapes_provincias} para representar los ámbitos departamentales de la EPEN.
+Incluyen la Provincia Constitucional del Callao como unidad separada
+(código UBIGEO \code{07}).
 }
 \keyword{datasets}

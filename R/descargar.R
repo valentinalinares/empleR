@@ -1,30 +1,30 @@
 #' Descargar microdatos de la EPEN desde el portal del INEI
 #'
-#' Descarga el modulo de Empleo e Ingresos de la Encuesta Permanente de Empleo
+#' Descarga el módulo de Empleo e Ingresos de la Encuesta Permanente de Empleo
 #' Nacional (EPEN) directamente desde el portal de microdatos del INEI
-#' (\url{https://proyectos.inei.gob.pe/microdatos/}). Soporta cache local para
+#' (\url{https://proyectos.inei.gob.pe/microdatos/}). Permite guardar una copia local para
 #' evitar descargas repetidas.
 #'
-#' @param year Ano de la encuesta. Los anos disponibles dependen de la
+#' @param year Año de la encuesta. Los años disponibles dependen de la
 #'   variante; ver [catalogo()] para la lista actual.
 #' @param variante Variante de la encuesta:
 #'   - `"departamentos_anual"` (por defecto): EPEN nacional anual.
-#'   - `"lima_movil"`: EPEN Lima Metropolitana, trimestres moviles.
+#'   - `"lima_movil"`: EPEN Lima Metropolitana, trimestres móviles.
 #' @param periodo Para `variante = "lima_movil"`, el periodo a descargar.
-#'   Usar el label exacto del catalogo, e.g. `"Trimestre Movil -(Ene-Feb-Mar)"`.
+#'   Usar el label exacto del catálogo, e.g. `"Trimestre Movil -(Ene-Feb-Mar)"`.
 #'   Ver [catalogo()] para la lista completa de periodos disponibles.
-#' @param destfile Ruta local donde cachear el resultado como `.rds`.
-#'   Si el archivo ya existe, se usa la version en cache solamente cuando
-#'   corresponde a la misma encuesta, variante, ano, periodo y URL. Los caches
-#'   creados por versiones anteriores, que no guardaban esta informacion, no
-#'   se reutilizan automaticamente.
-#'   Si es `NULL` (por defecto), descarga sin guardar cache permanente.
-#' @param quiet Logico. Si `TRUE` (por defecto), suprime mensajes de progreso.
+#' @param destfile Ruta local donde guardar el resultado como `.rds`.
+#'   Si el archivo ya existe, se usa la versión en caché solamente cuando
+#'   corresponde a la misma encuesta, variante, año, periodo y URL. Los archivos de caché
+#'   creados por versiones anteriores, que no guardaban esta información, no
+#'   se reutilizan automáticamente.
+#'   Si es `NULL` (por defecto), descarga sin guardar caché permanente.
+#' @param quiet Lógico. Si `TRUE` (por defecto), suprime mensajes de progreso.
 #'
-#' @return Un `data.frame` con los microdatos crudos del modulo de Empleo e
+#' @return Un `data.frame` con los microdatos crudos del módulo de Empleo e
 #'   Ingresos de la EPEN. Las columnas siguen la nomenclatura original del
 #'   INEI (e.g. `C308_COD`, `FAC300_ANUAL`, `ESTRATO`, `CONGLOMERADO`). Para
-#'   conservar codigos y ceros iniciales, todas las columnas se leen como
+#'   conservar códigos y ceros iniciales, todas las columnas se leen como
 #'   texto; los campos vacios y el texto `NA` se devuelven como valores
 #'   faltantes.
 #'   Usar [etiquetar()] para aplicar etiquetas de valor y [cno()] para
@@ -42,16 +42,16 @@
 #' # Descargar EPEN 2024 departamentos (nivel nacional)
 #' epen_2024 <- descargar(year = 2024)
 #'
-#' # Con cache: si el archivo existe, no vuelve a descargar
+#' # Con caché: si el archivo existe, no vuelve a descargar
 #' epen_2024 <- descargar(
 #'   year = 2024,
 #'   destfile = "datos/epen_2024.rds"
 #' )
 #'
-#' # Ver que periodos estan disponibles para lima_movil 2024
+#' # Ver que periodos están disponibles para lima_movil 2024
 #' catalogo(fuente = "EPEN", variante = "lima_movil", year = 2024)
 #'
-#' # Descargar un trimestre movil de Lima
+#' # Descargar un trimestre móvil de Lima
 #' lima_ene <- descargar(
 #'   year    = 2024,
 #'   variante = "lima_movil",
@@ -379,8 +379,8 @@ descargar <- function(year,
 #'
 #' Las conexiones creadas por `unz()` no admiten `seek()` en todas las
 #' versiones de R. `readLines()` intentaba reposicionarlas al convertir la
-#' codificacion y fallaba en R 4.1. Esta lectura avanza una sola vez sobre los
-#' bytes y, por tanto, funciona tambien con conexiones no reposicionables.
+#' codificación y fallaba en R 4.1. Esta lectura avanza una sola vez sobre los
+#' bytes y, por tanto, funciona también con conexiones no reposicionables.
 #'
 #' @param conexion Conexion binaria abierta.
 #' @param encoding Codificacion de origen.

@@ -3,13 +3,13 @@
 \docType{data}
 \name{indicadores_epen}
 \alias{indicadores_epen}
-\title{Indicadores nacionales pre-calculados del mercado laboral (EPEN/ENAHO)}
+\title{Indicadores nacionales precalculados del mercado laboral (EPEN/ENAHO)}
 \format{
 Un \code{data.frame} con columnas principales:
 \describe{
 \item{source}{Fuente: EPEN o ENAHO.}
 \item{survey_variant}{Variante de la encuesta.}
-\item{year}{Ano de referencia.}
+\item{year}{Año de referencia.}
 \item{period_label}{Etiqueta del periodo.}
 \item{activity_rate_pet}{Tasa de actividad sobre la PET (0-1).}
 \item{employment_rate_pet}{Tasa de empleo sobre la PET (0-1).}
@@ -19,15 +19,16 @@ Un \code{data.frame} con columnas principales:
 }
 }
 \source{
-INEI / elaboracion propia con pipeline Python.
+Elaboración del proyecto a partir de microdatos del INEI.
 }
 \usage{
 indicadores_epen
 }
 \description{
-Tasas e indicadores laborales ya calculados con la muestra completa de la
-PEA, incluyendo desocupados e inactivos que no estan en los microdatos
-procesados de \code{\link[=descargar]{descargar()}}. Devueltos por \code{\link[=resumen_nacional]{resumen_nacional()}}.
+Tasas e indicadores laborales calculados en el proyecto a partir de las
+bases completas del INEI. La actividad y el empleo se expresan sobre la
+población en edad de trabajar (PET); el desempleo, sobre la población
+económicamente activa (PEA). Se consultan con \code{\link[=resumen_nacional]{resumen_nacional()}}.
 }
 \seealso{
 \code{\link[=resumen_nacional]{resumen_nacional()}}

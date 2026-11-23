@@ -3,27 +3,27 @@
 \docType{data}
 \name{catalogo_fuentes}
 \alias{catalogo_fuentes}
-\title{Catalogo de fuentes de datos disponibles}
+\title{Catálogo de fuentes de datos disponibles}
 \format{
 Un \code{data.frame} con columnas:
 \describe{
 \item{fuente}{Nombre de la encuesta: EPEN o ENAHO.}
 \item{variante}{Variante: departamentos_anual, lima_movil, anual.}
-\item{year}{Ano de referencia.}
-\item{periodo}{Descripcion del periodo.}
-\item{filas}{Numero de filas en la base.}
-\item{codigos_ocup}{Numero de codigos ocupacionales distintos.}
+\item{year}{Año de referencia.}
+\item{periodo}{Descripción del periodo.}
+\item{filas}{Número de filas en la base.}
+\item{codigos_ocup}{Número de códigos ocupacionales distintos.}
 }
 }
 \source{
-INEI / elaboracion propia.
+INEI / elaboración propia.
 }
 \usage{
 catalogo_fuentes
 }
 \description{
-Inventario de todas las encuestas, anos, variantes y periodos disponibles
-para descargar con \code{\link[=descargar]{descargar()}}. Incluye EPEN (departamentos y Lima movil)
-y ENAHO anual.
+Inventario de las encuestas, años, variantes y periodos procesados por el
+proyecto. Incluye EPEN (departamentos y Lima móvil) y ENAHO anual.
+La descarga automática con \code{\link[=descargar]{descargar()}} está disponible solo para EPEN.
 }
 \keyword{datasets}
