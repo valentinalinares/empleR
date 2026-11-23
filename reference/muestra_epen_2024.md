@@ -4,13 +4,13 @@ Dataset completamente sintético de 2.000 filas con la estructura de la
 EPEN 2024 (variante departamentos_anual) para uso en ejemplos y pruebas.
 Ninguna fila corresponde a una persona, vivienda u hogar real.
 
-## Uso
+## Usage
 
 ``` r
 muestra_epen_2024
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
@@ -80,13 +80,13 @@ Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
   Variables sociodemográficas.
 
-## Fuente
+## Source
 
 Datos sintéticos generados por `empleR`. El esquema y los nombres de
 variables se basan en la documentación pública de la Encuesta Permanente
 de Empleo Nacional 2024 del INEI.
 
-## Detalles
+## Details
 
 Los registros se generaron para representar únicamente personas ocupadas
 (`labor_status_code = 1`) y practicar con códigos ocupacionales e

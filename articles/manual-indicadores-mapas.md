@@ -138,7 +138,7 @@ indicadores(
 #> Warning: 80 filas no participan por peso ausente o invalido.
 #> Warning: 48 filas con peso valido no participan por el valor del
 #> indicador.
-#> i Inferencia experimental: estrato strata_code y UPM .upm; ver `?indicadores`.
+#> ℹ Inferencia experimental: estrato strata_code y UPM .upm; ver `?indicadores`.
 #> This message is displayed once per session.
 #>      sex        indicador estimado error_std n_universo n_estimacion n_sin_peso
 #> 1 Hombre ingreso_promedio 1847.812  26.57505       1000          933         40
@@ -199,7 +199,7 @@ tasas_2024[, c(
   "year", "activity_rate_pet", "employment_rate_pet",
   "unemployment_rate_pea"
 )]
-#> # A tibble: 1 x 4
+#> # A tibble: 1 × 4
 #>    year activity_rate_pet employment_rate_pet unemployment_rate_pea
 #>   <dbl>             <dbl>               <dbl>                 <dbl>
 #> 1  2024             0.698               0.659                0.0557
@@ -272,7 +272,7 @@ mapa(
 #> Warning: 23 ambitos sin dato para 'estimado': "AMAZONAS", "ANCASH", "APURIMAC",
 #> "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CUSCO", "HUANCAVELICA", "HUANUCO", "ICA",
 #> "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LORETO", "MADRE DE DIOS", "MOQUEGUA",
-#> "PASCO", "PIURA", ..., "TUMBES", and "UCAYALI".
+#> "PASCO", "PIURA", …, "TUMBES", and "UCAYALI".
 ```
 
 ![](manual-indicadores-mapas_files/figure-html/mapa-1.png)

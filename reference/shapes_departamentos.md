@@ -11,13 +11,13 @@ para representar los ámbitos departamentales de la EPEN. Incluyen la
 Provincia Constitucional del Callao como unidad separada (código UBIGEO
 `07`).
 
-## Uso
+## Usage
 
 ``` r
 shapes_departamentos
 ```
 
-## Formato
+## Format
 
 Un objeto `sf` con 25 filas y columnas:
 
@@ -29,6 +29,6 @@ Un objeto `sf` con 25 filas y columnas:
 
   Polígono en CRS EPSG:4326.
 
-## Fuente
+## Source
 
 geoperu (CRAN) / INEI.

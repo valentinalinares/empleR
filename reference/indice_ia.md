@@ -6,13 +6,13 @@ investigación de Valentina Linares Herrera, usando Claude Sonnet 4.6
 (Anthropic) mediante tres corridas independientes y consolidación por
 consenso.
 
-## Uso
+## Usage
 
 ``` r
 indice_ia
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con columnas:
 
@@ -52,7 +52,7 @@ Un `data.frame` con columnas:
 
   Número de tareas tipo N (impacto nulo).
 
-## Fuente
+## Source
 
 Manky Bonilla, W. O. (2026). Índice de exposición a inteligencia
 artificial generativa para ocupaciones peruanas: corrida Claude Sonnet
@@ -64,7 +64,7 @@ tecnológico: análisis de la exposición a la automatización tradicional y
 a la inteligencia artificial generativa en el empleo peruano, utilizando
 datos de la ENAHO 2024. Instituto Nacional de Estadística e Informática.
 
-## Detalles
+## Details
 
 El archivo fuente final recomendado es
 `02_exposure_index_por_ocupacion.xlsx`. El puntaje principal por

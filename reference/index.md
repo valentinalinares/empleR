@@ -1,4 +1,4 @@
-# Índice del paquete
+# Package index
 
 ## Descarga y catálogo
 

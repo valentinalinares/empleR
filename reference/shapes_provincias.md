@@ -9,13 +9,13 @@ los usa internamente para construir los dos ámbitos oficiales del código
 15: Lima Metropolitana y Callao, y Región Lima. Si los unes a tus
 propios datos, usa departamento y provincia juntos como clave.
 
-## Uso
+## Usage
 
 ``` r
 shapes_provincias
 ```
 
-## Formato
+## Format
 
 Un objeto `sf` con 196 filas y columnas:
 
@@ -31,6 +31,6 @@ Un objeto `sf` con 196 filas y columnas:
 
   Polígono en CRS EPSG:4326.
 
-## Fuente
+## Source
 
 geoperu (CRAN) / INEI.

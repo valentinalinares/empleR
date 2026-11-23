@@ -6,13 +6,13 @@ la falta de homologación CO-95 -\> CNO 2015 (EPE) de la falta de puntaje
 en el índice. Revisar este resumen es un paso previo a comparar EPE y
 EPEN.
 
-## Uso
+## Usage
 
 ``` r
 cobertura(data, por = NULL, var_peso = NULL)
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -33,7 +33,7 @@ cobertura(data, por = NULL, var_peso = NULL)
   reportan observaciones. En la EPE (`fa_def19`, `fa_def21`) el factor
   depende del periodo y hay que indicarlo.
 
-## Valor
+## Value
 
 Un `data.frame` con una fila por grupo, estado y detalle:
 
@@ -60,7 +60,7 @@ Un `data.frame` con una fila por grupo, estado y detalle:
   Población expandida y porcentaje dentro del grupo (`NA` si no hay
   factor de expansión).
 
-## Ejemplos
+## Examples
 
 ``` r
 muestra <- suppressWarnings(ia_exposicion(cno(muestra_epen_2024)))

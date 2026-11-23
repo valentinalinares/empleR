@@ -6,7 +6,7 @@ paquete y devuelve un mapa interactivo (`leaflet`) o estático
 (`ggplot2`). La función recibe resultados ya agregados; no calcula
 indicadores.
 
-## Uso
+## Usage
 
 ``` r
 mapa(
@@ -20,7 +20,7 @@ mapa(
 )
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -60,11 +60,11 @@ mapa(
   y
   [shapes_provincias](https://valentinalinares.github.io/empleR/reference/shapes_provincias.md).
 
-## Valor
+## Value
 
 Un objeto `leaflet` o `ggplot`.
 
-## Detalles
+## Details
 
 **Ámbitos de la EPEN.** El INEI no publica los resultados de Lima como
 un único departamento. Distingue `DIVISION_LIMA = 1`, Lima Metropolitana
@@ -97,7 +97,7 @@ representatividad ni significancia estadística. Revisa el diseño
 muestral, el número de observaciones y la precisión antes de comparar
 territorios.
 
-## Ejemplos
+## Examples
 
 ``` r
 ingreso_dep <- indicadores(

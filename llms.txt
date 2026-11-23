@@ -183,7 +183,7 @@ las decisiones y es responsable del contenido integrado. El uso de
 Claude Sonnet 4.6 para calcular el índice de exposición a IA se describe
 por separado en la documentación de su metodología.
 
-# Índice del paquete
+# Package index
 
 ## Descarga y catálogo
 
@@ -239,7 +239,7 @@ por separado en la documentación de su metodología.
 - [`shapes_provincias`](https://valentinalinares.github.io/empleR/reference/shapes_provincias.md)
   : Polígonos provinciales del Perú (sf)
 
-# Artículos
+# Articles
 
 ### Empezar
 

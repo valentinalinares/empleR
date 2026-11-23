@@ -6,7 +6,7 @@ correspondencias y distinguir equivalencias únicas, múltiples y
 discrepantes. Antes de comparar encuestas, revisa también su cobertura,
 territorio y periodo.
 
-## Uso
+## Usage
 
 ``` r
 cno(
@@ -18,7 +18,7 @@ cno(
 )
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -49,7 +49,7 @@ cno(
   `"CNO_2015"`, `"CO_95"` o `NULL` (por defecto) para detectarlo
   automáticamente.
 
-## Valor
+## Value
 
 El mismo `data.frame` con columnas adicionales:
 
@@ -93,7 +93,7 @@ El mismo `data.frame` con columnas adicionales:
   `"ocupacion_no_especificada"`, `"codigo_no_encontrado"`,
   `"formato_invalido"` o `"sin_codigo"`.
 
-## Detalles
+## Details
 
 El clasificador se determina, en este orden: (1) el argumento
 `clasificador`; (2) la encuesta declarada en
@@ -118,7 +118,7 @@ requiere una decisión metodológica explícita del analista. Revisa
 siempre la cobertura con `table(datos$homologacion_estado)` antes de
 comparar series.
 
-## Ejemplos
+## Examples
 
 ``` r
 # Con la muestra incluida en el paquete

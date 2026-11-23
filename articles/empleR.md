@@ -34,24 +34,24 @@ empleR](https://valentinalinares.github.io/empleR/articles/funciones.md).
 
 # Ver todo el catálogo de fuentes disponibles
 catalogo()
-#> # A tibble: 52 x 6
+#> # A tibble: 52 × 6
 #>    fuente variante             year periodo                   filas codigos_ocup
 #>    <chr>  <chr>               <dbl> <chr>                     <dbl>        <dbl>
-#>  1 ENAHO  anual                2019 "Anual - (Ene-Dic)"       64954          421
-#>  2 ENAHO  anual                2020 "Anual - (Ene-Dic)"       56615          390
-#>  3 ENAHO  anual                2021 "Anual - (Ene-Dic)"       59935          397
-#>  4 ENAHO  anual                2022 "Anual - (Ene-Dic)"       61181          414
-#>  5 ENAHO  anual                2023 "Anual - (Ene-Dic)"       59447          400
-#>  6 ENAHO  anual                2024 "Anual - (Ene-Dic)"       58579          401
-#>  7 ENAHO  anual                2025 "Anual - (Ene-Dic)"       57716          397
-#>  8 EPEN   departamentos_anual  2022 "Anual - (Ene-Dic)"      192416          439
-#>  9 EPEN   lima_movil           2022 "Trimestre M\u00f3vil -~   6166          318
-#> 10 EPEN   lima_movil           2022 "Trimestre M\u00f3vil -~   6561          333
-#> # i 42 more rows
+#>  1 ENAHO  anual                2019 Anual - (Ene-Dic)         64954          421
+#>  2 ENAHO  anual                2020 Anual - (Ene-Dic)         56615          390
+#>  3 ENAHO  anual                2021 Anual - (Ene-Dic)         59935          397
+#>  4 ENAHO  anual                2022 Anual - (Ene-Dic)         61181          414
+#>  5 ENAHO  anual                2023 Anual - (Ene-Dic)         59447          400
+#>  6 ENAHO  anual                2024 Anual - (Ene-Dic)         58579          401
+#>  7 ENAHO  anual                2025 Anual - (Ene-Dic)         57716          397
+#>  8 EPEN   departamentos_anual  2022 Anual - (Ene-Dic)        192416          439
+#>  9 EPEN   lima_movil           2022 Trimestre Móvil -(Ago-S…   6166          318
+#> 10 EPEN   lima_movil           2022 Trimestre Móvil -(Oct-N…   6561          333
+#> # ℹ 42 more rows
 
 # Solo EPEN departamentos anuales
 catalogo(fuente = "EPEN", variante = "departamentos_anual")
-#> # A tibble: 4 x 6
+#> # A tibble: 4 × 6
 #>   fuente variante             year periodo            filas codigos_ocup
 #>   <chr>  <chr>               <dbl> <chr>              <dbl>        <dbl>
 #> 1 EPEN   departamentos_anual  2022 Anual - (Ene-Dic) 192416          439
@@ -66,11 +66,11 @@ catalogo(fuente = "EPEN", variante = "departamentos_anual")
 
 # 1. Practicar con la muestra sintética incluida en el paquete
 epen_2024 <- etiquetar(muestra_epen_2024)
-#> v 8 columna(s) de etiquetas agregada(s).
+#> ✔ 8 columna(s) de etiquetas agregada(s).
 
 # 2. Armonizar códigos ocupacionales (CNO 2015 automático para 2024)
 epen_2024 <- cno(epen_2024)
-#> i Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
 
 # 3. Calcular indicadores ponderados
 ingreso_dep <- indicadores(
@@ -88,7 +88,7 @@ mapa(ingreso_dep, var = "estimado",
 #> Warning: 23 ambitos sin dato para 'estimado': "AMAZONAS", "ANCASH", "APURIMAC",
 #> "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CUSCO", "HUANCAVELICA", "HUANUCO", "ICA",
 #> "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LORETO", "MADRE DE DIOS", "MOQUEGUA",
-#> "PASCO", "PIURA", ..., "TUMBES", and "UCAYALI".
+#> "PASCO", "PIURA", …, "TUMBES", and "UCAYALI".
 ```
 
 `descargar(year = 2024)` devuelve el módulo 76 con los nombres
@@ -109,14 +109,14 @@ calculadas con las bases completas, usa
 ``` r
 
 resumen_nacional("EPEN", variante = "departamentos_anual")
-#> # A tibble: 4 x 18
+#> # A tibble: 4 × 18
 #>   source survey_variant       year period_label    pet_population pea_population
 #>   <chr>  <chr>               <dbl> <chr>                    <dbl>          <dbl>
-#> 1 EPEN   departamentos_anual  2022 Anual - (Ene-D~      25481684.      18184319.
-#> 2 EPEN   departamentos_anual  2023 Anual - (Ene-D~      25910035.      18157195.
-#> 3 EPEN   departamentos_anual  2024 Anual - (Ene-D~      26276644.      18344229.
-#> 4 EPEN   departamentos_anual  2025 Anual - (Ene-D~      26601316.      18477203.
-#> # i 12 more variables: occupied_population <dbl>,
+#> 1 EPEN   departamentos_anual  2022 Anual - (Ene-D…      25481684.      18184319.
+#> 2 EPEN   departamentos_anual  2023 Anual - (Ene-D…      25910035.      18157195.
+#> 3 EPEN   departamentos_anual  2024 Anual - (Ene-D…      26276644.      18344229.
+#> 4 EPEN   departamentos_anual  2025 Anual - (Ene-D…      26601316.      18477203.
+#> # ℹ 12 more variables: occupied_population <dbl>,
 #> #   unemployed_open_population <dbl>, hidden_unemployment_population <dbl>,
 #> #   inactive_population <dbl>, activity_rate_pet <dbl>,
 #> #   employment_rate_pet <dbl>, unemployment_rate_pea <dbl>,
@@ -134,9 +134,9 @@ muestra_epen_2024 |>
   cno() |>
   ia_exposicion(incluir_tipo = TRUE) |>
   indicadores("ingreso_promedio", por = "ia_tipo")
-#> i Clasificador segun la encuesta de la base: CNO_2015
-#> i Filas con score de IA: 2000 (100%).
-#> i Resumen por encuesta y ano: `cobertura()`.
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Filas con score de IA: 2000 (100%).
+#> ℹ Resumen por encuesta y ano: `cobertura()`.
 #> Warning: 80 filas no participan por peso ausente o invalido.
 #> Warning: 48 filas con peso valido no participan por el valor del
 #> indicador.
@@ -245,9 +245,9 @@ Informática.
 epen_ia <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
-#> i Clasificador segun la encuesta de la base: CNO_2015
-#> i Filas con score de IA: 2000 (100%).
-#> i Resumen por encuesta y ano: `cobertura()`.
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Filas con score de IA: 2000 (100%).
+#> ℹ Resumen por encuesta y ano: `cobertura()`.
 
 # Ver distribución del puntaje
 summary(epen_ia$ia_score_mean)
@@ -286,7 +286,7 @@ redistribuir microdatos reales:
 
 # Ver estructura de la muestra
 str(muestra_epen_2024)
-#> tibble [2,000 x 36] (S3: tbl_df/tbl/data.frame)
+#> tibble [2,000 × 36] (S3: tbl_df/tbl/data.frame)
 #>  $ source                    : chr [1:2000] "EPEN" "EPEN" "EPEN" "EPEN" ...
 #>  $ survey_variant            : chr [1:2000] "departamentos_anual" "departamentos_anual" "departamentos_anual" "departamentos_anual" ...
 #>  $ period_label              : chr [1:2000] "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" ...
@@ -326,17 +326,17 @@ str(muestra_epen_2024)
 
 # Aplicar cno() directamente
 muestra_con_cno <- cno(muestra_epen_2024)
-#> i Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
 head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
-#> # A tibble: 6 x 3
+#> # A tibble: 6 × 3
 #>   cno_cod cno_desc                                                  clasificador
 #>   <chr>   <chr>                                                     <chr>       
-#> 1 1141    "Directores generales del sector privado del servicio de~ CNO_2015    
-#> 2 1167    "Directores generales del sector privado que prestan ser~ CNO_2015    
-#> 3 1223    "Directores de investigaci\u00f3n y desarrollo"           CNO_2015    
-#> 4 1342    "Directores y gerentes de empresas que prestan servicios~ CNO_2015    
-#> 5 1499    "Otros gerentes de servicios"                             CNO_2015    
-#> 6 2143    "Ingenieros medioambientales"                             CNO_2015
+#> 1 1141    Directores generales del sector privado del servicio de … CNO_2015    
+#> 2 1167    Directores generales del sector privado que prestan serv… CNO_2015    
+#> 3 1223    Directores de investigación y desarrollo                  CNO_2015    
+#> 4 1342    Directores y gerentes de empresas que prestan servicios … CNO_2015    
+#> 5 1499    Otros gerentes de servicios                               CNO_2015    
+#> 6 2143    Ingenieros medioambientales                               CNO_2015
 ```
 
 ## Citación y contribuciones

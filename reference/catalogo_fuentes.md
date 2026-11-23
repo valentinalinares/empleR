@@ -6,13 +6,13 @@ descarga automática con
 [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
 está disponible solo para EPEN.
 
-## Uso
+## Usage
 
 ``` r
 catalogo_fuentes
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con columnas:
 
@@ -40,6 +40,6 @@ Un `data.frame` con columnas:
 
   Número de códigos ocupacionales distintos.
 
-## Fuente
+## Source
 
 INEI / elaboración propia.

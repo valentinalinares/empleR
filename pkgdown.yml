@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   contexto-encuestas: contexto-encuestas.html
@@ -8,7 +8,7 @@ articles:
   manual-datos: manual-datos.html
   manual-indicadores-mapas: manual-indicadores-mapas.html
   manual-ocupaciones-ia: manual-ocupaciones-ia.html
-last_built: 2026-11-22T21:29Z
+last_built: 2026-11-23T18:18Z
 urls:
   reference: https://valentinalinares.github.io/empleR/reference
   article: https://valentinalinares.github.io/empleR/articles

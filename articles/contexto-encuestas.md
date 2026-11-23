@@ -68,10 +68,10 @@ co_1995[
   co_1995$estado == "multiples_destinos",
   c("co95", "nombre_co95", "cno2015_candidatos")
 ][1:3, ]
-#>   co95                      nombre_co95 cno2015_candidatos
-#> 1  011       Oficiales(Fuerzas Armadas)   0111; 0112; 0113
-#> 2  012 T<U+00E9>cnicos(Fuerzas Armadas)   0311; 0312; 0313
-#> 3  013   Sub-oficiales(Fuerzas Armadas)   0211; 0212; 0213
+#>   co95                    nombre_co95 cno2015_candidatos
+#> 1  011     Oficiales(Fuerzas Armadas)   0111; 0112; 0113
+#> 2  012      Técnicos(Fuerzas Armadas)   0311; 0312; 0313
+#> 3  013 Sub-oficiales(Fuerzas Armadas)   0211; 0212; 0213
 ```
 
 ## Qué puede y qué no puede compararse

@@ -1,4 +1,4 @@
-# Registro de cambios
+# Changelog
 
 ## empleR 0.1.0
 

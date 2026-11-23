@@ -5,13 +5,13 @@ Nacional de Ocupaciones 2015 (CNO 2015, 4 dígitos). Publicada por el
 INEI para facilitar la homologación de series temporales entre
 clasificadores.
 
-## Uso
+## Usage
 
 ``` r
 equivalencia_cno
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con columnas:
 
@@ -39,6 +39,6 @@ Un `data.frame` con columnas:
 
   Tipo de enlace de CNO hacia CIUO.
 
-## Fuente
+## Source
 
 INEI - Tabla de equivalencias CIUO-2008 / CNO 2015.

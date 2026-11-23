@@ -6,13 +6,13 @@ población en edad de trabajar (PET); el desempleo, sobre la población
 económicamente activa (PEA). Se consultan con
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md).
 
-## Uso
+## Usage
 
 ``` r
 indicadores_epen
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con columnas principales:
 
@@ -52,10 +52,10 @@ Un `data.frame` con columnas principales:
 
   Horas semanales promedio ponderadas.
 
-## Fuente
+## Source
 
 Elaboración del proyecto a partir de microdatos del INEI.
 
-## Ver también
+## See also
 
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)

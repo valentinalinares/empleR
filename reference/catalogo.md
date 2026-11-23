@@ -8,13 +8,13 @@ versión,
 solo descarga EPEN; una entrada en el catálogo no implica que todas las
 fuentes tengan descarga automática desde R.
 
-## Uso
+## Usage
 
 ``` r
 catalogo(fuente = "todas", year = NULL, variante = "todas")
 ```
 
-## Argumentos
+## Arguments
 
 - fuente:
 
@@ -29,7 +29,7 @@ catalogo(fuente = "todas", year = NULL, variante = "todas")
   Filtrar por variante: `"departamentos_anual"`, `"lima_movil"`,
   `"anual"` o `"todas"` (por defecto).
 
-## Valor
+## Value
 
 Un `data.frame` con columnas:
 
@@ -57,7 +57,7 @@ Un `data.frame` con columnas:
 
   Número de códigos ocupacionales distintos.
 
-## Ejemplos
+## Examples
 
 ``` r
 # Ver todo el catálogo

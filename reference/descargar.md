@@ -5,7 +5,7 @@ Empleo Nacional (EPEN) directamente desde el portal de microdatos del
 INEI (<https://proyectos.inei.gob.pe/microdatos/>). Permite guardar una
 copia local para evitar descargas repetidas.
 
-## Uso
+## Usage
 
 ``` r
 descargar(
@@ -17,7 +17,7 @@ descargar(
 )
 ```
 
-## Argumentos
+## Arguments
 
 - year:
 
@@ -53,7 +53,7 @@ descargar(
 
   Lógico. Si `TRUE` (por defecto), suprime mensajes de progreso.
 
-## Valor
+## Value
 
 Un `data.frame` con los microdatos crudos del módulo de Empleo e
 Ingresos de la EPEN. Las columnas siguen la nomenclatura original del
@@ -73,7 +73,7 @@ desocupados abiertos, desocupados ocultos e inactivos. La variable
 `OCUP300` (o equivalente) indica el estado laboral de cada persona, lo
 que permite calcular tasas de desempleo y actividad.
 
-## Ejemplos
+## Examples
 
 ``` r
 if (FALSE) { # \dontrun{

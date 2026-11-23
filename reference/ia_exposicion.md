@@ -7,13 +7,13 @@ de investigación de Valentina Linares Herrera, usando Claude Sonnet 4.6
 pueden ser asistidas o sustituidas por IA generativa, usando un puntaje
 continuo de 0 a 1.
 
-## Uso
+## Usage
 
 ``` r
 ia_exposicion(data, var_cno = NULL, score = "mean", incluir_tipo = FALSE)
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -41,7 +41,7 @@ ia_exposicion(data, var_cno = NULL, score = "mean", incluir_tipo = FALSE)
   Lógico. Si `TRUE`, agrega el tipo de impacto predominante y los
   conteos de tareas por tipo. Por defecto `FALSE`.
 
-## Valor
+## Value
 
 El mismo `data.frame` (mismas filas y orden) con columnas adicionales:
 
@@ -85,7 +85,7 @@ El mismo `data.frame` (mismas filas y orden) con columnas adicionales:
 Las columnas de tipo de impacto, empate y conteos de tareas se agregan
 solo con `incluir_tipo = TRUE`.
 
-## Detalles
+## Details
 
 El índice fue construido evaluando las tareas de cada ocupación del
 Clasificador Nacional de Ocupaciones (CNO 2015) con tres corridas
@@ -116,12 +116,12 @@ y EPEN (con la columna `clasificador` de
 [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md))
 cada fila usa su código.
 
-## Ver también
+## See also
 
 [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
 para resumir la cobertura por encuesta y año.
 
-## Ejemplos
+## Examples
 
 ``` r
 # Con la muestra incluida

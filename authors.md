@@ -1,16 +1,16 @@
-# Autores y Citas
+# Authors and Citation
 
-## Autores
+## Authors
 
-- **Valentina Linares Herrera**. Autor-a, mantenedor-a.
+- **Valentina Linares Herrera**. Author, maintainer.
 
-- **Walter Omar Manky Bonilla**. Colaborador-a.  
+- **Walter Omar Manky Bonilla**. Contributor.  
   Autor del indice de exposicion a IA incluido en el paquete
 
-## Cita
+## Citation
 
-Código:
-[`inst/CITATION`](https://github.com/valentinalinares/empleR/blob/HEAD/inst/CITATION)
+Source:
+[`inst/CITATION`](https://github.com/valentinalinares/empleR/blob/main/inst/CITATION)
 
 Linares Herrera V (2026). *empleR: Tools for Analyzing Peru's National
 Employment Surveys (EPEN/EPE)*. R package version 0.1.0,

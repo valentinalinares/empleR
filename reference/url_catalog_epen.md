@@ -5,13 +5,13 @@ del INEI. Extraídas del paquete Python `inei_microdatos`. Usadas
 internamente por
 [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md).
 
-## Uso
+## Usage
 
 ``` r
 url_catalog_epen
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con columnas:
 
@@ -39,6 +39,6 @@ Un `data.frame` con columnas:
 
   URL de descarga del ZIP con los módulos CSV.
 
-## Fuente
+## Source
 
 INEI - Sistema de Recuperación de Información de Encuestas (SRIIE).

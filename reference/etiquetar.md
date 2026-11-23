@@ -5,13 +5,13 @@ oficiales del INEI. Reconoce tanto los nombres originales del módulo 76
 (`C207`, `OCUP300`, `C366`, `C310`, `C311`, `C317`, `C338` y `AREA`)
 como sus equivalentes en las bases procesadas de `{empleR}`.
 
-## Uso
+## Usage
 
 ``` r
 etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -33,7 +33,7 @@ etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
   columnas de etiquetas. Usa `TRUE` solo para reproducir el
   comportamiento anterior, que reemplaza las columnas seleccionadas.
 
-## Valor
+## Value
 
 El mismo `data.frame`. Por defecto agrega una columna de etiqueta por
 concepto reconocido y conserva las columnas originales. Los nombres
@@ -41,7 +41,7 @@ posibles son `sex_label`, `labor_status_label`, `education_label`,
 `institutional_sector_label`, `occupational_category_label`,
 `firm_size_label`, `area_label` e `income_periodicity_label`.
 
-## Detalles
+## Details
 
 Por defecto conserva intacta cada columna de códigos y agrega una
 columna terminada en `_label`. Esta separacion permite usar las
@@ -50,12 +50,12 @@ validar o procesar los microdatos. Los valores ausentes siguen ausentes;
 un código no incluido en el diccionario genera una advertencia y su
 etiqueta queda en `NA`.
 
-## Referencias
+## References
 
 INEI. Diccionario de variables EPEN anual 2023.
 <https://www.inei.gob.pe/media/DATOS_ABIERTOS/EPEN_DEP/DICCIONARIO/2023/Anual-Ener-Dic/Diccionario.pdf>
 
-## Ejemplos
+## Examples
 
 ``` r
 # Conserva sex_code y crea sex_label

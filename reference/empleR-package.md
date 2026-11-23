@@ -11,7 +11,7 @@ CNO 2015 and CO-95, calculation of weighted labor market indicators with
 optional experimental survey-design inference, EPEN departmental-domain
 maps, and integration with an AI occupational exposure index.
 
-## Ver también
+## See also
 
 Useful links:
 
@@ -21,7 +21,7 @@ Useful links:
 
 - Report bugs at <https://github.com/valentinalinares/empleR/issues>
 
-## Autor-a
+## Author
 
 **Maintainer**: Valentina Linares Herrera
 <durgavalentinalinaresherrera@gmail.com>

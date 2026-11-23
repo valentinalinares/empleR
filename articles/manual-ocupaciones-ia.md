@@ -45,21 +45,21 @@ posibles correspondencias en el CNO 2015.
 ``` r
 
 ocupaciones <- cno(muestra_epen_2024[1:8, ])
-#> i Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
 ocupaciones[, c(
   "occupation_code_raw", "clasificador", "cno_cod", "cno_desc"
 )]
-#> # A tibble: 8 x 4
+#> # A tibble: 8 × 4
 #>   occupation_code_raw clasificador cno_cod cno_desc                             
 #>                 <dbl> <chr>        <chr>   <chr>                                
-#> 1                1141 CNO_2015     1141    "Directores generales del sector pri~
-#> 2                1167 CNO_2015     1167    "Directores generales del sector pri~
-#> 3                1223 CNO_2015     1223    "Directores de investigaci\u00f3n y ~
-#> 4                1342 CNO_2015     1342    "Directores y gerentes de empresas q~
-#> 5                1499 CNO_2015     1499    "Otros gerentes de servicios"        
-#> 6                2143 CNO_2015     2143    "Ingenieros medioambientales"        
-#> 7                2164 CNO_2015     2164    "Urbanistas e ingenieros de tr\u00e1~
-#> 8                2253 CNO_2015     2253    "Profesionales de la salud y la higi~
+#> 1                1141 CNO_2015     1141    Directores generales del sector priv…
+#> 2                1167 CNO_2015     1167    Directores generales del sector priv…
+#> 3                1223 CNO_2015     1223    Directores de investigación y desarr…
+#> 4                1342 CNO_2015     1342    Directores y gerentes de empresas qu…
+#> 5                1499 CNO_2015     1499    Otros gerentes de servicios          
+#> 6                2143 CNO_2015     2143    Ingenieros medioambientales          
+#> 7                2164 CNO_2015     2164    Urbanistas e ingenieros de tránsito  
+#> 8                2253 CNO_2015     2253    Profesionales de la salud y la higie…
 ```
 
 La salida conserva las filas originales y añade `clasificador`,
@@ -85,10 +85,10 @@ cno(epe_ejemplo, homologar = TRUE)[, c(
   "cno_cod", "cno_desc", "cno_homologado",
   "cno_candidatos", "homologacion_estado"
 )]
-#> i Clasificador segun la encuesta de la base: CO_95
-#> v Columna cno_homologado agregada con equivalencias CNO 2015.
-#> i 0% de las filas tiene una equivalencia unica.
-#> i Los casos con varios destinos quedan en NA; ver cno_candidatos y
+#> ℹ Clasificador segun la encuesta de la base: CO_95
+#> ✔ Columna cno_homologado agregada con equivalencias CNO 2015.
+#> ℹ 0% de las filas tiene una equivalencia unica.
+#> ℹ Los casos con varios destinos quedan en NA; ver cno_candidatos y
 #>   homologacion_estado.
 #>   cno_cod                     cno_desc cno_homologado
 #> 1     262 Economistas y planificadores           <NA>
@@ -133,25 +133,25 @@ asigna puntajes a casos ambiguos.
 con_ia <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
-#> i Clasificador segun la encuesta de la base: CNO_2015
-#> i Filas con score de IA: 2000 (100%).
-#> i Resumen por encuesta y ano: `cobertura()`.
+#> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> ℹ Filas con score de IA: 2000 (100%).
+#> ℹ Resumen por encuesta y ano: `cobertura()`.
 
 con_ia[1:8, c(
   "cno_cod", "cno_desc", "ia_score_mean",
   "ia_score_median", "ia_tipo"
 )]
-#> # A tibble: 8 x 5
+#> # A tibble: 8 × 5
 #>   cno_cod cno_desc                         ia_score_mean ia_score_median ia_tipo
 #>   <chr>   <chr>                                    <dbl>           <dbl> <chr>  
-#> 1 1141    "Directores generales del secto~         0.489           0.573 A      
-#> 2 1167    "Directores generales del secto~         0.501           0.61  A      
-#> 3 1223    "Directores de investigaci\u00f~         0.518           0.518 A      
-#> 4 1342    "Directores y gerentes de empre~         0.433           0.4   A      
-#> 5 1499    "Otros gerentes de servicios"            0.542           0.59  A      
-#> 6 2143    "Ingenieros medioambientales"            0.494           0.5   A      
-#> 7 2164    "Urbanistas e ingenieros de tr\~         0.575           0.58  A      
-#> 8 2253    "Profesionales de la salud y la~         0.473           0.483 A
+#> 1 1141    Directores generales del sector…         0.489           0.573 A      
+#> 2 1167    Directores generales del sector…         0.501           0.61  A      
+#> 3 1223    Directores de investigación y d…         0.518           0.518 A      
+#> 4 1342    Directores y gerentes de empres…         0.433           0.4   A      
+#> 5 1499    Otros gerentes de servicios              0.542           0.59  A      
+#> 6 2143    Ingenieros medioambientales              0.494           0.5   A      
+#> 7 2164    Urbanistas e ingenieros de trán…         0.575           0.58  A      
+#> 8 2253    Profesionales de la salud y la …         0.473           0.483 A
 ```
 
 La media resume los puntajes de las tareas de la ocupación; la mediana

@@ -7,13 +7,13 @@ denominador la población en edad de trabajar (PET); la de desempleo usa
 la población económicamente activa (PEA), formada por ocupados y
 desocupados.
 
-## Uso
+## Usage
 
 ``` r
 resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 ```
 
-## Argumentos
+## Arguments
 
 - fuente:
 
@@ -27,14 +27,14 @@ resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 
   Filtrar por variante. `NULL` devuelve todas las variantes.
 
-## Valor
+## Value
 
 Un `data.frame` con columnas: `source`, `survey_variant`, `year`,
 `period_label`, `activity_rate_pet`, `employment_rate_pet`,
 `unemployment_rate_pea`, `income_monthly_weighted_mean`,
 `hours_week_weighted_mean`, y más.
 
-## Ejemplos
+## Examples
 
 ``` r
 # Ver indicadores EPEN

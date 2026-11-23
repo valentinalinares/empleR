@@ -40,7 +40,7 @@ disponibles <- catalogo(
   variante = "departamentos_anual"
 )
 disponibles
-#> # A tibble: 4 x 6
+#> # A tibble: 4 × 6
 #>   fuente variante             year periodo            filas codigos_ocup
 #>   <chr>  <chr>               <dbl> <chr>              <dbl>        <dbl>
 #> 1 EPEN   departamentos_anual  2022 Anual - (Ene-Dic) 192416          439
@@ -62,21 +62,21 @@ catalogo(
   year = 2024,
   variante = "lima_movil"
 )
-#> # A tibble: 12 x 6
-#>    fuente variante    year periodo                            filas codigos_ocup
-#>    <chr>  <chr>      <dbl> <chr>                              <dbl>        <dbl>
-#>  1 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Abr-May-J~  6169          318
-#>  2 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Ago-Set-O~  6034          309
-#>  3 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Dic-Ene-F~  6179          315
-#>  4 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Ene-Feb-M~  6173          327
-#>  5 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Feb-Mar-A~  6140          322
-#>  6 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Jul-Ago-S~  5992          311
-#>  7 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Jun-Jul-A~  6056          319
-#>  8 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Mar-Abr-M~  6160          324
-#>  9 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(May-Jun-J~  6072          319
-#> 10 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Nov-Dic-E~  6337          328
-#> 11 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Oct-Nov-D~  5720          326
-#> 12 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Set-Oct-N~  5887          314
+#> # A tibble: 12 × 6
+#>    fuente variante    year periodo                        filas codigos_ocup
+#>    <chr>  <chr>      <dbl> <chr>                          <dbl>        <dbl>
+#>  1 EPEN   lima_movil  2024 Trimestre Móvil -(Abr-May-Jun)  6169          318
+#>  2 EPEN   lima_movil  2024 Trimestre Móvil -(Ago-Set-Oct)  6034          309
+#>  3 EPEN   lima_movil  2024 Trimestre Móvil -(Dic-Ene-Feb)  6179          315
+#>  4 EPEN   lima_movil  2024 Trimestre Móvil -(Ene-Feb-Mar)  6173          327
+#>  5 EPEN   lima_movil  2024 Trimestre Móvil -(Feb-Mar-Abr)  6140          322
+#>  6 EPEN   lima_movil  2024 Trimestre Móvil -(Jul-Ago-Set)  5992          311
+#>  7 EPEN   lima_movil  2024 Trimestre Móvil -(Jun-Jul-Ago)  6056          319
+#>  8 EPEN   lima_movil  2024 Trimestre Móvil -(Mar-Abr-May)  6160          324
+#>  9 EPEN   lima_movil  2024 Trimestre Móvil -(May-Jun-Jul)  6072          319
+#> 10 EPEN   lima_movil  2024 Trimestre Móvil -(Nov-Dic-Ene)  6337          328
+#> 11 EPEN   lima_movil  2024 Trimestre Móvil -(Oct-Nov-Dic)  5720          326
+#> 12 EPEN   lima_movil  2024 Trimestre Móvil -(Set-Oct-Nov)  5887          314
 ```
 
 ## `descargar()`: obtener microdatos de la EPEN
@@ -163,10 +163,10 @@ ejemplo <- muestra_epen_2024[1:8, c(
 
 antes <- ejemplo
 despues <- etiquetar(ejemplo)
-#> v 3 columna(s) de etiquetas agregada(s).
+#> ✔ 3 columna(s) de etiquetas agregada(s).
 
 antes
-#> # A tibble: 8 x 3
+#> # A tibble: 8 × 3
 #>   sex_code education_code is_rural
 #>      <dbl>          <dbl>    <dbl>
 #> 1        2              9        0
@@ -182,17 +182,17 @@ despues[, c(
   "education_code", "education_label",
   "is_rural", "area_label"
 )]
-#> # A tibble: 8 x 6
+#> # A tibble: 8 × 6
 #>   sex_code sex_label education_code education_label          is_rural area_label
 #>      <dbl> <fct>              <dbl> <fct>                       <dbl> <fct>     
-#> 1        2 Mujer                  9 "Superior no universita~        0 Urbano    
-#> 2        1 Hombre                 4 "Primaria completa"             0 Urbano    
-#> 3        2 Mujer                 11 "Superior universitaria~        0 Urbano    
-#> 4        1 Hombre                 6 "Secundaria completa"           0 Urbano    
-#> 5        2 Mujer                  2 "Educaci\u00f3n inicial"        1 Rural     
-#> 6        1 Hombre                 9 "Superior no universita~        1 Rural     
-#> 7        2 Mujer                  4 "Primaria completa"             1 Rural     
-#> 8        1 Hombre                11 "Superior universitaria~        1 Rural
+#> 1        2 Mujer                  9 Superior no universitar…        0 Urbano    
+#> 2        1 Hombre                 4 Primaria completa               0 Urbano    
+#> 3        2 Mujer                 11 Superior universitaria …        0 Urbano    
+#> 4        1 Hombre                 6 Secundaria completa             0 Urbano    
+#> 5        2 Mujer                  2 Educación inicial               1 Rural     
+#> 6        1 Hombre                 9 Superior no universitar…        1 Rural     
+#> 7        2 Mujer                  4 Primaria completa               1 Rural     
+#> 8        1 Hombre                11 Superior universitaria …        1 Rural
 ```
 
 ### Cómo interpretar el resultado
@@ -208,18 +208,18 @@ etiquetar(
   vars = c("sex_code", "education_code"),
   as_factor = FALSE
 )[, c("sex_code", "sex_label", "education_code", "education_label")]
-#> v 2 columna(s) de etiquetas agregada(s).
-#> # A tibble: 8 x 4
-#>   sex_code sex_label education_code education_label                     
-#>      <dbl> <chr>              <dbl> <chr>                               
-#> 1        2 Mujer                  9 "Superior no universitaria completa"
-#> 2        1 Hombre                 4 "Primaria completa"                 
-#> 3        2 Mujer                 11 "Superior universitaria completa"   
-#> 4        1 Hombre                 6 "Secundaria completa"               
-#> 5        2 Mujer                  2 "Educaci\u00f3n inicial"            
-#> 6        1 Hombre                 9 "Superior no universitaria completa"
-#> 7        2 Mujer                  4 "Primaria completa"                 
-#> 8        1 Hombre                11 "Superior universitaria completa"
+#> ✔ 2 columna(s) de etiquetas agregada(s).
+#> # A tibble: 8 × 4
+#>   sex_code sex_label education_code education_label                   
+#>      <dbl> <chr>              <dbl> <chr>                             
+#> 1        2 Mujer                  9 Superior no universitaria completa
+#> 2        1 Hombre                 4 Primaria completa                 
+#> 3        2 Mujer                 11 Superior universitaria completa   
+#> 4        1 Hombre                 6 Secundaria completa               
+#> 5        2 Mujer                  2 Educación inicial                 
+#> 6        1 Hombre                 9 Superior no universitaria completa
+#> 7        2 Mujer                  4 Primaria completa                 
+#> 8        1 Hombre                11 Superior universitaria completa
 ```
 
 También puedes etiquetar una base recién descargada:

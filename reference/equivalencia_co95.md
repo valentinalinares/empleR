@@ -8,13 +8,13 @@ o [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
 con `homologar = TRUE`: unir directamente esta tabla duplicaría
 registros y factores de expansión en los casos con varios destinos.
 
-## Uso
+## Usage
 
 ``` r
 equivalencia_co95
 ```
 
-## Formato
+## Format
 
 Un `data.frame` con 604 filas y columnas:
 
@@ -38,7 +38,7 @@ Un `data.frame` con 604 filas y columnas:
 
   Número de orígenes CO-95 del código CNO 2015.
 
-## Fuente
+## Source
 
 Ver
 [co_1995](https://valentinalinares.github.io/empleR/reference/co_1995.md).

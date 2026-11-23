@@ -8,7 +8,7 @@ explícita el código de ocupado. Si no contiene una variable de condición
 de actividad, supone que las filas recibidas ya corresponden a personas
 ocupadas.
 
-## Uso
+## Usage
 
 ``` r
 indicadores(
@@ -25,7 +25,7 @@ indicadores(
 )
 ```
 
-## Argumentos
+## Arguments
 
 - data:
 
@@ -98,7 +98,7 @@ indicadores(
   aproximación de diseño documentada abajo. La inferencia requiere
   identificadores completos de UPM y, cuando se usa, de estrato.
 
-## Valor
+## Value
 
 Un `data.frame` con el indicador calculado y columnas de auditoría:
 `n_universo`, `n_estimacion`, `n_sin_peso`, `n_peso_invalido`,
@@ -106,7 +106,7 @@ Un `data.frame` con el indicador calculado y columnas de auditoría:
 `poblacion_representada`. Si `incluir_inferencia = TRUE`, agrega
 `error_std`. Los conteos de problemas no son mutuamente excluyentes.
 
-## Detalles
+## Details
 
 Para consultar tasas de desempleo, actividad y empleo, usa
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md),
@@ -155,7 +155,7 @@ UPM, la función se detiene e indica qué información necesitas completar.
 Para una variante documentada sin estrato explícito se puede usar
 `var_strata = NA`.
 
-## Referencias
+## References
 
 INEI. Ficha técnica EPEN 2024.
 <https://proyectos.inei.gob.pe/iinei/srienaho/Descarga/DocumentosMetodologicos/2024-156/Ficha_Tecnica.pdf>
@@ -170,7 +170,7 @@ INEI. Perú: Indicadores del Mercado Laboral a nivel departamental,
 2022-2024.
 <https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib2029/libro.pdf>
 
-## Ver también
+## See also
 
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)
 para indicadores precalculados (incluyendo tasas de desempleo y
@@ -179,7 +179,7 @@ actividad).
 para el conjunto de datos interno con indicadores nacionales
 precalculados.
 
-## Ejemplos
+## Examples
 
 ``` r
 # Ingreso promedio nacional con la muestra interna
