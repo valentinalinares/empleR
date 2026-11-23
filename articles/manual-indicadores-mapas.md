@@ -49,11 +49,11 @@ variables de la base.
 5.  Para ingreso, conserva remuneraciones positivas; para horas, admite
     ceros.
 6.  Calcula el indicador para el total o para cada grupo.
-7.  Si solicitas inferencia, detecta estrato y conglomerado y construye
-    una UPM con muestra, región y conglomerado. No sustituye
-    identificadores faltantes.
-8.  Calcula el error estándar con el paquete `survey` y marca el
-    resultado como inferencia experimental.
+7.  Si solicitas inferencia, identifica las unidades primarias de
+    muestreo (UPM) combinando muestra, región y conglomerado, y utiliza
+    el estrato cuando corresponde.
+8.  En ese caso, calcula el error estándar con `survey` y marca la
+    inferencia como experimental.
 
 ### Qué devuelve
 
@@ -120,7 +120,12 @@ promedio simple de las filas. La mediana usa el extremo inferior del
 intervalo donde la distribución ponderada alcanza 0,5, la regla
 matemática de `survey`.
 
-La inferencia se solicita de forma explícita:
+Si necesitas evaluar la precisión de una estimación, puedes solicitar su
+error estándar. Este cálculo sigue siendo experimental: se contrastó con
+resultados publicados por el INEI, pero todavía no contamos con una
+descripción completa de su procedimiento de estimación.
+
+Para solicitarlo, usa `incluir_inferencia = TRUE`:
 
 ``` r
 
@@ -133,7 +138,7 @@ indicadores(
 #> Warning: 80 filas no participan por peso ausente o invalido.
 #> Warning: 48 filas con peso valido no participan por el valor del
 #> indicador.
-#> ℹ Inferencia experimental: estrato strata_code y UPM .upm; ver `?indicadores`.
+#> i Inferencia experimental: estrato strata_code y UPM .upm; ver `?indicadores`.
 #> This message is displayed once per session.
 #>      sex        indicador estimado error_std n_universo n_estimacion n_sin_peso
 #> 1 Hombre ingreso_promedio 1847.812  26.57505       1000          933         40
@@ -146,15 +151,21 @@ indicadores(
 #> 2               49425.97
 ```
 
+#### Cómo se comprobó el cálculo del error estándar
+
 `error_std` describe la precisión bajo el diseño reconstruido por el
-paquete. La especificación se contrastó con 24 celdas oficiales de Lima
-Metropolitana de octubre-diciembre de 2024 y 2025 y con ocho CV anuales
-de ingreso de 2024. Los estimados y CV coinciden al redondeo publicado.
-Aun así, el resultado se mantiene como experimental: la documentación
-pública no identifica todas las decisiones internas del INEI y no
-permite aplicar una corrección por población finita. Si faltan UPM o
-estratos, la función se detiene en lugar de simplificar el diseño sin
-avisar.
+paquete. La especificación se contrastó con 24 resultados oficiales de
+Lima Metropolitana de octubre-diciembre de 2024 y 2025 y con ocho
+coeficientes de variación (CV) anuales de ingreso de 2024. El CV expresa
+el error estándar en relación con la estimación. Los estimados y CV
+coinciden al redondeo publicado. Aun así, el resultado se mantiene como
+experimental: la documentación pública no identifica todas las
+decisiones internas del INEI y no permite aplicar una corrección por
+población finita. Si faltan los identificadores requeridos de las
+unidades primarias de muestreo (UPM) o de los estratos, la función
+indica qué información necesitas completar. Para la variante móvil de
+Lima validada, que no usa un estrato explícito, debes indicar
+`var_strata = NA`.
 
 La muestra sintética incluida representa únicamente personas ocupadas.
 Es adecuada para practicar con ingreso y horas, pero no para calcular
@@ -173,7 +184,8 @@ inactivos, además de ingresos y horas.
 ### Qué recibe y qué devuelve
 
 Puedes filtrar por fuente, año y variante. La función devuelve las filas
-del dataset interno `indicadores_epen` que cumplen esos criterios.
+del conjunto de datos interno `indicadores_epen` que cumplen esos
+criterios.
 
 ``` r
 
@@ -187,15 +199,16 @@ tasas_2024[, c(
   "year", "activity_rate_pet", "employment_rate_pet",
   "unemployment_rate_pea"
 )]
-#> # A tibble: 1 × 4
+#> # A tibble: 1 x 4
 #>    year activity_rate_pet employment_rate_pet unemployment_rate_pea
 #>   <dbl>             <dbl>               <dbl>                 <dbl>
 #> 1  2024             0.698               0.659                0.0557
 ```
 
-Estos resultados son productos reproducibles del pipeline del proyecto.
-Al citarlos, identifica la fuente y la variante; no los presentes como
-una API o una tabla oficial publicada directamente por el INEI.
+Estos indicadores se calcularon en el proyecto a partir de los
+microdatos del INEI. Al citarlos, indica la encuesta, el periodo y la
+variante utilizados, y aclara que consultaste los resultados preparados
+para `empleR`.
 
 ## `mapa()`: representar un indicador por ámbito EPEN
 
@@ -204,10 +217,10 @@ una API o una tabla oficial publicada directamente por el INEI.
 [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)
 une una tabla de resultados con los 25 ámbitos departamentales que
 publica la EPEN y produce un mapa estático o interactivo. Estos ámbitos
-no son idénticos a los 25 departamentos político-administrativos: la
-encuesta agrupa la provincia de Lima y la Provincia Constitucional del
-Callao como **Lima Metropolitana y Callao**, y separa las demás
-provincias del departamento de Lima como **Región Lima**.
+no son idénticos a los departamentos y la Provincia Constitucional del
+Callao: la encuesta agrupa la provincia de Lima y la Provincia
+Constitucional del Callao como **Lima Metropolitana y Callao**, y separa
+las demás provincias del departamento de Lima como **Región Lima**.
 
 La función espera datos ya agregados, con una fila por ámbito; no
 calcula el indicador dentro del mapa.
@@ -227,12 +240,12 @@ calcula el indicador dentro del mapa.
 ### Qué hace por dentro
 
 1.  Busca `CCDD` o `region_code`. Para los códigos distintos de `15`,
-    esa llave identifica directamente el ámbito.
+    esa clave identifica directamente el ámbito.
 2.  Para el código `15`, exige además `DIVISION_LIMA` o `division_lima`:
     el valor `1` identifica Lima Metropolitana y Callao; el `2`, Región
     Lima.
 3.  También admite los nombres oficiales. Si la tabla trae varias
-    llaves, comprueba que todas indiquen el mismo ámbito.
+    claves, comprueba que todas indiquen el mismo ámbito.
 4.  Rechaza ámbitos repetidos y avisa de filas que no corresponden a
     ningún polígono y de ámbitos sin dato.
 5.  Construye un objeto `ggplot` o `leaflet`.
@@ -259,39 +272,36 @@ mapa(
 #> Warning: 23 ambitos sin dato para 'estimado': "AMAZONAS", "ANCASH", "APURIMAC",
 #> "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CUSCO", "HUANCAVELICA", "HUANUCO", "ICA",
 #> "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LORETO", "MADRE DE DIOS", "MOQUEGUA",
-#> "PASCO", "PIURA", …, "TUMBES", and "UCAYALI".
+#> "PASCO", "PIURA", ..., "TUMBES", and "UCAYALI".
 ```
 
 ![](manual-indicadores-mapas_files/figure-html/mapa-1.png)
 
-La tabla conserva las dos partes de la llave territorial. En los 23
+La tabla conserva las dos partes de la clave territorial. En los 23
 ámbitos ordinarios, `division_lima` queda ausente. En el código `15`,
 sus valores `1` y `2` permiten representar por separado Lima
-Metropolitana y Callao, y Región Lima.
-[`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)
-no inventa el código `07` para Callao ni reparte un valor de Lima entre
-polígonos sin respaldo en los microdatos.
+Metropolitana y Callao, y Región Lima. En esta división de la EPEN,
+Callao forma parte del ámbito Lima Metropolitana y Callao.
 
-### Qué no hace
+### Cómo preparar la tabla para el mapa
 
-- **No trabaja con provincias ni distritos.** Las bases de la EPEN
-  identifican el ámbito departamental, pero no una llave provincial o
-  distrital suficiente. Pedir esos niveles produce un error en lugar de
-  un cruce que podría asignar valores al territorio equivocado.
-- **No adivina la división de Lima.** Una fila con código `15` sin
-  `division_lima` produce un error, porque podría referirse a cualquiera
-  de los dos ámbitos oficiales.
-- **No resuelve grupos dentro del ámbito.** Si calculaste un indicador
-  por ámbito y sexo, hay dos filas por territorio. Filtra un grupo o
-  calcula el indicador solo por `region_code` y `division_lima` antes de
-  mapear.
+- **Usa los ámbitos departamentales de la EPEN.** Esta versión admite
+  ese nivel territorial. El módulo usado no contiene identificadores
+  suficientes para asignar los resultados a provincias o distritos.
+- **Incluye la división de Lima.** Para el código `15`, agrega
+  `division_lima` para distinguir Lima Metropolitana y Callao de Región
+  Lima.
+- **Deja una fila por ámbito.** Si calculaste resultados por ámbito y
+  sexo, selecciona uno de los grupos antes de crear el mapa. También
+  puedes volver a calcular el indicador agrupando solo por `region_code`
+  y `division_lima`.
 
 ### Cómo interpretar el mapa
 
 Un mapa representa los valores que recibe. No demuestra que la encuesta
 sea representativa para cada departamento ni que las diferencias de
-color sean estadísticamente significativas. El ejemplo anterior usa la
-muestra de 2.000 personas incluida en el paquete y no ofrece
-estimaciones por ámbito válidas. Para resultados sustantivos usa la base
+color sean estadísticamente significativas. El ejemplo anterior usa los
+2.000 registros sintéticos incluidos en el paquete para mostrar cómo
+funciona la herramienta. Para resultados sustantivos usa la base
 completa, revisa el número de observaciones y la precisión de cada
 estimación, y comprueba qué dominios permite el diseño de la encuesta.

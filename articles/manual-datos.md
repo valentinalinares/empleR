@@ -5,9 +5,9 @@
 library(empleR)
 ```
 
-Esta parte del manual cubre el inicio del flujo: saber qué información
-existe, descargar los microdatos de la EPEN y convertir códigos
-numéricos en categorías legibles.
+Antes de empezar, puedes consultar qué años y periodos contiene el
+catálogo. En esta sección aprenderás a descargar una base de la EPEN y
+añadir etiquetas para interpretar sus códigos.
 
 ## `catalogo()`: saber qué está disponible
 
@@ -40,7 +40,7 @@ disponibles <- catalogo(
   variante = "departamentos_anual"
 )
 disponibles
-#> # A tibble: 4 × 6
+#> # A tibble: 4 x 6
 #>   fuente variante             year periodo            filas codigos_ocup
 #>   <chr>  <chr>               <dbl> <chr>              <dbl>        <dbl>
 #> 1 EPEN   departamentos_anual  2022 Anual - (Ene-Dic) 192416          439
@@ -62,21 +62,21 @@ catalogo(
   year = 2024,
   variante = "lima_movil"
 )
-#> # A tibble: 12 × 6
-#>    fuente variante    year periodo                        filas codigos_ocup
-#>    <chr>  <chr>      <dbl> <chr>                          <dbl>        <dbl>
-#>  1 EPEN   lima_movil  2024 Trimestre Móvil -(Abr-May-Jun)  6169          318
-#>  2 EPEN   lima_movil  2024 Trimestre Móvil -(Ago-Set-Oct)  6034          309
-#>  3 EPEN   lima_movil  2024 Trimestre Móvil -(Dic-Ene-Feb)  6179          315
-#>  4 EPEN   lima_movil  2024 Trimestre Móvil -(Ene-Feb-Mar)  6173          327
-#>  5 EPEN   lima_movil  2024 Trimestre Móvil -(Feb-Mar-Abr)  6140          322
-#>  6 EPEN   lima_movil  2024 Trimestre Móvil -(Jul-Ago-Set)  5992          311
-#>  7 EPEN   lima_movil  2024 Trimestre Móvil -(Jun-Jul-Ago)  6056          319
-#>  8 EPEN   lima_movil  2024 Trimestre Móvil -(Mar-Abr-May)  6160          324
-#>  9 EPEN   lima_movil  2024 Trimestre Móvil -(May-Jun-Jul)  6072          319
-#> 10 EPEN   lima_movil  2024 Trimestre Móvil -(Nov-Dic-Ene)  6337          328
-#> 11 EPEN   lima_movil  2024 Trimestre Móvil -(Oct-Nov-Dic)  5720          326
-#> 12 EPEN   lima_movil  2024 Trimestre Móvil -(Set-Oct-Nov)  5887          314
+#> # A tibble: 12 x 6
+#>    fuente variante    year periodo                            filas codigos_ocup
+#>    <chr>  <chr>      <dbl> <chr>                              <dbl>        <dbl>
+#>  1 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Abr-May-J~  6169          318
+#>  2 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Ago-Set-O~  6034          309
+#>  3 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Dic-Ene-F~  6179          315
+#>  4 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Ene-Feb-M~  6173          327
+#>  5 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Feb-Mar-A~  6140          322
+#>  6 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Jul-Ago-S~  5992          311
+#>  7 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Jun-Jul-A~  6056          319
+#>  8 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Mar-Abr-M~  6160          324
+#>  9 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(May-Jun-J~  6072          319
+#> 10 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Nov-Dic-E~  6337          328
+#> 11 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Oct-Nov-D~  5720          326
+#> 12 EPEN   lima_movil  2024 "Trimestre M\u00f3vil -(Set-Oct-N~  5887          314
 ```
 
 ## `descargar()`: obtener microdatos de la EPEN
@@ -100,7 +100,9 @@ repetir la descarga.
 
 ### Qué hace por dentro
 
-1.  Si `destfile` ya existe, lee esa copia.
+1.  Si `destfile` ya existe, comprueba que la copia corresponda a la
+    solicitud antes de reutilizarla. Las copias antiguas sin metadatos
+    deben regenerarse.
 2.  Busca la URL que corresponde al año, variante y periodo.
 3.  Descarga el ZIP del INEI a una ubicación temporal.
 4.  Detecta el CSV y su separador.
@@ -161,10 +163,10 @@ ejemplo <- muestra_epen_2024[1:8, c(
 
 antes <- ejemplo
 despues <- etiquetar(ejemplo)
-#> ✔ 3 columna(s) de etiquetas agregada(s).
+#> v 3 columna(s) de etiquetas agregada(s).
 
 antes
-#> # A tibble: 8 × 3
+#> # A tibble: 8 x 3
 #>   sex_code education_code is_rural
 #>      <dbl>          <dbl>    <dbl>
 #> 1        2              9        0
@@ -180,17 +182,17 @@ despues[, c(
   "education_code", "education_label",
   "is_rural", "area_label"
 )]
-#> # A tibble: 8 × 6
+#> # A tibble: 8 x 6
 #>   sex_code sex_label education_code education_label          is_rural area_label
 #>      <dbl> <fct>              <dbl> <fct>                       <dbl> <fct>     
-#> 1        2 Mujer                  9 Superior no universitar…        0 Urbano    
-#> 2        1 Hombre                 4 Primaria completa               0 Urbano    
-#> 3        2 Mujer                 11 Superior universitaria …        0 Urbano    
-#> 4        1 Hombre                 6 Secundaria completa             0 Urbano    
-#> 5        2 Mujer                  2 Educación inicial               1 Rural     
-#> 6        1 Hombre                 9 Superior no universitar…        1 Rural     
-#> 7        2 Mujer                  4 Primaria completa               1 Rural     
-#> 8        1 Hombre                11 Superior universitaria …        1 Rural
+#> 1        2 Mujer                  9 "Superior no universita~        0 Urbano    
+#> 2        1 Hombre                 4 "Primaria completa"             0 Urbano    
+#> 3        2 Mujer                 11 "Superior universitaria~        0 Urbano    
+#> 4        1 Hombre                 6 "Secundaria completa"           0 Urbano    
+#> 5        2 Mujer                  2 "Educaci\u00f3n inicial"        1 Rural     
+#> 6        1 Hombre                 9 "Superior no universita~        1 Rural     
+#> 7        2 Mujer                  4 "Primaria completa"             1 Rural     
+#> 8        1 Hombre                11 "Superior universitaria~        1 Rural
 ```
 
 ### Cómo interpretar el resultado
@@ -206,21 +208,21 @@ etiquetar(
   vars = c("sex_code", "education_code"),
   as_factor = FALSE
 )[, c("sex_code", "sex_label", "education_code", "education_label")]
-#> ✔ 2 columna(s) de etiquetas agregada(s).
-#> # A tibble: 8 × 4
-#>   sex_code sex_label education_code education_label                   
-#>      <dbl> <chr>              <dbl> <chr>                             
-#> 1        2 Mujer                  9 Superior no universitaria completa
-#> 2        1 Hombre                 4 Primaria completa                 
-#> 3        2 Mujer                 11 Superior universitaria completa   
-#> 4        1 Hombre                 6 Secundaria completa               
-#> 5        2 Mujer                  2 Educación inicial                 
-#> 6        1 Hombre                 9 Superior no universitaria completa
-#> 7        2 Mujer                  4 Primaria completa                 
-#> 8        1 Hombre                11 Superior universitaria completa
+#> v 2 columna(s) de etiquetas agregada(s).
+#> # A tibble: 8 x 4
+#>   sex_code sex_label education_code education_label                     
+#>      <dbl> <chr>              <dbl> <chr>                               
+#> 1        2 Mujer                  9 "Superior no universitaria completa"
+#> 2        1 Hombre                 4 "Primaria completa"                 
+#> 3        2 Mujer                 11 "Superior universitaria completa"   
+#> 4        1 Hombre                 6 "Secundaria completa"               
+#> 5        2 Mujer                  2 "Educaci\u00f3n inicial"            
+#> 6        1 Hombre                 9 "Superior no universitaria completa"
+#> 7        2 Mujer                  4 "Primaria completa"                 
+#> 8        1 Hombre                11 "Superior universitaria completa"
 ```
 
-La conexión con una descarga cruda es directa:
+También puedes etiquetar una base recién descargada:
 
 ``` r
 
@@ -230,7 +232,7 @@ epen_2024 <- etiquetar(epen_2024)
 # C207 permanece intacta; sex_label contiene Hombre/Mujer
 table(epen_2024$C207, epen_2024$sex_label, useNA = "ifany")
 
-# El codigo ocupacional sigue disponible para el paso siguiente
+# El código ocupacional sigue disponible para el paso siguiente
 epen_2024 <- cno(epen_2024)
 ```
 
@@ -239,19 +241,19 @@ Los nombres originales y procesados reconocidos son:
 | Concepto | Variable original | Variable procesada | Etiqueta creada |
 |----|----|----|----|
 | Sexo | `C207` | `sex_code` | `sex_label` |
-| Condicion de actividad | `OCUP300` | `labor_status_code` | `labor_status_label` |
+| Condición de actividad | `OCUP300` | `labor_status_code` | `labor_status_label` |
 | Nivel educativo | `C366` | `education_code` | `education_label` |
-| Categoria ocupacional | `C310` | `occupational_category_code` | `occupational_category_label` |
+| Categoría ocupacional | `C310` | `occupational_category_code` | `occupational_category_label` |
 | Sector institucional | `C311` | `institutional_sector_code` | `institutional_sector_label` |
-| Tamano de empresa | `C317` | `firm_size_code` | `firm_size_label` |
+| Tamaño de empresa | `C317` | `firm_size_code` | `firm_size_label` |
 | Periodicidad del ingreso | `C338` | `income_periodicity_code` | `income_periodicity_label` |
-| Area | `AREA` | `is_rural` | `area_label` |
+| Área | `AREA` | `is_rural` | `area_label` |
 
-La codificacion de `AREA` no es la misma en ambas versiones: el dato
+La codificación de `AREA` no es la misma en ambas versiones: el dato
 original usa 1/2 y `is_rural` usa 0/1.
 [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
 aplica el diccionario que corresponde a cada nombre. No interpreta
-automaticamente las demas columnas del modulo 76.
+automáticamente las demás columnas del módulo 76.
 
 ## Siguiente paso
 

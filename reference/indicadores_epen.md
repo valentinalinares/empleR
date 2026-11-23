@@ -1,19 +1,18 @@
-# Indicadores nacionales pre-calculados del mercado laboral (EPEN/ENAHO)
+# Indicadores nacionales precalculados del mercado laboral (EPEN/ENAHO)
 
-Tasas e indicadores laborales ya calculados con la muestra completa de
-la PEA, incluyendo desocupados e inactivos que no estan en los
-microdatos procesados de
-[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md).
-Devueltos por
+Tasas e indicadores laborales calculados en el proyecto a partir de las
+bases completas del INEI. La actividad y el empleo se expresan sobre la
+población en edad de trabajar (PET); el desempleo, sobre la población
+económicamente activa (PEA). Se consultan con
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md).
 
-## Usage
+## Uso
 
 ``` r
 indicadores_epen
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con columnas principales:
 
@@ -27,7 +26,7 @@ Un `data.frame` con columnas principales:
 
 - year:
 
-  Ano de referencia.
+  Año de referencia.
 
 - period_label:
 
@@ -53,10 +52,10 @@ Un `data.frame` con columnas principales:
 
   Horas semanales promedio ponderadas.
 
-## Source
+## Fuente
 
-INEI / elaboracion propia con pipeline Python.
+Elaboración del proyecto a partir de microdatos del INEI.
 
-## See also
+## Ver también
 
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md)

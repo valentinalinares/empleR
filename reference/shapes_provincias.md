@@ -1,35 +1,36 @@
-# Poligonos provinciales del Peru (sf)
+# Polígonos provinciales del Perú (sf)
 
-Shapes a nivel provincia (196 unidades) pre-computados desde el dataset
+Polígonos a nivel provincia (196 unidades) precalculados desde el
+conjunto de datos
 [`geoperu::peru`](https://paulesantos.github.io/geoperu/reference/peru.html)
 usando el motor GEOS (sin s2).
 [`mapa()`](https://valentinalinares.github.io/empleR/reference/mapa.md)
-los usa internamente para construir los dos ambitos oficiales del codigo
-15: Lima Metropolitana y Callao, y Region Lima. Si los unes a tus
-propios datos, usa departamento y provincia juntos como llave.
+los usa internamente para construir los dos ámbitos oficiales del código
+15: Lima Metropolitana y Callao, y Región Lima. Si los unes a tus
+propios datos, usa departamento y provincia juntos como clave.
 
-## Usage
+## Uso
 
 ``` r
 shapes_provincias
 ```
 
-## Format
+## Formato
 
 Un objeto `sf` con 196 filas y columnas:
 
 - departamento:
 
-  Nombre del departamento en mayusculas.
+  Nombre del departamento en mayúsculas.
 
 - provincia:
 
-  Nombre de la provincia en mayusculas.
+  Nombre de la provincia en mayúsculas.
 
 - geometry:
 
-  Poligono en CRS EPSG:4326.
+  Polígono en CRS EPSG:4326.
 
-## Source
+## Fuente
 
 geoperu (CRAN) / INEI.

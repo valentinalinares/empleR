@@ -1,17 +1,18 @@
-# Catalogo de fuentes de datos disponibles
+# Catálogo de fuentes de datos disponibles
 
-Inventario de todas las encuestas, anos, variantes y periodos
-disponibles para descargar con
-[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md).
-Incluye EPEN (departamentos y Lima movil) y ENAHO anual.
+Inventario de las encuestas, años, variantes y periodos procesados por
+el proyecto. Incluye EPEN (departamentos y Lima móvil) y ENAHO anual. La
+descarga automática con
+[`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
+está disponible solo para EPEN.
 
-## Usage
+## Uso
 
 ``` r
 catalogo_fuentes
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con columnas:
 
@@ -25,20 +26,20 @@ Un `data.frame` con columnas:
 
 - year:
 
-  Ano de referencia.
+  Año de referencia.
 
 - periodo:
 
-  Descripcion del periodo.
+  Descripción del periodo.
 
 - filas:
 
-  Numero de filas en la base.
+  Número de filas en la base.
 
 - codigos_ocup:
 
-  Numero de codigos ocupacionales distintos.
+  Número de códigos ocupacionales distintos.
 
-## Source
+## Fuente
 
-INEI / elaboracion propia.
+INEI / elaboración propia.

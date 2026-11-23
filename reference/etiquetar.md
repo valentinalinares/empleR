@@ -1,17 +1,17 @@
 # Aplicar etiquetas de valor a variables de la EPEN
 
 Interpreta variables codificadas de la EPEN siguiendo los diccionarios
-oficiales del INEI. Reconoce tanto los nombres originales del modulo 76
+oficiales del INEI. Reconoce tanto los nombres originales del módulo 76
 (`C207`, `OCUP300`, `C366`, `C310`, `C311`, `C317`, `C338` y `AREA`)
 como sus equivalentes en las bases procesadas de `{empleR}`.
 
-## Usage
+## Uso
 
 ``` r
 etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
 ```
 
-## Arguments
+## Argumentos
 
 - data:
 
@@ -24,16 +24,16 @@ etiquetar(data, vars = NULL, as_factor = TRUE, reemplazar = FALSE)
 
 - as_factor:
 
-  Logico. Si `TRUE` (por defecto), devuelve las etiquetas como factores.
+  Lógico. Si `TRUE` (por defecto), devuelve las etiquetas como factores.
   Si `FALSE`, las devuelve como texto.
 
 - reemplazar:
 
-  Logico. Si es `FALSE` (por defecto), conserva los codigos y agrega
+  Lógico. Si es `FALSE` (por defecto), conserva los códigos y agrega
   columnas de etiquetas. Usa `TRUE` solo para reproducir el
   comportamiento anterior, que reemplaza las columnas seleccionadas.
 
-## Value
+## Valor
 
 El mismo `data.frame`. Por defecto agrega una columna de etiqueta por
 concepto reconocido y conserva las columnas originales. Los nombres
@@ -41,21 +41,21 @@ posibles son `sex_label`, `labor_status_label`, `education_label`,
 `institutional_sector_label`, `occupational_category_label`,
 `firm_size_label`, `area_label` e `income_periodicity_label`.
 
-## Details
+## Detalles
 
-Por defecto conserva intacta cada columna de codigos y agrega una
+Por defecto conserva intacta cada columna de códigos y agrega una
 columna terminada en `_label`. Esta separacion permite usar las
-etiquetas para tablas y graficos sin perder los codigos necesarios para
+etiquetas para tablas y graficos sin perder los códigos necesarios para
 validar o procesar los microdatos. Los valores ausentes siguen ausentes;
-un codigo no incluido en el diccionario genera una advertencia y su
+un código no incluido en el diccionario genera una advertencia y su
 etiqueta queda en `NA`.
 
-## References
+## Referencias
 
 INEI. Diccionario de variables EPEN anual 2023.
 <https://www.inei.gob.pe/media/DATOS_ABIERTOS/EPEN_DEP/DICCIONARIO/2023/Anual-Ener-Dic/Diccionario.pdf>
 
-## Examples
+## Ejemplos
 
 ``` r
 # Conserva sex_code y crea sex_label
@@ -66,7 +66,7 @@ table(muestra_etiquetada$sex_label)
 #> Hombre  Mujer 
 #>   1000   1000 
 
-# Funciona tambien con nombres originales del modulo 76
+# Funciona también con nombres originales del módulo 76
 crudos <- data.frame(C207 = c("1", "2"), C366 = c("6", "11"))
 etiquetar(crudos, as_factor = FALSE)
 #> ✔ 2 columna(s) de etiquetas agregada(s).

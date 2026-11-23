@@ -1,16 +1,19 @@
-# Consultar indicadores nacionales pre-calculados (EPEN/ENAHO)
+# Consultar indicadores nacionales precalculados (EPEN/ENAHO)
 
 Devuelve indicadores del mercado laboral a nivel nacional ya calculados
 para todos los periodos disponibles. Incluye tasas de desempleo,
-actividad y empleo que requieren la PEA completa (no solo ocupados).
+actividad y empleo. Las tasas de actividad y empleo usan como
+denominador la población en edad de trabajar (PET); la de desempleo usa
+la población económicamente activa (PEA), formada por ocupados y
+desocupados.
 
-## Usage
+## Uso
 
 ``` r
 resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 ```
 
-## Arguments
+## Argumentos
 
 - fuente:
 
@@ -18,20 +21,20 @@ resumen_nacional(fuente = "todas", year = NULL, variante = NULL)
 
 - year:
 
-  Filtrar por ano. `NULL` devuelve todos los anos.
+  Filtrar por año. `NULL` devuelve todos los años.
 
 - variante:
 
   Filtrar por variante. `NULL` devuelve todas las variantes.
 
-## Value
+## Valor
 
 Un `data.frame` con columnas: `source`, `survey_variant`, `year`,
 `period_label`, `activity_rate_pet`, `employment_rate_pet`,
 `unemployment_rate_pea`, `income_monthly_weighted_mean`,
-`hours_week_weighted_mean`, y mas.
+`hours_week_weighted_mean`, y más.
 
-## Examples
+## Ejemplos
 
 ``` r
 # Ver indicadores EPEN
@@ -57,7 +60,7 @@ resumen_nacional(fuente = "EPEN")
 #> #   income_monthly_weighted_mean <dbl>, hours_week_weighted_mean <dbl>,
 #> #   women_share_weighted <dbl>, rural_share_weighted <dbl>, …
 
-# Tasa de desempleo EPEN departamentos por ano
+# Tasa de desempleo EPEN departamentos por año
 resumen_nacional("EPEN", variante = "departamentos_anual") |>
   subset(select = c(year, unemployment_rate_pea, activity_rate_pet))
 #> # A tibble: 4 × 3

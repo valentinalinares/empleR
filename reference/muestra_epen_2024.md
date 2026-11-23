@@ -4,29 +4,29 @@ Dataset completamente sintético de 2.000 filas con la estructura de la
 EPEN 2024 (variante departamentos_anual) para uso en ejemplos y pruebas.
 Ninguna fila corresponde a una persona, vivienda u hogar real.
 
-## Usage
+## Uso
 
 ``` r
 muestra_epen_2024
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
 - year, month:
 
-  Ano y mes de referencia.
+  Año y mes de referencia.
 
 - region_code:
 
-  Codigo CCDD de la EPEN. El codigo 15 incluye los dos ambitos de Lima y
+  Código CCDD de la EPEN. El código 15 incluye los dos ámbitos de Lima y
   Callao.
 
 - division_lima:
 
-  Division geografica cuando `region_code = 15`: 1 = Lima Metropolitana
-  y Provincia Constitucional del Callao; 2 = Region Lima. En los otros
+  División geográfica cuando `region_code = 15`: 1 = Lima Metropolitana
+  y Provincia Constitucional del Callao; 2 = Región Lima. En los otros
   departamentos es `NA`.
 
 - sample_id:
@@ -44,20 +44,20 @@ Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
 - person_id, relationship_code:
 
-  Numero de orden de la persona (`C201`) y parentesco (`C203`).
+  Número de orden de la persona (`C201`) y parentesco (`C203`).
 
 - occupational_category_code, firm_size_code, income_periodicity_code:
 
-  Categoria ocupacional (`C310`), tamano de empresa (`C317`) y
+  Categoría ocupacional (`C310`), tamaño de empresa (`C317`) y
   periodicidad del pago (`C338`, solo dependientes).
 
 - labor_status_code:
 
-  Estado laboral: **siempre 1 (Ocupado)** en este dataset.
+  Estado laboral: **siempre 1 (Ocupado)** en este conjunto de datos.
 
 - occupation_code_4d:
 
-  Codigo CNO 2015 de 4 digitos (character).
+  Código CNO 2015 de 4 dígitos (character).
 
 - labor_income_monthly:
 
@@ -65,7 +65,7 @@ Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
 - hours_week:
 
-  Horas trabajadas en la ocupacion principal (`C318_T`).
+  Horas trabajadas en la ocupación principal (`C318_T`).
 
 - hours_week_total:
 
@@ -74,30 +74,29 @@ Un `data.frame` con 2.000 filas y 36 columnas. Variables principales:
 
 - weight:
 
-  Factor de expansion (peso muestral).
+  Factor de expansión (peso muestral).
 
 - sex_code, age, education_code:
 
-  Variables sociodemograficas.
+  Variables sociodemográficas.
 
-## Source
+## Fuente
 
 Datos sintéticos generados por `empleR`. El esquema y los nombres de
 variables se basan en la documentación pública de la Encuesta Permanente
 de Empleo Nacional 2024 del INEI.
 
-## Details
+## Detalles
 
-**Importante:** este dataset representa **unicamente personas ocupadas**
-(`labor_status_code = 1`). Los desocupados e inactivos fueron excluidos
-porque el objetivo de los ejemplos es trabajar con codigos de ocupacion
-(CNO) y cruzarlos con el indice de IA.
+Los registros se generaron para representar únicamente personas ocupadas
+(`labor_status_code = 1`) y practicar con códigos ocupacionales e
+índices de exposición a IA.
 
 Esto significa que **no es posible calcular tasas de desempleo o
 actividad** directamente desde esta muestra. Para esos indicadores usa:
 
 - [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md):
-  tasas pre-calculadas sobre la PEA completa.
+  tasas ya calculadas con las bases completas.
 
 - [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md):
   microdatos crudos del INEI con todos los estados laborales.
@@ -108,5 +107,5 @@ reproducir el esquema disponible del módulo 76.
 
 La muestra se genera con `data-raw/07_muestra_epen_2024.R`, semilla
 `20261114` y reglas declaradas. No se remuestrean microdatos del INEI.
-Los codigos ocupacionales se limitan a codigos CNO validos presentes en
-el indice incluido en el paquete.
+Los códigos ocupacionales se limitan a códigos CNO válidos presentes en
+el índice incluido en el paquete.

@@ -1,20 +1,20 @@
-# Ver el catalogo de fuentes disponibles
+# Ver el catálogo de fuentes disponibles
 
-Muestra un inventario de las encuestas, anos y variantes procesadas por
-el proyecto. Incluye EPEN (departamentos y Lima movil) y ENAHO anual,
-con el numero de filas y codigos ocupacionales por periodo. En esta
-version,
+Muestra un inventario de las encuestas, años y variantes procesadas por
+el proyecto. Incluye EPEN (departamentos y Lima móvil) y ENAHO anual,
+con el número de filas y códigos ocupacionales por periodo. En esta
+versión,
 [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md)
-solo descarga EPEN; una entrada en el catalogo no implica que todas las
-fuentes tengan descarga automatica desde R.
+solo descarga EPEN; una entrada en el catálogo no implica que todas las
+fuentes tengan descarga automática desde R.
 
-## Usage
+## Uso
 
 ``` r
 catalogo(fuente = "todas", year = NULL, variante = "todas")
 ```
 
-## Arguments
+## Argumentos
 
 - fuente:
 
@@ -22,14 +22,14 @@ catalogo(fuente = "todas", year = NULL, variante = "todas")
 
 - year:
 
-  Filtrar por ano. Si es `NULL` (por defecto), devuelve todos los anos.
+  Filtrar por año. Si es `NULL` (por defecto), devuelve todos los años.
 
 - variante:
 
   Filtrar por variante: `"departamentos_anual"`, `"lima_movil"`,
   `"anual"` o `"todas"` (por defecto).
 
-## Value
+## Valor
 
 Un `data.frame` con columnas:
 
@@ -43,24 +43,24 @@ Un `data.frame` con columnas:
 
 - year:
 
-  Ano de referencia.
+  Año de referencia.
 
 - periodo:
 
-  Descripcion del periodo (trimestre o anual).
+  Descripción del periodo (trimestre o anual).
 
 - filas:
 
-  Numero de filas en la base procesada.
+  Número de filas en la base procesada.
 
 - codigos_ocup:
 
-  Numero de codigos ocupacionales distintos.
+  Número de códigos ocupacionales distintos.
 
-## Examples
+## Ejemplos
 
 ``` r
-# Ver todo el catalogo
+# Ver todo el catálogo
 catalogo()
 #> # A tibble: 52 × 6
 #>    fuente variante             year periodo                   filas codigos_ocup
@@ -104,7 +104,7 @@ catalogo(fuente = "EPEN", variante = "departamentos_anual")
 #> 3 EPEN   departamentos_anual  2024 Anual - (Ene-Dic) 200630          434
 #> 4 EPEN   departamentos_anual  2025 Anual - (Ene-Dic) 207407          438
 
-# Un ano especifico
+# Un año específico
 catalogo(year = 2024)
 #> # A tibble: 14 × 6
 #>    fuente variante             year periodo                   filas codigos_ocup

@@ -1,4 +1,4 @@
-# License
+# Licencia
 
     YEAR: 2025
     COPYRIGHT HOLDER: Durga Valentina Linares Herrera

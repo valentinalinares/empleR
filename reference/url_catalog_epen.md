@@ -1,17 +1,17 @@
-# Catalogo de URLs de descarga EPEN (INEI)
+# Catálogo de URLs de descarga EPEN (INEI)
 
 URLs reales para descargar los microdatos de la EPEN desde el servidor
-del INEI. Extraidas del paquete Python `inei_microdatos`. Usadas
+del INEI. Extraídas del paquete Python `inei_microdatos`. Usadas
 internamente por
 [`descargar()`](https://valentinalinares.github.io/empleR/reference/descargar.md).
 
-## Usage
+## Uso
 
 ``` r
 url_catalog_epen
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con columnas:
 
@@ -25,20 +25,20 @@ Un `data.frame` con columnas:
 
 - year:
 
-  Ano de referencia (integer).
+  Año de referencia (integer).
 
 - period_label:
 
-  Etiqueta del periodo (e.g. "Anual", "Trimestre Movil...").
+  Etiqueta del periodo (e.g. "Anual", "Trimestre Móvil...").
 
 - survey_code:
 
-  Codigo de encuesta INEI (entero).
+  Código de encuesta INEI (entero).
 
 - url:
 
-  URL de descarga del ZIP con los modulos CSV.
+  URL de descarga del ZIP con los módulos CSV.
 
-## Source
+## Fuente
 
-INEI - Sistema de Recuperacion de Informacion de Encuestas (SRIIE).
+INEI - Sistema de Recuperación de Información de Encuestas (SRIIE).

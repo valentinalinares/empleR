@@ -1,10 +1,9 @@
 # Contribuir a empleR
 
-Gracias por considerar una contribución. Son bienvenidos los reportes de
-errores, mejoras de documentación, pruebas, ejemplos y propuestas de
-código. `empleR` busca que el trabajo con la EPE y la EPEN sea
-comprensible y reproducible, por lo que una buena explicación de una
-fuente o de un caso límite también es una contribución valiosa.
+Puedes contribuir señalando un error, mejorando una explicación o
+compartiendo un ejemplo. Si una variable o una fuente te resultó difícil
+de interpretar, contarlo también ayuda a mejorar el paquete. Las
+propuestas de código y las pruebas son bienvenidas.
 
 ## Antes de empezar
 
@@ -27,9 +26,8 @@ departamentales. La inferencia muestral continúa marcada como
 experimental. El seguimiento longitudinal de personas y la ampliación a
 otros países no forman parte del alcance actual.
 
-Esta delimitación no impide proponer ideas. Sirve para que una
-contribución no se presente como funcionalidad estable antes de contar
-con fuentes, pruebas y una validación suficiente.
+Si tu propuesta amplía este alcance, abre un issue para conversar sobre
+las fuentes y las validaciones que necesitaría.
 
 ## Preparar el entorno
 
@@ -66,9 +64,9 @@ modificaste comentarios de roxygen, regenera los archivos de `man/` y
   límites.
 - No incorpores bases reales al paquete. Los datos de ejemplo deben
   tener una licencia compatible o ser completamente sintéticos.
-- Si cambias un dataset incluido, actualiza su generador, manifiesto,
-  documentación y validación de reconstrucción. No edites solo el
-  `.rda`.
+- Si cambias un conjunto de datos incluido, actualiza su generador,
+  manifiesto, documentación y validación de reconstrucción. No edites
+  solo el `.rda`.
 
 ## Pull requests
 
@@ -96,6 +94,6 @@ las plantillas públicas del repositorio.
 
 ## Reconocimiento
 
-Las contribuciones se reconocerán según su naturaleza y magnitud. Antes
-de agregar a una persona a `Authors@R` se solicitará su consentimiento y
-se registrará el rol correspondiente.
+Los créditos reflejarán el trabajo aportado. Antes de incluir a una
+persona en `Authors@R`, acordaremos con ella cómo describir su
+contribución y pediremos su consentimiento.

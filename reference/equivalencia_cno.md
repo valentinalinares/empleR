@@ -1,35 +1,35 @@
 # Tabla de equivalencias CIUO-2008 \<-\> CNO 2015
 
-Tabla de correspondencias entre los codigos CIUO-2008 y el Clasificador
-Nacional de Ocupaciones 2015 (CNO 2015, 4 digitos). Publicada por el
-INEI para facilitar la homologacion de series temporales entre
+Tabla de correspondencias entre los códigos CIUO-2008 y el Clasificador
+Nacional de Ocupaciones 2015 (CNO 2015, 4 dígitos). Publicada por el
+INEI para facilitar la homologación de series temporales entre
 clasificadores.
 
-## Usage
+## Uso
 
 ``` r
 equivalencia_cno
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con columnas:
 
 - cod_ciuo_2008:
 
-  Codigo CIUO-2008 (4 digitos).
+  Código CIUO-2008 (4 dígitos).
 
 - desc_ciuo_2008:
 
-  Descripcion del grupo primario CIUO-2008.
+  Descripción del grupo primario CIUO-2008.
 
 - cod_cno_2015:
 
-  Codigo CNO 2015 equivalente (4 digitos).
+  Código CNO 2015 equivalente (4 dígitos).
 
 - desc_cno_2015:
 
-  Descripcion del grupo primario CNO 2015.
+  Descripción del grupo primario CNO 2015.
 
 - enlace_ciuo_cno:
 
@@ -39,6 +39,6 @@ Un `data.frame` con columnas:
 
   Tipo de enlace de CNO hacia CIUO.
 
-## Source
+## Fuente
 
 INEI - Tabla de equivalencias CIUO-2008 / CNO 2015.

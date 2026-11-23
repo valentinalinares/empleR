@@ -1,8 +1,8 @@
-# Articles
+# Artículos
 
 ### Empezar
 
-- [Introduccion a
+- [Introducción a
   empleR](https://valentinalinares.github.io/empleR/articles/empleR.md):
 
 ### Manual de empleR

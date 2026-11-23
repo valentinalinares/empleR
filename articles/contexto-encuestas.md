@@ -12,8 +12,8 @@ mercado laboral a todo el país. Su ficha técnica de 2022 define
 cobertura nacional, departamental y de principales ciudades, además de
 resultados mensuales, trimestrales y anuales según el indicador.
 
-La transición implica al menos cuatro diferencias que una investigación
-debe hacer explícitas:
+Antes de comparar resultados de ambas encuestas, conviene revisar cuatro
+aspectos:
 
 1.  **Ámbito geográfico.** La EPE histórica representa Lima
     Metropolitana; la EPEN tiene cobertura nacional y dominios
@@ -21,8 +21,9 @@ debe hacer explícitas:
 2.  **Diseño y muestra.** Cambian la selección, el tamaño muestral, los
     factores de expansión y las variables necesarias para estimar la
     precisión.
-3.  **Periodos de difusión.** Un trimestre móvil, un trimestre
-    calendario y un promedio anual no son el mismo objeto estadístico.
+3.  **Periodos de difusión.** Comprueba qué meses abarca cada resultado
+    y si corresponde a un trimestre móvil, un trimestre calendario o un
+    promedio anual.
 4.  **Clasificador ocupacional.** La EPE usa CO-95 y la EPEN usa CNO
     2015.
 
@@ -39,7 +40,8 @@ cuatro dígitos, utilizado por la EPEN desde 2022.
 El INEI publica tablas de correspondencia, pero una correspondencia no
 siempre es uno a uno. Un código antiguo puede dividirse entre varias
 ocupaciones del nuevo clasificador. En esos casos, elegir un destino sin
-información adicional crearía precisión falsa.
+información adicional asignaría una ocupación que los datos no permiten
+determinar.
 
 ``` r
 
@@ -56,8 +58,9 @@ table(co_1995$estado)
 [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
 solo completa `cno_homologado` cuando el destino es único y consistente.
 Para los demás casos conserva `cno_candidatos` y `homologacion_estado`.
-Así la persona usuaria puede decidir si su análisis admite agregación a
-gran grupo, exclusión documentada o una revisión caso por caso.
+Con esa información puedes evaluar si conviene agrupar ocupaciones,
+revisar casos individuales o excluirlos del análisis y explicar el
+criterio usado.
 
 ``` r
 
@@ -65,10 +68,10 @@ co_1995[
   co_1995$estado == "multiples_destinos",
   c("co95", "nombre_co95", "cno2015_candidatos")
 ][1:3, ]
-#>   co95                    nombre_co95 cno2015_candidatos
-#> 1  011     Oficiales(Fuerzas Armadas)   0111; 0112; 0113
-#> 2  012      Técnicos(Fuerzas Armadas)   0311; 0312; 0313
-#> 3  013 Sub-oficiales(Fuerzas Armadas)   0211; 0212; 0213
+#>   co95                      nombre_co95 cno2015_candidatos
+#> 1  011       Oficiales(Fuerzas Armadas)   0111; 0112; 0113
+#> 2  012 T<U+00E9>cnicos(Fuerzas Armadas)   0311; 0312; 0313
+#> 3  013   Sub-oficiales(Fuerzas Armadas)   0211; 0212; 0213
 ```
 
 ## Qué puede y qué no puede compararse
@@ -116,15 +119,13 @@ entregas concretas y deben recalcularse para otros periodos.
 
 ## Relación con otras herramientas
 
-No corresponde presentar `empleR` como el primer paquete peruano de
-microdatos. [`enaho`](https://cran.r-project.org/package=enaho) cubre
-ENAHO y otras encuestas del INEI. La diferencia de `empleR` es su foco
-en EPE/EPEN, la comparabilidad ocupacional y la auditoría de las
-correspondencias CO-95–CNO 2015. Como antecedente internacional,
-[`eph`](https://packages.ropensci.org/eph) organiza la Encuesta
-Permanente de Hogares de Argentina.
+En R ya existen herramientas para trabajar con encuestas peruanas, como
+[`enaho`](https://cran.r-project.org/package=enaho), que cubre la ENAHO
+y otras encuestas del INEI. `empleR` se concentra en la EPE y la EPEN y
+en las correspondencias entre sus clasificadores ocupacionales. Como
+antecedente internacional, [`eph`](https://packages.ropensci.org/eph)
+organiza la Encuesta Permanente de Hogares de Argentina.
 
-Esta delimitación es intencional. Incorporar otro país requeriría
-validar su encuesta, clasificadores, diseño y documentación como un
-producto propio; por eso no forma parte del alcance de la primera
-versión estable.
+Por ahora, el desarrollo se concentra en las encuestas peruanas.
+Incorporar otro país requeriría estudiar sus fuentes, clasificadores y
+diseño muestral, y preparar ejemplos y validaciones específicos.

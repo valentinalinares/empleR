@@ -1,30 +1,30 @@
 # Tabla de correspondencia CO-95 -\> CNO 2015 (todos los pares)
 
-Los 604 pares CO-95 / CNO 2015 del anexo 1 del INEI. Un codigo CO-95
-puede aparecer varias veces: **no unir microdatos directamente con esta
-tabla**, porque se replicarian personas y factores de expansion. Para
-eso usar
+Contiene los 604 pares CO-95 / CNO 2015 del anexo 1 del INEI. Un código
+CO-95 puede aparecer varias veces. Para añadir correspondencias a los
+microdatos, usa
 [co_1995](https://valentinalinares.github.io/empleR/reference/co_1995.md)
 o [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
-con `homologar = TRUE`.
+con `homologar = TRUE`: unir directamente esta tabla duplicaría
+registros y factores de expansión en los casos con varios destinos.
 
-## Usage
+## Uso
 
 ``` r
 equivalencia_co95
 ```
 
-## Format
+## Formato
 
 Un `data.frame` con 604 filas y columnas:
 
 - co95, nombre_co95:
 
-  Codigo (3 digitos) y descripcion CO-95.
+  Código (3 dígitos) y descripción CO-95.
 
 - cno2015, nombre_cno2015:
 
-  Codigo (4 digitos) y descripcion CNO 2015.
+  Código (4 dígitos) y descripción CNO 2015.
 
 - acuerdo_anexos:
 
@@ -32,13 +32,13 @@ Un `data.frame` con 604 filas y columnas:
 
 - n_cno_por_co95:
 
-  Numero de destinos CNO 2015 del codigo CO-95.
+  Número de destinos CNO 2015 del código CO-95.
 
 - n_co95_por_cno:
 
-  Numero de origenes CO-95 del codigo CNO 2015.
+  Número de orígenes CO-95 del código CNO 2015.
 
-## Source
+## Fuente
 
 Ver
 [co_1995](https://valentinalinares.github.io/empleR/reference/co_1995.md).

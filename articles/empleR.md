@@ -1,51 +1,76 @@
-# Introduccion a empleR
+# Introducción a empleR
 
 ``` r
 
 library(empleR)
 ```
 
-## Que es empleR
+## Qué es empleR
 
 [empleR](https://valentinalinares.github.io/empleR/) es un paquete de R
 para descargar EPEN y procesar y analizar microdatos de las encuestas de
-empleo del Peru publicadas por el INEI:
+empleo del Perú publicadas por el INEI:
 
 - **EPEN** (Encuesta Permanente de Empleo Nacional, 2022-presente):
   cobertura nacional y resultados en ámbitos departamentales.
 - **EPE** (Encuesta Permanente de Empleo, hasta 2021): cobertura solo
   Lima Metropolitana.
 
-El paquete resuelve la principal dificultad tecnica de trabajar con
-estas series: la **ruptura de clasificadores ocupacionales** entre EPE
-(que usa CO-95, 3 digitos) y EPEN (que usa CNO 2015, 4 digitos).
+Al trabajar con ambas encuestas encontrarás códigos de dos
+clasificadores ocupacionales: CO-95 en la EPE y CNO 2015 en la EPEN.
+[`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
+consulta sus correspondencias y muestra qué ocupaciones tienen una
+equivalencia única y cuáles requieren una revisión adicional.
 
-Para una explicacion historica y metodologica, consulta [De la EPE a la
+Para una explicación histórica y metodológica, consulta [De la EPE a la
 EPEN](https://valentinalinares.github.io/empleR/articles/contexto-encuestas.md).
-Para ver entradas, resultados y limites de cada funcion, consulta el
+Para ver entradas, resultados y límites de cada función, consulta el
 [Manual de
 empleR](https://valentinalinares.github.io/empleR/articles/funciones.md).
 
-## Ver que datos estan disponibles
+## Ver qué datos están disponibles
 
 ``` r
 
-# Ver todo el catalogo de fuentes disponibles
+# Ver todo el catálogo de fuentes disponibles
 catalogo()
+#> # A tibble: 52 x 6
+#>    fuente variante             year periodo                   filas codigos_ocup
+#>    <chr>  <chr>               <dbl> <chr>                     <dbl>        <dbl>
+#>  1 ENAHO  anual                2019 "Anual - (Ene-Dic)"       64954          421
+#>  2 ENAHO  anual                2020 "Anual - (Ene-Dic)"       56615          390
+#>  3 ENAHO  anual                2021 "Anual - (Ene-Dic)"       59935          397
+#>  4 ENAHO  anual                2022 "Anual - (Ene-Dic)"       61181          414
+#>  5 ENAHO  anual                2023 "Anual - (Ene-Dic)"       59447          400
+#>  6 ENAHO  anual                2024 "Anual - (Ene-Dic)"       58579          401
+#>  7 ENAHO  anual                2025 "Anual - (Ene-Dic)"       57716          397
+#>  8 EPEN   departamentos_anual  2022 "Anual - (Ene-Dic)"      192416          439
+#>  9 EPEN   lima_movil           2022 "Trimestre M\u00f3vil -~   6166          318
+#> 10 EPEN   lima_movil           2022 "Trimestre M\u00f3vil -~   6561          333
+#> # i 42 more rows
 
 # Solo EPEN departamentos anuales
 catalogo(fuente = "EPEN", variante = "departamentos_anual")
+#> # A tibble: 4 x 6
+#>   fuente variante             year periodo            filas codigos_ocup
+#>   <chr>  <chr>               <dbl> <chr>              <dbl>        <dbl>
+#> 1 EPEN   departamentos_anual  2022 Anual - (Ene-Dic) 192416          439
+#> 2 EPEN   departamentos_anual  2023 Anual - (Ene-Dic) 196595          449
+#> 3 EPEN   departamentos_anual  2024 Anual - (Ene-Dic) 200630          434
+#> 4 EPEN   departamentos_anual  2025 Anual - (Ene-Dic) 207407          438
 ```
 
-## Flujo basico de trabajo
+## Flujo básico de trabajo
 
 ``` r
 
-# 1. Practicar con la muestra procesada incluida en el paquete
+# 1. Practicar con la muestra sintética incluida en el paquete
 epen_2024 <- etiquetar(muestra_epen_2024)
+#> v 8 columna(s) de etiquetas agregada(s).
 
-# 2. Armonizar codigos ocupacionales (CNO 2015 automatico para 2024)
+# 2. Armonizar códigos ocupacionales (CNO 2015 automático para 2024)
 epen_2024 <- cno(epen_2024)
+#> i Clasificador segun la encuesta de la base: CNO_2015
 
 # 3. Calcular indicadores ponderados
 ingreso_dep <- indicadores(
@@ -53,27 +78,51 @@ ingreso_dep <- indicadores(
   "ingreso_promedio",
   por = c("region_code", "division_lima")
 )
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del
+#> indicador.
 
-# 4. Visualizar los 25 ambitos departamentales oficiales de la EPEN
+# 4. Visualizar los 25 ámbitos departamentales oficiales de la EPEN
 mapa(ingreso_dep, var = "estimado",
-     titulo = "Ingreso laboral promedio por ambito EPEN, 2024")
+     titulo = "Ingreso laboral promedio: ejemplo con datos sintéticos")
+#> Warning: 23 ambitos sin dato para 'estimado': "AMAZONAS", "ANCASH", "APURIMAC",
+#> "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CUSCO", "HUANCAVELICA", "HUANUCO", "ICA",
+#> "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LORETO", "MADRE DE DIOS", "MOQUEGUA",
+#> "PASCO", "PIURA", ..., "TUMBES", and "UCAYALI".
 ```
 
-`descargar(year = 2024)` devuelve el modulo 76 con los nombres
+`descargar(year = 2024)` devuelve el módulo 76 con los nombres
 originales del INEI.
 [`etiquetar()`](https://valentinalinares.github.io/empleR/reference/etiquetar.md)
-reconoce ocho variables crudas del modulo y sus equivalentes procesados.
-Conserva los codigos y agrega columnas terminadas en `_label`; no
-intenta interpretar automaticamente las demas columnas sin un
+reconoce ocho variables crudas del módulo y sus equivalentes procesados.
+Conserva los códigos y agrega columnas terminadas en `_label`; no
+intenta interpretar automáticamente las demás columnas sin un
 diccionario verificado.
 
-Las tasas de desempleo, actividad y empleo requieren la PEA completa y
-se consultan pre-calculadas con
+Las tasas de actividad y empleo usan como referencia la población en
+edad de trabajar (PET); la tasa de desempleo usa la población
+económicamente activa (PEA), formada por ocupados y desocupados. La
+muestra de ejemplo contiene solo ocupados. Para consultar tasas ya
+calculadas con las bases completas, usa
 [`resumen_nacional()`](https://valentinalinares.github.io/empleR/reference/resumen_nacional.md):
 
 ``` r
 
 resumen_nacional("EPEN", variante = "departamentos_anual")
+#> # A tibble: 4 x 18
+#>   source survey_variant       year period_label    pet_population pea_population
+#>   <chr>  <chr>               <dbl> <chr>                    <dbl>          <dbl>
+#> 1 EPEN   departamentos_anual  2022 Anual - (Ene-D~      25481684.      18184319.
+#> 2 EPEN   departamentos_anual  2023 Anual - (Ene-D~      25910035.      18157195.
+#> 3 EPEN   departamentos_anual  2024 Anual - (Ene-D~      26276644.      18344229.
+#> 4 EPEN   departamentos_anual  2025 Anual - (Ene-D~      26601316.      18477203.
+#> # i 12 more variables: occupied_population <dbl>,
+#> #   unemployed_open_population <dbl>, hidden_unemployment_population <dbl>,
+#> #   inactive_population <dbl>, activity_rate_pet <dbl>,
+#> #   employment_rate_pet <dbl>, unemployment_rate_pea <dbl>,
+#> #   income_monthly_weighted_mean <dbl>, hours_week_weighted_mean <dbl>,
+#> #   women_share_weighted <dbl>, rural_share_weighted <dbl>,
+#> #   occupation_count <dbl>
 ```
 
 Con el operador pipe, el flujo reproducible sobre la muestra incluida se
@@ -85,20 +134,38 @@ muestra_epen_2024 |>
   cno() |>
   ia_exposicion(incluir_tipo = TRUE) |>
   indicadores("ingreso_promedio", por = "ia_tipo")
+#> i Clasificador segun la encuesta de la base: CNO_2015
+#> i Filas con score de IA: 2000 (100%).
+#> i Resumen por encuesta y ano: `cobertura()`.
+#> Warning: 80 filas no participan por peso ausente o invalido.
+#> Warning: 48 filas con peso valido no participan por el valor del
+#> indicador.
+#>   ia_tipo        indicador estimado n_universo n_estimacion n_sin_peso
+#> 1       A ingreso_promedio 1901.539        849          791         37
+#> 2       N ingreso_promedio 1883.667       1004          938         40
+#> 3       S ingreso_promedio 2128.156          5            5          0
+#>   n_peso_invalido n_sin_indicador n_indicador_invalido n_fuera_definicion
+#> 1               0               0                    0                 23
+#> 2               0               0                    0                 27
+#> 3               0               0                    0                  0
+#>   poblacion_representada
+#> 1             42029.1207
+#> 2             48515.3103
+#> 3               199.5049
 ```
 
 ## La ruptura de clasificadores EPE/EPEN
 
-Este es el problema central que
-[empleR](https://valentinalinares.github.io/empleR/) resuelve
-automaticamente.
+Las tablas del INEI permiten buscar correspondencias entre los dos
+clasificadores. Algunas ocupaciones tienen un destino único; otras se
+reparten entre varias categorías del nuevo clasificador.
 
-Antes de 2022, la EPE usaba el **CO-95** (3 digitos, basado en CIUO-88).
-Desde 2022, la EPEN usa el **CNO 2015** (4 digitos, basado en CIUO-08).
+Antes de 2022, la EPE usaba el **CO-95** (3 dígitos, basado en CIUO-88).
+Desde 2022, la EPEN usa el **CNO 2015** (4 dígitos, basado en CIUO-08).
 
-La homologacion usa la tabla de correspondencia oficial del INEI
-(`co_1995`). No todas las ocupaciones tienen un equivalente unico: de
-370 codigos CO-95, 236 tienen un solo destino CNO 2015 y 125 tienen
+La homologación usa la tabla de correspondencia oficial del INEI
+(`co_1995`). No todas las ocupaciones tienen un equivalente único: de
+370 códigos CO-95, 236 tienen un solo destino CNO 2015 y 125 tienen
 varios. Por ejemplo, CO-95 262 (“Economistas y planificadores”)
 corresponde a CNO 2412 (analistas financieros) y 2631 (economistas). En
 esos casos
@@ -108,7 +175,7 @@ las opciones en `cno_candidatos`.
 
 ``` r
 
-# Con datos EPE 2019 (CO-95, detectado automaticamente; variable P204A)
+# Con datos EPE 2019 (CO-95, detectado automáticamente; variable P204A)
 epe_2019 <- readRDS("epe_2019.rds")
 epe_2019 <- cno(epe_2019, homologar = TRUE)
 # Agrega: cno_cod, cno_desc, cno_homologado, cno_candidatos,
@@ -119,30 +186,31 @@ table(epe_2019$homologacion_estado)
 
 # A nivel de gran grupo la cobertura es mayor
 epen_2024 <- cno(descargar(year = 2024), agregar = "1d")
-# epe_2019$cno_gran_grupo es comparable con epen_2024$cno_cod
+# Ambas columnas expresan el gran grupo ocupacional.
+# Antes de compararlas, revisa cobertura, territorio y periodo.
 ```
 
-La tabla completa de pares esta en `equivalencia_co95`. No la unas
-directamente a los microdatos: un codigo CO-95 con varios destinos
-replicaria personas y pesos.
+La tabla completa de pares está en `equivalencia_co95`. No la unas
+directamente a los microdatos: un código CO-95 con varios destinos
+replicaría personas y pesos.
 
-### Deteccion del clasificador
+### Detección del clasificador
 
 [`cno()`](https://valentinalinares.github.io/empleR/reference/cno.md)
 decide el clasificador con el argumento `clasificador`, la encuesta
-declarada en `source` (EPE o EPEN) o los anos de **todas** las filas
-(`year`, `anio`, `ANIO` o `AÑO`). Una base que mezcla anos anteriores y
+declarada en `source` (EPE o EPEN) o los años de **todas** las filas
+(`year`, `anio`, `ANIO` o `AÑO`). Una base que mezcla años anteriores y
 posteriores a 2022, o ambas encuestas, produce un error: procesa cada
-parte por separado y une despues.
+parte por separado y une después.
 
-### Exposicion a IA y cobertura en EPE y EPEN
+### Exposición a IA y cobertura en EPE y EPEN
 
 [`ia_exposicion()`](https://valentinalinares.github.io/empleR/reference/ia_exposicion.md)
 usa `cno_homologado` en las filas EPE y `cno_cod` en las EPEN, y rechaza
-codigos CO-95 o agregados.
+códigos CO-95 o agregados.
 [`cobertura()`](https://valentinalinares.github.io/empleR/reference/cobertura.md)
-resume por encuesta y ano cuantas observaciones y cuanta poblacion
-tienen score, y por que falta en el resto:
+resume por encuesta y año cuántas observaciones y cuánta población
+tienen puntaje, y por qué falta en el resto:
 
 ``` r
 
@@ -152,43 +220,48 @@ cobertura(dplyr::bind_rows(epe, epen))
 # estado: con_score, sin_score, sin_homologacion, sin_codigo
 ```
 
-## Indice de exposicion a inteligencia artificial
+## Índice de exposición a inteligencia artificial
 
 [empleR](https://valentinalinares.github.io/empleR/) incluye una nueva
-corrida del indice de exposicion a IA generativa, desarrollada por
-Walter Omar Manky Bonilla, con la asistencia de investigacion de
+corrida del índice de exposición a IA generativa, desarrollada por
+Walter Omar Manky Bonilla, con la asistencia de investigación de
 Valentina Linares Herrera, usando Claude Sonnet 4.6 (Anthropic) para las
-ocupaciones del CNO 2015. La corrida se realizo en abril de 2026 y su
-paquete metodologico fue versionado el 15 de junio de 2026. Actualiza el
-enfoque publicado por Manky (2025), conserva un score continuo y aplica
-reglas revisadas para empates, ambiguedades y tipo de exposicion; por
-ello sus valores no son los puntajes publicados originalmente por el
+ocupaciones del CNO 2015. La corrida se realizó en abril de 2026 y su
+paquete metodológico fue versionado el 15 de junio de 2026. Actualiza el
+enfoque publicado por Manky (2025), conserva un puntaje continuo y
+aplica reglas revisadas para empates, ambigüedades y tipo de exposición;
+por ello sus valores no son los puntajes publicados originalmente por el
 INEI.
 
-Referencia del antecedente: Manky, W. O. (2025). *Doble desafio
-tecnologico: analisis de la exposicion a la automatizacion tradicional y
+Referencia del antecedente: Manky, W. O. (2025). *Doble desafío
+tecnológico: análisis de la exposición a la automatización tradicional y
 a la inteligencia artificial generativa en el empleo peruano, utilizando
-datos de la ENAHO 2024*. Instituto Nacional de Estadistica e
-Informatica.
+datos de la ENAHO 2024*. Instituto Nacional de Estadística e
+Informática.
 
 ``` r
 
-# Agregar score de IA a los microdatos
-epen_ia <- descargar(year = 2024) |>
+# Agregar puntaje de IA a los microdatos
+epen_ia <- muestra_epen_2024 |>
   cno() |>
   ia_exposicion(score = "ambos", incluir_tipo = TRUE)
+#> i Clasificador segun la encuesta de la base: CNO_2015
+#> i Filas con score de IA: 2000 (100%).
+#> i Resumen por encuesta y ano: `cobertura()`.
 
-# Ver distribucion del score
+# Ver distribución del puntaje
 summary(epen_ia$ia_score_mean)
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>  0.0500  0.1800  0.3718  0.3522  0.5000  0.8033
 
-# Exposicion media por ambito EPEN (promedio ponderado por peso)
+# Exposición media por ámbito EPEN en los datos sintéticos
 llave <- interaction(
   epen_ia$region_code,
   ifelse(is.na(epen_ia$division_lima), 0L, epen_ia$division_lima),
   drop = TRUE
 )
 ia_dep <- do.call(rbind, lapply(split(epen_ia, llave), function(d) {
-  ok <- !is.na(d$ia_score_mean)
+  ok <- is.finite(d$ia_score_mean) & is.finite(d$weight) & d$weight > 0
   data.frame(
     region_code   = d$region_code[1],
     division_lima = d$division_lima[1],
@@ -196,20 +269,24 @@ ia_dep <- do.call(rbind, lapply(split(epen_ia, llave), function(d) {
   )
 }))
 mapa(ia_dep, var = "ia_score_mean",
-     titulo = "Exposicion a IA generativa por ambito EPEN, 2024")
+     titulo = "Exposición a IA: ejemplo con datos sintéticos")
 ```
+
+El mapa anterior sirve para practicar el procedimiento. Sus valores
+proceden de datos sintéticos y no describen la exposición de la
+población peruana.
 
 ## Datos de ejemplo
 
-El paquete incluye `muestra_epen_2024`, un dataset completamente
-sintético de 2.000 filas para practicar sin descargar ni redistribuir
-microdatos reales:
+El paquete incluye `muestra_epen_2024`, un conjunto de datos
+completamente sintético de 2.000 filas para practicar sin descargar ni
+redistribuir microdatos reales:
 
 ``` r
 
 # Ver estructura de la muestra
 str(muestra_epen_2024)
-#> tibble [2,000 × 36] (S3: tbl_df/tbl/data.frame)
+#> tibble [2,000 x 36] (S3: tbl_df/tbl/data.frame)
 #>  $ source                    : chr [1:2000] "EPEN" "EPEN" "EPEN" "EPEN" ...
 #>  $ survey_variant            : chr [1:2000] "departamentos_anual" "departamentos_anual" "departamentos_anual" "departamentos_anual" ...
 #>  $ period_label              : chr [1:2000] "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" "Anual - (Ene-Dic)" ...
@@ -249,22 +326,22 @@ str(muestra_epen_2024)
 
 # Aplicar cno() directamente
 muestra_con_cno <- cno(muestra_epen_2024)
-#> ℹ Clasificador segun la encuesta de la base: CNO_2015
+#> i Clasificador segun la encuesta de la base: CNO_2015
 head(muestra_con_cno[, c("cno_cod", "cno_desc", "clasificador")])
-#> # A tibble: 6 × 3
+#> # A tibble: 6 x 3
 #>   cno_cod cno_desc                                                  clasificador
 #>   <chr>   <chr>                                                     <chr>       
-#> 1 1141    Directores generales del sector privado del servicio de … CNO_2015    
-#> 2 1167    Directores generales del sector privado que prestan serv… CNO_2015    
-#> 3 1223    Directores de investigación y desarrollo                  CNO_2015    
-#> 4 1342    Directores y gerentes de empresas que prestan servicios … CNO_2015    
-#> 5 1499    Otros gerentes de servicios                               CNO_2015    
-#> 6 2143    Ingenieros medioambientales                               CNO_2015
+#> 1 1141    "Directores generales del sector privado del servicio de~ CNO_2015    
+#> 2 1167    "Directores generales del sector privado que prestan ser~ CNO_2015    
+#> 3 1223    "Directores de investigaci\u00f3n y desarrollo"           CNO_2015    
+#> 4 1342    "Directores y gerentes de empresas que prestan servicios~ CNO_2015    
+#> 5 1499    "Otros gerentes de servicios"                             CNO_2015    
+#> 6 2143    "Ingenieros medioambientales"                             CNO_2015
 ```
 
-## Citacion y contribuciones
+## Citación y contribuciones
 
-Para citar el paquete y, si corresponde, el indice de exposicion a IA,
+Para citar el paquete y, si corresponde, el índice de exposición a IA,
 consulta:
 
 ``` r
@@ -274,7 +351,7 @@ citation("empleR")
 
 Los microdatos y las cifras oficiales deben citarse por separado como
 productos del INEI. Si encuentras un error o quieres proponer una
-mejora, revisa la [guia de
-contribucion](https://valentinalinares.github.io/empleR/CONTRIBUTING.md)
-y el [codigo de
-conducta](https://valentinalinares.github.io/empleR/CODE_OF_CONDUCT.md).
+mejora, revisa la [guía de
+contribución](https://valentinalinares.github.io/empleR/CONTRIBUTING.html)
+y el [código de
+conducta](https://valentinalinares.github.io/empleR/CODE_OF_CONDUCT.html).
